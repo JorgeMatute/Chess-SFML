@@ -16,9 +16,9 @@ Game::~Game() { //Avoiding memory leaks.
 	delete this->king_W;
 	delete this->king_B;
 
-	//
-	delete pawn_W[0];
-	//
+	for (int i = 0; i < 8; i++) {
+		delete pawn_W[i];
+	}
 }
 
 //Functions.
@@ -50,11 +50,16 @@ void Game::render() {
 	this->initBackground();
 
 	//Pieces.
+
+	//Kings.
 	this->king_W->render(*this->window);
 	this->king_B->render(*this->window);
-	//
-	this->pawn_W[0]->render(*this->window);
-	//
+	
+	//Pawns.
+	for (int i = 0; i < 8; i++) {
+		this->pawn_W[i]->render(*this->window);
+		this->pawn_B[i]->render(*this->window);
+	}
 
 
 	this->window->display();
@@ -74,12 +79,16 @@ void Game::initVariables(){
 }
 
 void Game::initPieces() {
+
+	//Kings.
 	this->king_W = new King(0, board[4][4].x, board[7][7].y);
 	this->king_B = new King(1, board[4][4].x, board[0][0].y);
 
-	//
-	this->pawn_W[0] = new King(1, board[4][4].x, board[4][4].y);
-	//
+	//Pawns.
+	for (int col = 0; col < 8; col++) {
+		this->pawn_W[col] = new Pawn(0, board[col][col].x, board[6][6].y);
+		this->pawn_B[col] = new Pawn(1, board[col][col].x, board[1][1].y);
+	}
 }
 
 void Game::initBackground() {
