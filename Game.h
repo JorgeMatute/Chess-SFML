@@ -1,13 +1,5 @@
 #pragma once
-
-#include <iostream>
-#include <ctime>
-
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/Audio.hpp>
-#include <SFML/Network.hpp>
+#include "Pawn.h"
 
 class Game {
 public:
@@ -31,6 +23,9 @@ private:
 	sf::RenderWindow* window;
 	bool endGame;
 	sf::Event windowEvents;
+	sf::Texture textureBoard;
+	sf::Sprite spriteBoard;
+
 
 	void initWindow();
 	void initVariables();

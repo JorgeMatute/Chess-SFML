@@ -2,8 +2,8 @@
 
 //Constructor and destructor.
 Game::Game() {
-	this->initWindow();
 	this->initVariables();
+	this->initWindow();
 }
 
 Game::~Game() {
@@ -33,6 +33,8 @@ void Game::render() {
 	this->window->clear();
 	
 	//Render stuff.
+	this->window->draw(this->spriteBoard);
+
 	this->window->display();
 }
 
@@ -44,4 +46,10 @@ void Game::initWindow() {
 
 void Game::initVariables(){
 	this->endGame = false;
+	
+	//Board sprite texture.
+	this->textureBoard.loadFromFile("Images/Board/Board.png");
+	this->spriteBoard = sf::Sprite(this->textureBoard, sf::IntRect(0, 0, 1200, 1200));
+	this->spriteBoard.setScale(0.5f, 0.5f);
+
 }
