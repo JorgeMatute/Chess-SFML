@@ -32,12 +32,22 @@ private:
 	void initWindow();
 	void initVariables();
 	void initBackground();
+	void initPieces();
 
 	//Pieces.
 	King* king_W;
 
-	//Pieces inits.
-	void initKing();
+	King* king_B;
+
+	King* pawn_W[8]; //PRUEBA PRUEBA PRUEBA. BORRAR ESTE 
+					 //ARRAY PARA VER LO QUE TENGO QUE BORRAR EN EL .CPP 
+					//YA QUE SOLO ESTABA PROBANDO PERO YA VI QUE VOY A PODER HACER
+					//ESTO PARA LOS PEONES.
+					//PARA LAS DEMAS PIEZAS SI VOY A TRABAJAR INDIVIDUAL.
+
+	//All board positions.
+	sf::Vector2f board[8][8];
+	void setBoardPositions();
 
 };
 

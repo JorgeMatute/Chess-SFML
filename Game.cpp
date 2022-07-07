@@ -1,11 +1,11 @@
 #include "Game.h"
 
-
 //Constructor and destructor.
 Game::Game() {
 	this->initVariables();
 	this->initWindow();
-	this->initKing();
+	this->setBoardPositions();
+	this->initPieces();
 }
 
 Game::~Game() { //Avoiding memory leaks.
@@ -14,6 +14,11 @@ Game::~Game() { //Avoiding memory leaks.
 
 	//Delete pieces.
 	delete this->king_W;
+	delete this->king_B;
+
+	//
+	delete pawn_W[0];
+	//
 }
 
 //Functions.
@@ -43,7 +48,15 @@ void Game::render() {
 	//Render stuff.
 	this->window->draw(this->spriteBoard);
 	this->initBackground();
+
+	//Pieces.
 	this->king_W->render(*this->window);
+	this->king_B->render(*this->window);
+	//
+	this->pawn_W[0]->render(*this->window);
+	//
+
+
 	this->window->display();
 }
 
@@ -60,9 +73,13 @@ void Game::initVariables(){
 
 }
 
-void Game::initKing() {
-	this->king_W = new King();
-	
+void Game::initPieces() {
+	this->king_W = new King(0, board[4][4].x, board[7][7].y);
+	this->king_B = new King(1, board[4][4].x, board[0][0].y);
+
+	//
+	this->pawn_W[0] = new King(1, board[4][4].x, board[4][4].y);
+	//
 }
 
 void Game::initBackground() {
@@ -73,3 +90,19 @@ void Game::initBackground() {
 	this->spriteBoard.setScale(0.5f, 0.5f);
 }
 
+//Defines the position of each square on the board.
+void Game::setBoardPositions() {
+	float y = 0.0;
+	float x = 0.0;
+
+	//Each square size: (75.0 x 75.0)
+	for (int row = 0; row < 8; row++) {
+		for (int col = 0; col < 8; col++) {
+			sf::Vector2f nuevoVector(x, y);
+			this->board[row][col] = nuevoVector;
+			y += 75.0;
+		}
+		y = 0.0;
+		x += 75.0;
+	}
+}

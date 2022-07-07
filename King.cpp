@@ -1,8 +1,15 @@
 #include "King.h"
 
+//Constructors and destructor.
 King::King() {
+
+}
+
+King::King(int color, float dirX, float dirY) {
+	this->color = color;
 	this->initTexture();
 	this->initSprite();
+	this->spriteKing.setPosition(sf::Vector2f(dirX, dirY));
 }
 
 King::~King() {
@@ -10,8 +17,10 @@ King::~King() {
 }
 
 void King::initTexture() {
-	//Load a texture from file.
-	this->textureKing.loadFromFile("Images/WhitePieces/W_King.png");
+	if(this->color == 0)
+		this->textureKing.loadFromFile("Images/WhitePieces/W_King.png");
+	else
+		this->textureKing.loadFromFile("Images/BlackPieces/B_King.png");
 }
 
 void King::initSprite() {

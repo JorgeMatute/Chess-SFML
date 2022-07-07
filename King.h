@@ -11,7 +11,7 @@
 
 class King {
 public:
-	//Constructor and destructor.
+	//Constructors and destructor.
 	King();
 	King(int color, float dirX, float dirY);
 	virtual ~King();
@@ -29,5 +29,6 @@ private:
 private:
 	sf::Texture textureKing;
 	sf::Sprite spriteKing;
+	int color;
 };
 
