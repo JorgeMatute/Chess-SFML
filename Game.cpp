@@ -13,12 +13,38 @@ Game::~Game() { //Avoiding memory leaks.
 	delete this->window;
 
 	//Delete pieces.
+
+	//Kings.
 	delete this->king_W;
 	delete this->king_B;
 
+	//Queens.
+	delete this->queen_W;
+	delete this->queen_B;
+
+	//Pawns.
 	for (int i = 0; i < 8; i++) {
 		delete pawn_W[i];
 	}
+
+	//Rooks.
+	delete this->rook1_W;
+	delete this->rook2_W;
+	delete this->rook1_B;
+	delete this->rook2_B;
+
+	//Knights.
+	delete this->knight1_W;
+	delete this->knight2_W;
+	delete this->knight1_B;
+	delete this->knight2_B;
+
+	//Bishops.
+	delete this->bishop1_W;
+	delete this->bishop2_W;
+	delete this->bishop1_B;
+	delete this->bishop2_B;
+
 }
 
 //Functions.
@@ -55,11 +81,33 @@ void Game::render() {
 	this->king_W->render(*this->window);
 	this->king_B->render(*this->window);
 	
+	//Queens.
+	this->queen_W->render(*this->window);
+	this->queen_B->render(*this->window);
+
 	//Pawns.
 	for (int i = 0; i < 8; i++) {
 		this->pawn_W[i]->render(*this->window);
 		this->pawn_B[i]->render(*this->window);
 	}
+
+	//Rooks.
+	this->rook1_W->render(*this->window);
+	this->rook2_W->render(*this->window);
+	this->rook1_B->render(*this->window);
+	this->rook2_B->render(*this->window);
+
+	//Knights.
+	this->knight1_W->render(*this->window);
+	this->knight2_W->render(*this->window);
+	this->knight1_B->render(*this->window);
+	this->knight2_B->render(*this->window);
+
+	//Bishops.
+	this->bishop1_W->render(*this->window);
+	this->bishop2_W->render(*this->window);
+	this->bishop1_B->render(*this->window);
+	this->bishop2_B->render(*this->window);
 
 
 	this->window->display();
@@ -84,11 +132,33 @@ void Game::initPieces() {
 	this->king_W = new King(0, board[4][4].x, board[7][7].y);
 	this->king_B = new King(1, board[4][4].x, board[0][0].y);
 
+	//Queens.
+	this->queen_W = new Queen(0, board[3][3].x, board[7][7].y);
+	this->queen_B = new Queen(1, board[3][3].x, board[0][0].y);
+
 	//Pawns.
 	for (int col = 0; col < 8; col++) {
 		this->pawn_W[col] = new Pawn(0, board[col][col].x, board[6][6].y);
 		this->pawn_B[col] = new Pawn(1, board[col][col].x, board[1][1].y);
 	}
+
+	//Rooks.
+	this->rook1_W = new Rook(0, board[0][0].x, board[7][7].y);
+	this->rook2_W = new Rook(0, board[7][7].x, board[7][7].y);
+	this->rook1_B = new Rook(1, board[0][0].x, board[0][0].y);
+	this->rook2_B = new Rook(1, board[7][7].x, board[0][0].y);
+
+	//Knights.
+	this->knight1_W = new Knight(0, board[1][1].x, board[7][7].y);
+	this->knight2_W = new Knight(0, board[6][6].x, board[7][7].y);
+	this->knight1_B = new Knight(1, board[1][1].x, board[0][0].y);
+	this->knight2_B = new Knight(1, board[6][6].x, board[0][0].y);
+
+	//Bishops.
+	this->bishop1_W = new Bishop(0, board[2][2].x, board[7][7].y);
+	this->bishop2_W = new Bishop(0, board[5][5].x, board[7][7].y);
+	this->bishop1_B = new Bishop(1, board[2][2].x, board[0][0].y);
+	this->bishop2_B = new Bishop(1, board[5][5].x, board[0][0].y);
 }
 
 void Game::initBackground() {

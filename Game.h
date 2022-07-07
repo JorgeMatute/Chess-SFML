@@ -2,6 +2,10 @@
 
 #include "King.h"
 #include "Pawn.h"
+#include "Rook.h"
+#include "Knight.h"
+#include "Bishop.h"
+#include "Queen.h"
 
 class Game {
 public:
@@ -37,16 +41,24 @@ private:
 
 	//Pieces.
 	King* king_W;
+	Queen* queen_W;
 	Pawn* pawn_W[8];
+	Rook* rook1_W;
+	Rook* rook2_W;
+	Knight* knight1_W;
+	Knight* knight2_W;
+	Bishop* bishop1_W;
+	Bishop* bishop2_W;
 
 	King* king_B;
+	Queen* queen_B;
 	Pawn* pawn_B[8];
-
-	//PRUEBA PRUEBA PRUEBA. BORRAR ESTE 
-	//ARRAY PARA VER LO QUE TENGO QUE BORRAR EN EL .CPP 
-	//YA QUE SOLO ESTABA PROBANDO PERO YA VI QUE VOY A PODER HACER
-	//ESTO PARA LOS PEONES.
-	//PARA LAS DEMAS PIEZAS SI VOY A TRABAJAR INDIVIDUAL.
+	Rook* rook1_B;
+	Rook* rook2_B;
+	Knight* knight1_B;
+	Knight* knight2_B;
+	Bishop* bishop1_B;
+	Bishop* bishop2_B;
 
 
 	//All board positions.
