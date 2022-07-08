@@ -39,7 +39,7 @@ private:
 	void initVariables();
 	void initBackground();
 	void initPieces();
-	void initCircles();
+	void initSquares();
 
 	//Pieces.
 	King* king_W;
@@ -71,6 +71,7 @@ private:
 	sf::Vector2f squarePositions[8][8];
 	void setBoardPositions();
 	void setSquaresPositions();
+
 
 };
 

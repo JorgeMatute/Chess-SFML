@@ -6,9 +6,9 @@ Game::Game() {
 	this->initVariables();
 	this->initWindow();
 	this->setBoardPositions();
-	this->setSquaresPositions();
 	this->initPieces();
-	this->initCircles();
+	this->setSquaresPositions();
+	this->initSquares();
 }
 
 Game::~Game() { //Avoiding memory leaks.
@@ -216,18 +216,24 @@ void Game::movements() {
 
 
 		if (bounds.contains(mouse)) {
-			std::cout << "hola" << std::endl;
-
-			//Aqui irian entonces las acciones o events.
-			this->squares[4][4]->setFillColor(sf::Color::Red); //Despues solo lo volveria a transparent..
-
+			this->squares[0][4]->setFillColor(sf::Color::Red); //Despues solo lo volveria a transparent...
+			this->squares[0][5]->setFillColor(sf::Color::Red); //Despues solo lo volveria a transparent...
 		}
 
-		//Con un loop podría añadir 64 shapes en las 64 posiciones que tengo de board.
-		//de esa forma puedo recrear el tablero y ponerlos de rojo.
-		//Asi si cuando toque una pieza que se pongan en rojo los disponibles y si
-		//toca esa shape, que se mueva a las coordenadas de esa shape.
+		bounds = this->squares[0][5]->getGlobalBounds();
+		sf::FloatRect bounds2 = this->squares[0][4]->getGlobalBounds();
+		if (bounds.contains(mouse)) {
+			this->squares[0][4]->setFillColor(sf::Color::Transparent);
+			this->squares[0][5]->setFillColor(sf::Color::Transparent);
+			this->pawn_W[0]->move(board[0][0].x, board[5][5].y);
+		}
+		else if (bounds2.contains(mouse)) {
+			this->squares[0][4]->setFillColor(sf::Color::Transparent);
+			this->squares[0][5]->setFillColor(sf::Color::Transparent);
+			this->pawn_W[0]->move(board[0][0].x, board[4][4].y);
+		}
 	}
+	this->pawn_W[0]->render(*this->window);
 }
 
 void Game::setSquaresPositions() {
@@ -245,7 +251,7 @@ void Game::setSquaresPositions() {
 	}
 }
 
-void Game::initCircles() {
+void Game::initSquares() {
 
 	for (int row = 0; row < 8; row++) {
 		for (int col = 0; col < 8; col++) {

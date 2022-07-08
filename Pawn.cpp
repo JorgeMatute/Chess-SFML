@@ -43,3 +43,5 @@ void Pawn::render(sf::RenderTarget& target) {
 void Pawn::move(const float dirX, const float dirY) {
 	this->spritePawn.setPosition(dirX, dirY);
 }
+
+
