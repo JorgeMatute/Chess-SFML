@@ -5,7 +5,9 @@ Game::Game() {
 	this->initVariables();
 	this->initWindow();
 	this->setBoardPositions();
+	this->setCirclesPositions();
 	this->initPieces();
+	this->initCircles();
 }
 
 Game::~Game() { //Avoiding memory leaks.
@@ -45,6 +47,12 @@ Game::~Game() { //Avoiding memory leaks.
 	delete this->bishop1_B;
 	delete this->bishop2_B;
 
+	//Squares.
+	for (int row = 0; row < 8; row++) {
+		for (int col = 0; col < 8; col++) {
+			delete this->circles[row][col];
+		}
+	}
 }
 
 //Functions.
@@ -75,6 +83,15 @@ void Game::render() {
 	//Render stuff.
 	this->window->draw(this->spriteBoard);
 	this->initBackground();
+
+	//Circles.
+	for (int row = 0; row < 8; row++) {
+		for (int col = 0; col < 8; col++) {
+			window->draw(*this->circles[row][col]);
+			//this->circles[row][col]->setFillColor(sf::Color::Transparent);
+			//this->circles[row][col]->remove
+		}
+	}
 
 	//Pieces.
 
@@ -109,6 +126,10 @@ void Game::render() {
 	this->bishop2_W->render(*this->window);
 	this->bishop1_B->render(*this->window);
 	this->bishop2_B->render(*this->window);
+
+
+
+
 
 
 	this->window->display();
@@ -203,7 +224,48 @@ void Game::movements() {
 
 		if (bounds.contains(mouse)) {
 			std::cout << "hola" << std::endl;
+
+			//Aqui irian entonces las acciones o events.
 		}
 
+		//Con un loop podría añadir 64 shapes en las 64 posiciones que tengo de board.
+		//de esa forma puedo recrear el tablero y ponerlos de rojo.
+		//Asi si cuando toque una pieza que se pongan en rojo los disponibles y si
+		//toca esa shape, que se mueva a las coordenadas de esa shape.
+	}
+}
+
+void Game::setCirclesPositions() {
+	float y = 37.5;
+	float x = 37.5;
+
+	for (int row = 0; row < 8; row++) {
+		for (int col = 0; col < 8; col++) {
+			sf::Vector2f nuevoVector(x, y);
+			this->circlePositions[row][col] = nuevoVector;
+			y += 75.0;
+		}
+		y = 37.5;
+		x += 75.0;
+	}
+}
+
+void Game::initCircles() {
+
+	//Circles texture of possible moves.
+	if (!this->textureCircles.loadFromFile("Images/Board/Circle.png")) {
+		std::cout << "ERROR::GAME::COULD NOT LOAD BACKGROUND TEXTURE" << "\n";
+	}
+
+	for (int row = 0; row < 8; row++) {
+		for (int col = 0; col < 8; col++) {
+			this->circles[row][col] = new sf::RectangleShape(sf::Vector2f(75.0f, 75.0f));
+			//this->circles[row][col]->setTexture(&this->textureCircles);
+			this->circles[row][col]->setFillColor(sf::Color::Red);
+			this->circles[row][col]->setOutlineColor(sf::Color::Black);
+			this->circles[row][col]->setOutlineThickness(0.5);
+			this->circles[row][col]->setOrigin(37.5f, 37.5f);
+			this->circles[row][col]->setPosition(circlePositions[col][row]);
+		}
 	}
 }
