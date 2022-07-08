@@ -61,7 +61,8 @@ void Game::pollEvents() {
 		}
 	}
 
-	//Move pieces.
+	//Pieces movements.
+	movements();
 }
 
 void Game::update() {
@@ -118,7 +119,7 @@ void Game::initWindow() {
 	this->videoMode = sf::VideoMode(600, 600);
 	this->window = new sf::RenderWindow(this->videoMode, "Chess", sf::Style::Close);
 	this->window->setVerticalSyncEnabled(false);
-	this->window->setFramerateLimit(60);
+	this->window->setFramerateLimit(140);
 }
 
 void Game::initVariables(){
@@ -171,17 +172,38 @@ void Game::initBackground() {
 
 //Defines the position of each square on the board.
 void Game::setBoardPositions() {
-	float y = 0.0;
-	float x = 0.0;
+	float y = 37.5;
+	float x = 37.5;
 
 	//Each square size: (75.0 x 75.0)
 	for (int row = 0; row < 8; row++) {
 		for (int col = 0; col < 8; col++) {
 			sf::Vector2f nuevoVector(x, y);
 			this->board[row][col] = nuevoVector;
-			y += 75.0;
+			if (col == 0)
+				y += 37.5;
+			else
+				y += 75.0;
 		}
-		y = 0.0;
+		y = 75.0;
 		x += 75.0;
+	}
+}
+
+void Game::movements() {
+	//Movements.
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+
+		// transform the mouse position from window coordinates to world coordinates
+		sf::Vector2f mouse = this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window));
+
+		// retrieve the bounding box of the sprite
+		sf::FloatRect bounds = this->pawn_W[0]->spritePawn.getGlobalBounds();
+
+
+		if (bounds.contains(mouse)) {
+			std::cout << "hola" << std::endl;
+		}
+
 	}
 }

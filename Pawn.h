@@ -28,8 +28,9 @@ private:
 
 private:
 	sf::Texture texturePawn;
-	sf::Sprite spritePawn;
 	int color;
+public:
+	sf::Sprite spritePawn;
 };
 
 

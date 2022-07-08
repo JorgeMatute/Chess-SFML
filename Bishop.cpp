@@ -10,6 +10,7 @@ Bishop::Bishop(int color, float dirX, float dirY) {
 	this->initTexture();
 	this->initSprite();
 	this->spriteBishop.setPosition(sf::Vector2f(dirX, dirY));
+	this->spriteBishop.setOrigin(75.f, 75.f);
 }
 
 Bishop::~Bishop() {

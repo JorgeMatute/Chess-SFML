@@ -10,6 +10,7 @@ Pawn::Pawn(int color, float dirX, float dirY) {
 	this->initTexture();
 	this->initSprite();
 	this->spritePawn.setPosition(sf::Vector2f(dirX, dirY));
+	this->spritePawn.setOrigin(75.f, 75.f);
 }
 
 Pawn::~Pawn() {
@@ -40,5 +41,5 @@ void Pawn::render(sf::RenderTarget& target) {
 }
 
 void Pawn::move(const float dirX, const float dirY) {
-
+	this->spritePawn.setPosition(dirX, dirY);
 }

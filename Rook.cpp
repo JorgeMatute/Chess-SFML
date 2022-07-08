@@ -10,6 +10,7 @@ Rook::Rook(int color, float dirX, float dirY) {
 	this->initTexture();
 	this->initSprite();
 	this->spriteRook.setPosition(sf::Vector2f(dirX, dirY));
+	this->spriteRook.setOrigin(75.f, 75.f);
 }
 
 Rook::~Rook() {

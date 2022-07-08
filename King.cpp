@@ -10,6 +10,7 @@ King::King(int color, float dirX, float dirY) {
 	this->initTexture();
 	this->initSprite();
 	this->spriteKing.setPosition(sf::Vector2f(dirX, dirY));
+	this->spriteKing.setOrigin(75.f, 75.f);
 }
 
 King::~King() {

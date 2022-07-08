@@ -16,6 +16,7 @@ public:
 	//Functions.
 	const bool running() const;
 	void pollEvents();
+	void movements();
 
 	void update();
 	void render();

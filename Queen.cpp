@@ -10,6 +10,7 @@ Queen::Queen(int color, float dirX, float dirY) {
 	this->initTexture();
 	this->initSprite();
 	this->spriteQueen.setPosition(sf::Vector2f(dirX, dirY));
+	this->spriteQueen.setOrigin(75.f, 75.f);
 }
 
 Queen::~Queen() {

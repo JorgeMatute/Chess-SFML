@@ -10,6 +10,7 @@ Knight::Knight(int color, float dirX, float dirY) {
 	this->initTexture();
 	this->initSprite();
 	this->spriteKnight.setPosition(sf::Vector2f(dirX, dirY));
+	this->spriteKnight.setOrigin(75.f, 75.f);
 }
 
 Knight::~Knight() {
