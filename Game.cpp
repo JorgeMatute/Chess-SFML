@@ -1,11 +1,12 @@
 #include "Game.h"
+using namespace std;
 
 //Constructor and destructor.
 Game::Game() {
 	this->initVariables();
 	this->initWindow();
 	this->setBoardPositions();
-	this->setCirclesPositions();
+	this->setSquaresPositions();
 	this->initPieces();
 	this->initCircles();
 }
@@ -50,7 +51,7 @@ Game::~Game() { //Avoiding memory leaks.
 	//Squares.
 	for (int row = 0; row < 8; row++) {
 		for (int col = 0; col < 8; col++) {
-			delete this->circles[row][col];
+			delete this->squares[row][col];
 		}
 	}
 }
@@ -84,12 +85,10 @@ void Game::render() {
 	this->window->draw(this->spriteBoard);
 	this->initBackground();
 
-	//Circles.
+	//Squares (transparents).
 	for (int row = 0; row < 8; row++) {
 		for (int col = 0; col < 8; col++) {
-			window->draw(*this->circles[row][col]);
-			//this->circles[row][col]->setFillColor(sf::Color::Transparent);
-			//this->circles[row][col]->remove
+			window->draw(*this->squares[row][col]);
 		}
 	}
 
@@ -127,11 +126,6 @@ void Game::render() {
 	this->bishop1_B->render(*this->window);
 	this->bishop2_B->render(*this->window);
 
-
-
-
-
-
 	this->window->display();
 }
 
@@ -145,7 +139,6 @@ void Game::initWindow() {
 
 void Game::initVariables(){
 	this->endGame = false;
-
 }
 
 void Game::initPieces() {
@@ -226,6 +219,8 @@ void Game::movements() {
 			std::cout << "hola" << std::endl;
 
 			//Aqui irian entonces las acciones o events.
+			this->squares[4][4]->setFillColor(sf::Color::Red); //Despues solo lo volveria a transparent..
+
 		}
 
 		//Con un loop podría añadir 64 shapes en las 64 posiciones que tengo de board.
@@ -235,14 +230,14 @@ void Game::movements() {
 	}
 }
 
-void Game::setCirclesPositions() {
+void Game::setSquaresPositions() {
 	float y = 37.5;
 	float x = 37.5;
 
 	for (int row = 0; row < 8; row++) {
 		for (int col = 0; col < 8; col++) {
 			sf::Vector2f nuevoVector(x, y);
-			this->circlePositions[row][col] = nuevoVector;
+			this->squarePositions[col][row] = nuevoVector; //row-col.
 			y += 75.0;
 		}
 		y = 37.5;
@@ -252,20 +247,14 @@ void Game::setCirclesPositions() {
 
 void Game::initCircles() {
 
-	//Circles texture of possible moves.
-	if (!this->textureCircles.loadFromFile("Images/Board/Circle.png")) {
-		std::cout << "ERROR::GAME::COULD NOT LOAD BACKGROUND TEXTURE" << "\n";
-	}
-
 	for (int row = 0; row < 8; row++) {
 		for (int col = 0; col < 8; col++) {
-			this->circles[row][col] = new sf::RectangleShape(sf::Vector2f(75.0f, 75.0f));
-			//this->circles[row][col]->setTexture(&this->textureCircles);
-			this->circles[row][col]->setFillColor(sf::Color::Red);
-			this->circles[row][col]->setOutlineColor(sf::Color::Black);
-			this->circles[row][col]->setOutlineThickness(0.5);
-			this->circles[row][col]->setOrigin(37.5f, 37.5f);
-			this->circles[row][col]->setPosition(circlePositions[col][row]);
+			this->squares[row][col] = new sf::RectangleShape(sf::Vector2f(75.0f, 75.0f));
+			this->squares[row][col]->setFillColor(sf::Color::Transparent);
+			this->squares[row][col]->setOutlineColor(sf::Color::Black);
+			this->squares[row][col]->setOutlineThickness(0.5);
+			this->squares[row][col]->setOrigin(37.5f, 37.5f);
+			this->squares[row][col]->setPosition(squarePositions[col][row]);
 		}
 	}
 }

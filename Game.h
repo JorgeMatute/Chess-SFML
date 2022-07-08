@@ -32,7 +32,6 @@ private:
 	//Board.
 	sf::Texture textureBoard;
 	sf::Sprite spriteBoard;
-	sf::Texture textureCircles;
 
 
 	//Init functions.
@@ -64,14 +63,14 @@ private:
 	Bishop* bishop2_B;
 
 	//Square shapes to determine the valid moves.
-	sf::RectangleShape* circles[8][8];
+	sf::RectangleShape* squares[8][8];
 
 
 	//All board positions.
 	sf::Vector2f board[8][8];
-	sf::Vector2f circlePositions[8][8];
+	sf::Vector2f squarePositions[8][8];
 	void setBoardPositions();
-	void setCirclesPositions();
+	void setSquaresPositions();
 
 };
 
