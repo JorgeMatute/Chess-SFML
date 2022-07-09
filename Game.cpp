@@ -9,6 +9,12 @@ Game::Game() {
 	this->initPieces();
 	this->setSquaresPositions();
 	this->initSquares();
+	this->initBoardPos();
+
+
+	//Test
+	printOccupiedAndNonOcuppiedPositions();
+	//
 }
 
 Game::~Game() { //Avoiding memory leaks.
@@ -205,6 +211,7 @@ void Game::setBoardPositions() {
 }
 
 void Game::movements() {
+
 	//Movements.
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 
@@ -222,10 +229,21 @@ void Game::movements() {
 
 		bounds = this->squares[0][5]->getGlobalBounds();
 		sf::FloatRect bounds2 = this->squares[0][4]->getGlobalBounds();
+
 		if (bounds.contains(mouse)) {
+			cout << endl << endl; //PRUEBA.
 			this->squares[0][4]->setFillColor(sf::Color::Transparent);
 			this->squares[0][5]->setFillColor(sf::Color::Transparent);
 			this->pawn_W[0]->move(board[0][0].x, board[5][5].y);
+
+			//Prueba.
+			int aux = boardPos[0][6];
+			boardPos[0][6] = boardPos[0][5];
+			boardPos[0][5] = aux;
+			this->printOccupiedAndNonOcuppiedPositions();
+			//cout << this->boardPos[0][5] << endl;
+			//
+
 		}
 		else if (bounds2.contains(mouse)) {
 			this->squares[0][4]->setFillColor(sf::Color::Transparent);
@@ -263,4 +281,46 @@ void Game::initSquares() {
 			this->squares[row][col]->setPosition(squarePositions[col][row]);
 		}
 	}
+}
+
+void Game::initBoardPos() { //Creo que es aqui donde tengo que hacer las modificaciones.
+	//Occupied squares.
+
+	//White.
+	for (int x = 0; x < 8; x++) {
+		for (int y = 6; y < 8; y++) {
+			boardPos[x][y] = 0; //White .
+		}
+	}
+
+	//Black.
+	for (int x = 0; x < 8; x++) {
+		for (int y = 0; y < 2; y++) {
+			boardPos[x][y] = 1; //Black.
+		}
+	}
+
+	//Unoccupied squares.
+	for (int x = 0; x < 8; x++) {
+		for (int y = 2; y < 6; y++) {
+			boardPos[x][y] = 2; //2 -> empty.
+		}
+	}
+}
+
+
+
+
+//PRUEBA.
+void Game::printOccupiedAndNonOcuppiedPositions() {
+	//PRUEBA
+	for (int x = 0; x < 8; x++) {
+		for (int y = 0; y < 8; y++) {
+			cout << "[" << boardPos[y][x] << "]";
+
+			//cout << "[" << x << "]" << "[" << y  << "]: " << boardPos[x][y] << endl;
+		}
+		cout << endl;
+	}
+	//
 }

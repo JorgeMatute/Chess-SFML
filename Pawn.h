@@ -31,6 +31,11 @@ private:
 	int color;
 public:
 	sf::Sprite spritePawn;
+
+//Movement functions.
+public:
+	bool isMoveLegal();
+
 };
 
 

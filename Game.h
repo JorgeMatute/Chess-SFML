@@ -72,6 +72,13 @@ private:
 	void setBoardPositions();
 	void setSquaresPositions();
 
+	//Board indicating occupied and unoccupied positions.
+	void initBoardPos();
+	int boardPos[8][8]; 
+	
+	//prueba.
+	void printOccupiedAndNonOcuppiedPositions();
+	//
 
 };
 
