@@ -28,7 +28,8 @@ private:
 
 private:
 	sf::Texture textureKing;
-	sf::Sprite spriteKing;
 	int color;
+public:
+	sf::Sprite spriteKing;
 };
 

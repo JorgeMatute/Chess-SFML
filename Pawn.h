@@ -13,7 +13,7 @@ class Pawn {
 public:
 	//Constructors and destructor.
 	Pawn();
-	Pawn(int color, float dirX, float dirY);
+	Pawn(int color, float dirX, float dirY, int x, int y);
 	virtual ~Pawn();
 
 	//Functions.
@@ -26,16 +26,18 @@ private:
 	void initTexture();
 	void initSprite();
 
-private:
+public:
 	sf::Texture texturePawn;
 	int color;
-public:
+	int x;
+	int y;
 	sf::Sprite spritePawn;
+	int fistMove = 0;
 
 //Movement functions.
 public:
-	bool isMoveLegal();
-
+	bool isMoveLegal(int board[][8]);
+	int attack(int board[][8]);
 };
 
 

@@ -28,7 +28,8 @@ private:
 
 private:
 	sf::Texture textureRook;
-	sf::Sprite spriteRook;
 	int color;
+public:
+	sf::Sprite spriteRook;
 };
 

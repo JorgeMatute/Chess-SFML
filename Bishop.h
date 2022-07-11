@@ -28,7 +28,8 @@ private:
 
 private:
 	sf::Texture textureBishop;
-	sf::Sprite spriteBishop;
 	int color;
+public:
+	sf::Sprite spriteBishop;
 };
 

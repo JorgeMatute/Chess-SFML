@@ -40,6 +40,7 @@ private:
 	void initBackground();
 	void initPieces();
 	void initSquares();
+	void initSquareBounds();
 
 	//Pieces.
 	King* king_W;
@@ -65,17 +66,24 @@ private:
 	//Square shapes to determine the valid moves.
 	sf::RectangleShape* squares[8][8];
 
-
 	//All board positions.
 	sf::Vector2f board[8][8];
 	sf::Vector2f squarePositions[8][8];
+	sf::FloatRect boundsSquares[8][8];
 	void setBoardPositions();
 	void setSquaresPositions();
 
 	//Board indicating occupied and unoccupied positions.
 	void initBoardPos();
 	int boardPos[8][8]; 
-	
+
+	//Turns.
+	bool whiteTurn();
+	int turn;
+	bool pawnMoves_W[8]; //Al coronar, el bool pasaria a esa nueva piece.
+
+	bool pawnMoves_B[8];
+
 	//prueba.
 	void printOccupiedAndNonOcuppiedPositions();
 	//

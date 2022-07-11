@@ -9,8 +9,9 @@ Game::Game() {
 	this->initPieces();
 	this->setSquaresPositions();
 	this->initSquares();
+	this->initSquareBounds();
 	this->initBoardPos();
-
+	this->turn = 0; //Pair = white turn.
 
 	//Test
 	printOccupiedAndNonOcuppiedPositions();
@@ -140,7 +141,7 @@ void Game::initWindow() {
 	this->videoMode = sf::VideoMode(600, 600);
 	this->window = new sf::RenderWindow(this->videoMode, "Chess", sf::Style::Close);
 	this->window->setVerticalSyncEnabled(false);
-	this->window->setFramerateLimit(140);
+	this->window->setFramerateLimit(10);
 }
 
 void Game::initVariables(){
@@ -159,8 +160,8 @@ void Game::initPieces() {
 
 	//Pawns.
 	for (int col = 0; col < 8; col++) {
-		this->pawn_W[col] = new Pawn(0, board[col][col].x, board[6][6].y);
-		this->pawn_B[col] = new Pawn(1, board[col][col].x, board[1][1].y);
+		this->pawn_W[col] = new Pawn(0, board[col][col].x, board[6][6].y, col, 6);
+		this->pawn_B[col] = new Pawn(1, board[col][col].x, board[1][1].y, col, 1);
 	}
 
 	//Rooks.
@@ -212,47 +213,371 @@ void Game::setBoardPositions() {
 
 void Game::movements() {
 
-	//Movements.
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 
 		// transform the mouse position from window coordinates to world coordinates
 		sf::Vector2f mouse = this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window));
+		
+		//White pieces (BOUNDS).
+		sf::FloatRect boundsPawn_W[8];
+		sf::FloatRect boundsKing_W;
+		sf::FloatRect boundsQueen_W;
+		sf::FloatRect boundsRook1_W;
+		sf::FloatRect boundsRook2_W;
+		sf::FloatRect boundsKnight1_W;
+		sf::FloatRect boundsKnight2_W;
+		sf::FloatRect boundsBisho1_W;
+		sf::FloatRect boundsBisho2_W;
 
-		// retrieve the bounding box of the sprite
-		sf::FloatRect bounds = this->pawn_W[0]->spritePawn.getGlobalBounds();
+		//Black pieces (BOUNDS).
+		sf::FloatRect boundsPawn_B[8];
+		sf::FloatRect boundsKing_B;
+		sf::FloatRect boundsQueen_B;
+		sf::FloatRect boundsRook1_B;
+		sf::FloatRect boundsRook2_B;
+		sf::FloatRect boundsKnight1_B;
+		sf::FloatRect boundsKnight2_B;
+		sf::FloatRect boundsBisho1_B;
+		sf::FloatRect boundsBisho2_B;
 
+		//Defining pieces bounds.
+		boundsKing_W = this->king_W->spriteKing.getGlobalBounds();
+		boundsQueen_W = this->queen_W->spriteQueen.getGlobalBounds();
+		boundsRook1_W = this->rook1_W->spriteRook.getGlobalBounds();
+		boundsRook2_W = this->rook2_W->spriteRook.getGlobalBounds();
+		boundsKnight1_W = this->knight1_W->spriteKnight.getGlobalBounds();
+		boundsKnight2_W = this->knight2_W->spriteKnight.getGlobalBounds();
+		boundsBisho1_W = this->bishop1_W->spriteBishop.getGlobalBounds();
+		boundsBisho2_W = this->bishop2_W->spriteBishop.getGlobalBounds();
 
-		if (bounds.contains(mouse)) {
-			this->squares[0][4]->setFillColor(sf::Color::Red); //Despues solo lo volveria a transparent...
-			this->squares[0][5]->setFillColor(sf::Color::Red); //Despues solo lo volveria a transparent...
+		boundsKing_B = this->king_B->spriteKing.getGlobalBounds();
+		boundsQueen_B = this->queen_B->spriteQueen.getGlobalBounds();
+		boundsRook1_B = this->rook1_B->spriteRook.getGlobalBounds();
+		boundsRook2_B = this->rook2_B->spriteRook.getGlobalBounds();
+		boundsKnight1_B = this->knight1_B->spriteKnight.getGlobalBounds();
+		boundsKnight2_B = this->knight2_B->spriteKnight.getGlobalBounds();
+		boundsBisho1_B = this->bishop1_B->spriteBishop.getGlobalBounds();
+		boundsBisho2_B = this->bishop2_B->spriteBishop.getGlobalBounds();
+
+		for (int i = 0; i < 8; i++) {
+			boundsPawn_W[i] = this->pawn_W[i]->spritePawn.getGlobalBounds();
+			boundsPawn_B[i] = this->pawn_B[i]->spritePawn.getGlobalBounds();
 		}
 
-		bounds = this->squares[0][5]->getGlobalBounds();
-		sf::FloatRect bounds2 = this->squares[0][4]->getGlobalBounds();
-
-		if (bounds.contains(mouse)) {
-			cout << endl << endl; //PRUEBA.
-			this->squares[0][4]->setFillColor(sf::Color::Transparent);
-			this->squares[0][5]->setFillColor(sf::Color::Transparent);
-			this->pawn_W[0]->move(board[0][0].x, board[5][5].y);
-
-			//Prueba.
-			int aux = boardPos[0][6];
-			boardPos[0][6] = boardPos[0][5];
-			boardPos[0][5] = aux;
-			this->printOccupiedAndNonOcuppiedPositions();
-			//cout << this->boardPos[0][5] << endl;
-			//
-
+		
+		if (whiteTurn()) { //Coloring the possible moves for each piece (WHITE).
+			
+				//Pawns.
+				if (boundsPawn_W[0].contains(mouse)) { //No entra porque seria solo si esta en boundsPawn1. Entonces talvez con un ||.
+					if (pawn_W[0]->isMoveLegal(this->boardPos)) {
+						int y = this->pawn_W[0]->attack(boardPos);
+						if (this->pawn_B[0]->fistMove == 0) {
+							this->squares[this->pawn_W[0]->x][y]->setFillColor(sf::Color::Red);
+							this->squares[this->pawn_W[0]->x][y+1]->setFillColor(sf::Color::Red);
+						}
+						else {
+							this->squares[this->pawn_W[0]->x][y]->setFillColor(sf::Color::Red);
+						}
+						this->pawnMoves_W[0] = true;
+					}
+				}
+				else if (boundsPawn_W[1].contains(mouse)) {
+					if (pawn_W[0]->isMoveLegal(this->boardPos)) {
+						int y = this->pawn_W[1]->attack(boardPos);
+						if (this->pawn_B[1]->fistMove == 0) {
+							this->squares[this->pawn_W[1]->x][y]->setFillColor(sf::Color::Red);
+							this->squares[this->pawn_W[1]->x][y + 1]->setFillColor(sf::Color::Red);
+						}
+						else {
+							this->squares[this->pawn_W[1]->x][y]->setFillColor(sf::Color::Red);
+						}
+						this->pawnMoves_W[1] = true;
+					}
+				}
+				else if (boundsPawn_W[2].contains(mouse)) {
+					if (pawn_W[2]->isMoveLegal(this->boardPos)) {
+						int y = this->pawn_W[2]->attack(boardPos);
+						if (this->pawn_W[2]->fistMove == 0) {
+							this->squares[this->pawn_W[2]->x][y]->setFillColor(sf::Color::Red);
+							this->squares[this->pawn_W[2]->x][y + 1]->setFillColor(sf::Color::Red);
+						}
+						else {
+							this->squares[this->pawn_W[2]->x][y]->setFillColor(sf::Color::Red);
+						}
+						this->pawnMoves_W[2] = true;
+					}
+				}
+				else if (boundsPawn_W[3].contains(mouse)) {
+					if (pawn_W[0]->isMoveLegal(this->boardPos)) {
+						int y = this->pawn_W[3]->attack(boardPos);
+						if (this->pawn_W[3]->fistMove == 0) {
+							this->squares[this->pawn_W[3]->x][y]->setFillColor(sf::Color::Red);
+							this->squares[this->pawn_W[3]->x][y + 1]->setFillColor(sf::Color::Red);
+						}
+						else {
+							this->squares[this->pawn_W[3]->x][y]->setFillColor(sf::Color::Red);
+						}
+						this->pawnMoves_W[3] = true;
+					}
+				}
+				else if (boundsPawn_W[4].contains(mouse)) {
+					if (pawn_W[4]->isMoveLegal(this->boardPos)) {
+						int y = this->pawn_W[4]->attack(boardPos);
+						if (this->pawn_W[4]->fistMove == 0) {
+							this->squares[this->pawn_W[4]->x][y]->setFillColor(sf::Color::Red);
+							this->squares[this->pawn_W[4]->x][y + 1]->setFillColor(sf::Color::Red);
+						}
+						else {
+							this->squares[this->pawn_W[4]->x][y]->setFillColor(sf::Color::Red);
+						}
+						this->pawnMoves_W[4] = true;
+					}
+				}
+				else if (boundsPawn_W[5].contains(mouse)) {
+					if (pawn_W[5]->isMoveLegal(this->boardPos)) {
+						int y = this->pawn_W[5]->attack(boardPos);
+						if (this->pawn_W[5]->fistMove == 0) {
+							this->squares[this->pawn_W[5]->x][y]->setFillColor(sf::Color::Red);
+							this->squares[this->pawn_W[5]->x][y + 1]->setFillColor(sf::Color::Red);
+						}
+						else {
+							this->squares[this->pawn_W[5]->x][y]->setFillColor(sf::Color::Red);
+						}
+						this->pawnMoves_W[5] = true;
+					}
+				}
+				else if (boundsPawn_W[6].contains(mouse)) {
+					if (pawn_W[6]->isMoveLegal(this->boardPos)) {
+						int y = this->pawn_W[6]->attack(boardPos);
+						if (this->pawn_W[6]->fistMove == 0) {
+							this->squares[this->pawn_W[6]->x][y]->setFillColor(sf::Color::Red);
+							this->squares[this->pawn_W[6]->x][y + 1]->setFillColor(sf::Color::Red);
+						}
+						else {
+							this->squares[this->pawn_W[6]->x][y]->setFillColor(sf::Color::Red);
+						}
+						this->pawnMoves_W[6] = true;
+					}
+				}
+				else if (boundsPawn_W[7].contains(mouse)) {
+					if (pawn_W[7]->isMoveLegal(this->boardPos)) {
+						int y = this->pawn_W[7]->attack(boardPos);
+						if (this->pawn_W[7]->fistMove == 0) {
+							this->squares[this->pawn_W[7]->x][y]->setFillColor(sf::Color::Red);
+							this->squares[this->pawn_W[7]->x][y + 1]->setFillColor(sf::Color::Red);
+						}
+						else {
+							this->squares[this->pawn_W[7]->x][y]->setFillColor(sf::Color::Red);
+						}
+						this->pawnMoves_W[7] = true;
+					}
+				}
+				turn++;
+			}
+			else {  //Coloring the possible moves for each piece (BLACK).
+				if (boundsPawn_B[0].contains(mouse)) {
+					if (pawn_B[0]->isMoveLegal(this->boardPos)) {
+						int y = this->pawn_B[0]->attack(boardPos);
+						if (this->pawn_B[0]->fistMove == 0) {
+							this->squares[this->pawn_B[0]->x][y]->setFillColor(sf::Color::Red);
+							this->squares[this->pawn_B[0]->x][y - 1]->setFillColor(sf::Color::Red);
+						}
+						else {
+							this->squares[this->pawn_B[0]->x][y]->setFillColor(sf::Color::Red);
+						}
+						this->pawnMoves_B[0] = true;
+					}
+				}
+				else if (boundsPawn_B[1].contains(mouse)) {
+					if (pawn_B[1]->isMoveLegal(this->boardPos)) {
+						int y = this->pawn_B[1]->attack(boardPos);
+						if (this->pawn_B[1]->fistMove == 0) {
+							this->squares[this->pawn_B[1]->x][y]->setFillColor(sf::Color::Red);
+							this->squares[this->pawn_B[1]->x][y - 1]->setFillColor(sf::Color::Red);
+						}
+						else {
+							this->squares[this->pawn_B[1]->x][y]->setFillColor(sf::Color::Red);
+						}
+						this->pawnMoves_B[1] = true;
+					}
+				}
+				else if (boundsPawn_B[2].contains(mouse)) {
+					if (pawn_B[2]->isMoveLegal(this->boardPos)) {
+						int y = this->pawn_B[2]->attack(boardPos);
+						if (this->pawn_B[2]->fistMove == 0) {
+							this->squares[this->pawn_B[2]->x][y]->setFillColor(sf::Color::Red);
+							this->squares[this->pawn_B[2]->x][y - 1]->setFillColor(sf::Color::Red);
+						}
+						else {
+							this->squares[this->pawn_B[2]->x][y]->setFillColor(sf::Color::Red);
+						}
+						this->pawnMoves_B[2] = true;
+					}
+				}
+				else if (boundsPawn_B[3].contains(mouse)) {
+					if (pawn_W[3]->isMoveLegal(this->boardPos)) {
+						int y = this->pawn_B[3]->attack(boardPos);
+						if (this->pawn_B[3]->fistMove == 0) {
+							this->squares[this->pawn_B[3]->x][y]->setFillColor(sf::Color::Red);
+							this->squares[this->pawn_B[3]->x][y - 1]->setFillColor(sf::Color::Red);
+						}
+						else {
+							this->squares[this->pawn_B[3]->x][y]->setFillColor(sf::Color::Red);
+						}
+						this->pawnMoves_B[3] = true;
+					}
+				}
+				else if (boundsPawn_B[4].contains(mouse)) {
+					if (pawn_B[0]->isMoveLegal(this->boardPos)) {
+						int y = this->pawn_B[4]->attack(boardPos);
+						if (this->pawn_B[4]->fistMove == 0) {
+							this->squares[this->pawn_B[4]->x][y]->setFillColor(sf::Color::Red);
+							this->squares[this->pawn_B[4]->x][y - 1]->setFillColor(sf::Color::Red);
+						}
+						else {
+							this->squares[this->pawn_B[4]->x][y]->setFillColor(sf::Color::Red);
+						}
+						this->pawnMoves_B[4] = true;
+					}
+				}
+				else if (boundsPawn_B[5].contains(mouse)) {
+					if (pawn_B[5]->isMoveLegal(this->boardPos)) {
+						int y = this->pawn_B[5]->attack(boardPos);
+						if (this->pawn_B[5]->fistMove == 0) {
+							this->squares[this->pawn_B[5]->x][y]->setFillColor(sf::Color::Red);
+							this->squares[this->pawn_B[5]->x][y - 1]->setFillColor(sf::Color::Red);
+						}
+						else {
+							this->squares[this->pawn_B[5]->x][y]->setFillColor(sf::Color::Red);
+						}
+						this->pawnMoves_B[5] = true;
+					}
+				}
+				else if (boundsPawn_B[6].contains(mouse)) {
+					if (pawn_B[6]->isMoveLegal(this->boardPos)) {
+						int y = this->pawn_B[6]->attack(boardPos);
+						if (this->pawn_B[6]->fistMove == 0) {
+							this->squares[this->pawn_B[6]->x][y]->setFillColor(sf::Color::Red);
+							this->squares[this->pawn_B[6]->x][y - 1]->setFillColor(sf::Color::Red);
+						}
+						else {
+							this->squares[this->pawn_B[6]->x][y]->setFillColor(sf::Color::Red);
+						}
+						this->pawnMoves_B[6] = true;
+					}
+				}
+				else if (boundsPawn_B[7].contains(mouse)) {
+					if (pawn_B[7]->isMoveLegal(this->boardPos)) {
+						int y = this->pawn_B[7]->attack(boardPos);
+						if (this->pawn_B[7]->fistMove == 0) {
+							this->squares[this->pawn_B[7]->x][y]->setFillColor(sf::Color::Red);
+							this->squares[this->pawn_B[7]->x][y - 1]->setFillColor(sf::Color::Red);
+						}
+						else {
+							this->squares[this->pawn_B[7]->x][y]->setFillColor(sf::Color::Red);
+						}
+						this->pawnMoves_B[7] = true;
+					}
+				}
+				turn++;
 		}
-		else if (bounds2.contains(mouse)) {
-			this->squares[0][4]->setFillColor(sf::Color::Transparent);
-			this->squares[0][5]->setFillColor(sf::Color::Transparent);
-			this->pawn_W[0]->move(board[0][0].x, board[4][4].y);
+
+		//Hasta en esta funcion es que voy a aumentar el turn ya que es donde se van a hacer los movimientos.
+		//Verify that the square is a possible move to then move the piece.
+		for (int x = 0; x < 8; x++) {
+			for (int y = 0; y < 8; y++) {
+				if (this->boundsSquares[x][y].contains(mouse) && this->squares[x][y]->getFillColor() == sf::Color::Red) {
+					
+					//White pawns.
+					if (pawnMoves_W[0]) {
+						this->pawn_W[0]->move(board[x][x].x, board[y][y].y); //Aqui debo de actualizar la posicion.
+
+						//Voy a tener que pasar por el constructor la pos inicial para ir intercambiando y actualizando esa pos.
+						//int aux = boardPos[0][6];	
+						//boardPos[0][6] = boardPos[0][5];
+						//boardPos[0][5] = aux;
+
+					}
+					else if (pawnMoves_W[1]) {
+
+					}
+					else if (pawnMoves_W[2]) {
+
+					}
+					else if (pawnMoves_W[3]) {
+
+					}
+					else if (pawnMoves_W[4]) {
+
+					}
+					else if (pawnMoves_W[5]) {
+
+					}
+					else if (pawnMoves_W[6]) {
+
+					}
+					else if (pawnMoves_W[7]) {
+
+					}
+
+					//Black pawns.
+					else if (pawnMoves_B[0]) {
+
+					}
+					else if (pawnMoves_B[1]) {
+
+					}
+					else if (pawnMoves_B[2]) {
+
+					}
+					else if (pawnMoves_B[3]) {
+
+					}
+					else if (pawnMoves_B[4]) {
+
+					}
+					else if (pawnMoves_B[5]) {
+
+					}
+					else if (pawnMoves_B[6]) {
+
+					}
+					else if (pawnMoves_B[7]) {
+
+					}
+				}
+			}
 		}
+
+
+		//	bounds = this->squares[0][5]->getGlobalBounds();
+		//	sf::FloatRect bounds2 = this->squares[0][4]->getGlobalBounds();
+
+			//if (bounds.contains(mouse)) {
+			//	cout << endl << endl; //PRUEBA.
+			//	this->squares[0][4]->setFillColor(sf::Color::Transparent);
+			//	this->squares[0][5]->setFillColor(sf::Color::Transparent);
+			//	this->pawn_W[0]->move(board[0][0].x, board[5][5].y);
+
+			//	//Prueba.
+			//	int aux = boardPos[0][6];
+			//	boardPos[0][6] = boardPos[0][5];
+			//	boardPos[0][5] = aux;
+			//	this->printOccupiedAndNonOcuppiedPositions();
+			//	//cout << this->boardPos[0][5] << endl;
+			//	//
+
+			//}
+		//	else if (bounds2.contains(mouse)) {
+		//		this->squares[0][4]->setFillColor(sf::Color::Transparent);
+		//		this->squares[0][5]->setFillColor(sf::Color::Transparent);
+		//		this->pawn_W[0]->move(board[0][0].x, board[4][4].y);
+		//	}
+		//}
+		this->pawn_W[0]->render(*this->window);
 	}
-	this->pawn_W[0]->render(*this->window);
 }
+
 
 void Game::setSquaresPositions() {
 	float y = 37.5;
@@ -309,8 +634,6 @@ void Game::initBoardPos() { //Creo que es aqui donde tengo que hacer las modific
 }
 
 
-
-
 //PRUEBA.
 void Game::printOccupiedAndNonOcuppiedPositions() {
 	//PRUEBA
@@ -324,3 +647,17 @@ void Game::printOccupiedAndNonOcuppiedPositions() {
 	}
 	//
 }
+
+bool Game::whiteTurn() {
+	return (this->turn % 2) == 0;
+}
+
+
+void Game::initSquareBounds() {
+	for (int x = 0; x < 8; x++) {
+		for (int y = 0; y < 8; y++) {
+			this->boundsSquares[x][y] = this->squares[x][y]->getGlobalBounds();
+		}
+	}
+}
+

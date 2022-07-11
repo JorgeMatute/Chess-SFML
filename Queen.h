@@ -28,7 +28,8 @@ private:
 
 private:
 	sf::Texture textureQueen;
-	sf::Sprite spriteQueen;
 	int color;
+public:
+	sf::Sprite spriteQueen;
 };
 
