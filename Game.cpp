@@ -372,7 +372,6 @@ void Game::movements() {
 						this->pawnMoves_W[7] = true;
 					}
 				}
-				turn++;
 			}
 			else {  //Coloring the possible moves for each piece (BLACK).
 				if (boundsPawn_B[0].contains(mouse)) {
@@ -479,9 +478,9 @@ void Game::movements() {
 						this->pawnMoves_B[7] = true;
 					}
 				}
-				turn++;
 		}
 
+		int aux = 0;
 		//Hasta en esta funcion es que voy a aumentar el turn ya que es donde se van a hacer los movimientos.
 		//Verify that the square is a possible move to then move the piece.
 		for (int x = 0; x < 8; x++) {
@@ -490,60 +489,98 @@ void Game::movements() {
 					
 					//White pawns.
 					if (pawnMoves_W[0]) {
+
+						//TRABAJAR SOLAMENTE CON ESTE PEON PARA IR POCO A POCO ARREGLANDO LOS BUGS
+						//Y LUEGO IMPLEMENTARLO EN LAS OTRAS PIEZAS.
+						//CREO QUE ESA ES LA CLAVE.
+
 						this->pawn_W[0]->move(board[x][x].x, board[y][y].y); //Aqui debo de actualizar la posicion.
+						aux = this->boardPos[this->pawn_W[0]->x][this->pawn_W[0]->y];
+						this->boardPos[this->pawn_W[0]->x][this->pawn_W[0]->y] = this->boardPos[x][y];
+						this->boardPos[x][y] = aux;
 
-						//Voy a tener que pasar por el constructor la pos inicial para ir intercambiando y actualizando esa pos.
-						//int aux = boardPos[0][6];	
-						//boardPos[0][6] = boardPos[0][5];
-						//boardPos[0][5] = aux;
-
+						cout << endl;
+						printOccupiedAndNonOcuppiedPositions();
+						initSquares(); //Para volver a ponerlos transparentes.
+						turn++;
+						this->pawnMoves_W[0] = false;
 					}
 					else if (pawnMoves_W[1]) {
-
+						initSquares(); 
+						turn++;
+						this->pawnMoves_W[1] = false;
 					}
 					else if (pawnMoves_W[2]) {
-
+						initSquares();
+						turn++;
+						this->pawnMoves_W[2] = false;
 					}
 					else if (pawnMoves_W[3]) {
-
+						initSquares();
+						turn++;
+						this->pawnMoves_W[3] = false;
 					}
 					else if (pawnMoves_W[4]) {
-
+						initSquares();
+						turn++;
+						this->pawnMoves_W[4] = false;
 					}
 					else if (pawnMoves_W[5]) {
-
+						initSquares();
+						turn++;
+						this->pawnMoves_W[5] = false;
 					}
 					else if (pawnMoves_W[6]) {
-
+						initSquares();
+						turn++;
+						this->pawnMoves_W[6] = false;
 					}
 					else if (pawnMoves_W[7]) {
-
+						initSquares();
+						turn++;
+						this->pawnMoves_W[7] = false;
 					}
 
 					//Black pawns.
 					else if (pawnMoves_B[0]) {
-
+						initSquares();
+						turn++;
+						this->pawnMoves_B[0] = false;
 					}
 					else if (pawnMoves_B[1]) {
-
+						initSquares();
+						turn++;
+						this->pawnMoves_B[1] = false;
 					}
 					else if (pawnMoves_B[2]) {
-
+						initSquares();
+						turn++;
+						this->pawnMoves_B[2] = false;
 					}
 					else if (pawnMoves_B[3]) {
-
+						initSquares();
+						turn++;
+						this->pawnMoves_B[3] = false;
 					}
 					else if (pawnMoves_B[4]) {
-
+						initSquares();
+						turn++;
+						this->pawnMoves_B[4] = false;
 					}
 					else if (pawnMoves_B[5]) {
-
+						initSquares();
+						turn++;
+						this->pawnMoves_B[5] = false;
 					}
 					else if (pawnMoves_B[6]) {
-
+						initSquares();
+						turn++;
+						this->pawnMoves_B[6] = false;
 					}
 					else if (pawnMoves_B[7]) {
-
+						initSquares();
+						turn++;
+						this->pawnMoves_B[7] = false;
 					}
 				}
 			}
@@ -574,6 +611,9 @@ void Game::movements() {
 		//		this->pawn_W[0]->move(board[0][0].x, board[4][4].y);
 		//	}
 		//}
+
+
+
 		this->pawn_W[0]->render(*this->window);
 	}
 }
