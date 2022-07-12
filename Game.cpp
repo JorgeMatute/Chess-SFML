@@ -271,9 +271,10 @@ void Game::movements() {
 				if (boundsPawn_W[0].contains(mouse)) { //No entra porque seria solo si esta en boundsPawn1. Entonces talvez con un ||.
 					if (pawn_W[0]->isMoveLegal(this->boardPos)) {
 						int y = this->pawn_W[0]->attack(boardPos);
-						if (this->pawn_B[0]->fistMove == 0) {
+						if (this->pawn_W[0]->fistMove == 0) {
 							this->squares[this->pawn_W[0]->x][y]->setFillColor(sf::Color::Red);
 							this->squares[this->pawn_W[0]->x][y+1]->setFillColor(sf::Color::Red);
+							this->pawn_W[0]->fistMove++;
 						}
 						else {
 							this->squares[this->pawn_W[0]->x][y]->setFillColor(sf::Color::Red);
@@ -284,9 +285,10 @@ void Game::movements() {
 				else if (boundsPawn_W[1].contains(mouse)) {
 					if (pawn_W[0]->isMoveLegal(this->boardPos)) {
 						int y = this->pawn_W[1]->attack(boardPos);
-						if (this->pawn_B[1]->fistMove == 0) {
+						if (this->pawn_W[1]->fistMove == 0) {
 							this->squares[this->pawn_W[1]->x][y]->setFillColor(sf::Color::Red);
 							this->squares[this->pawn_W[1]->x][y + 1]->setFillColor(sf::Color::Red);
+							this->pawn_W[1]->fistMove++;
 						}
 						else {
 							this->squares[this->pawn_W[1]->x][y]->setFillColor(sf::Color::Red);
@@ -300,6 +302,7 @@ void Game::movements() {
 						if (this->pawn_W[2]->fistMove == 0) {
 							this->squares[this->pawn_W[2]->x][y]->setFillColor(sf::Color::Red);
 							this->squares[this->pawn_W[2]->x][y + 1]->setFillColor(sf::Color::Red);
+							this->pawn_W[2]->fistMove++;
 						}
 						else {
 							this->squares[this->pawn_W[2]->x][y]->setFillColor(sf::Color::Red);
@@ -313,6 +316,7 @@ void Game::movements() {
 						if (this->pawn_W[3]->fistMove == 0) {
 							this->squares[this->pawn_W[3]->x][y]->setFillColor(sf::Color::Red);
 							this->squares[this->pawn_W[3]->x][y + 1]->setFillColor(sf::Color::Red);
+							this->pawn_W[3]->fistMove++;
 						}
 						else {
 							this->squares[this->pawn_W[3]->x][y]->setFillColor(sf::Color::Red);
@@ -326,6 +330,7 @@ void Game::movements() {
 						if (this->pawn_W[4]->fistMove == 0) {
 							this->squares[this->pawn_W[4]->x][y]->setFillColor(sf::Color::Red);
 							this->squares[this->pawn_W[4]->x][y + 1]->setFillColor(sf::Color::Red);
+							this->pawn_W[4]->fistMove++;
 						}
 						else {
 							this->squares[this->pawn_W[4]->x][y]->setFillColor(sf::Color::Red);
@@ -339,6 +344,7 @@ void Game::movements() {
 						if (this->pawn_W[5]->fistMove == 0) {
 							this->squares[this->pawn_W[5]->x][y]->setFillColor(sf::Color::Red);
 							this->squares[this->pawn_W[5]->x][y + 1]->setFillColor(sf::Color::Red);
+							this->pawn_W[5]->fistMove++;
 						}
 						else {
 							this->squares[this->pawn_W[5]->x][y]->setFillColor(sf::Color::Red);
@@ -352,6 +358,7 @@ void Game::movements() {
 						if (this->pawn_W[6]->fistMove == 0) {
 							this->squares[this->pawn_W[6]->x][y]->setFillColor(sf::Color::Red);
 							this->squares[this->pawn_W[6]->x][y + 1]->setFillColor(sf::Color::Red);
+							this->pawn_W[6]->fistMove++;
 						}
 						else {
 							this->squares[this->pawn_W[6]->x][y]->setFillColor(sf::Color::Red);
@@ -365,6 +372,7 @@ void Game::movements() {
 						if (this->pawn_W[7]->fistMove == 0) {
 							this->squares[this->pawn_W[7]->x][y]->setFillColor(sf::Color::Red);
 							this->squares[this->pawn_W[7]->x][y + 1]->setFillColor(sf::Color::Red);
+							this->pawn_W[7]->fistMove++;
 						}
 						else {
 							this->squares[this->pawn_W[7]->x][y]->setFillColor(sf::Color::Red);
@@ -380,6 +388,7 @@ void Game::movements() {
 						if (this->pawn_B[0]->fistMove == 0) {
 							this->squares[this->pawn_B[0]->x][y]->setFillColor(sf::Color::Red);
 							this->squares[this->pawn_B[0]->x][y - 1]->setFillColor(sf::Color::Red);
+							this->pawn_B[0]->fistMove++;
 						}
 						else {
 							this->squares[this->pawn_B[0]->x][y]->setFillColor(sf::Color::Red);
@@ -393,6 +402,7 @@ void Game::movements() {
 						if (this->pawn_B[1]->fistMove == 0) {
 							this->squares[this->pawn_B[1]->x][y]->setFillColor(sf::Color::Red);
 							this->squares[this->pawn_B[1]->x][y - 1]->setFillColor(sf::Color::Red);
+							this->pawn_B[1]->fistMove++;
 						}
 						else {
 							this->squares[this->pawn_B[1]->x][y]->setFillColor(sf::Color::Red);
@@ -406,6 +416,7 @@ void Game::movements() {
 						if (this->pawn_B[2]->fistMove == 0) {
 							this->squares[this->pawn_B[2]->x][y]->setFillColor(sf::Color::Red);
 							this->squares[this->pawn_B[2]->x][y - 1]->setFillColor(sf::Color::Red);
+							this->pawn_B[2]->fistMove++;
 						}
 						else {
 							this->squares[this->pawn_B[2]->x][y]->setFillColor(sf::Color::Red);
@@ -419,6 +430,7 @@ void Game::movements() {
 						if (this->pawn_B[3]->fistMove == 0) {
 							this->squares[this->pawn_B[3]->x][y]->setFillColor(sf::Color::Red);
 							this->squares[this->pawn_B[3]->x][y - 1]->setFillColor(sf::Color::Red);
+							this->pawn_B[3]->fistMove++;
 						}
 						else {
 							this->squares[this->pawn_B[3]->x][y]->setFillColor(sf::Color::Red);
@@ -432,6 +444,7 @@ void Game::movements() {
 						if (this->pawn_B[4]->fistMove == 0) {
 							this->squares[this->pawn_B[4]->x][y]->setFillColor(sf::Color::Red);
 							this->squares[this->pawn_B[4]->x][y - 1]->setFillColor(sf::Color::Red);
+							this->pawn_B[4]->fistMove++;
 						}
 						else {
 							this->squares[this->pawn_B[4]->x][y]->setFillColor(sf::Color::Red);
@@ -445,6 +458,7 @@ void Game::movements() {
 						if (this->pawn_B[5]->fistMove == 0) {
 							this->squares[this->pawn_B[5]->x][y]->setFillColor(sf::Color::Red);
 							this->squares[this->pawn_B[5]->x][y - 1]->setFillColor(sf::Color::Red);
+							this->pawn_B[5]->fistMove++;
 						}
 						else {
 							this->squares[this->pawn_B[5]->x][y]->setFillColor(sf::Color::Red);
@@ -458,6 +472,7 @@ void Game::movements() {
 						if (this->pawn_B[6]->fistMove == 0) {
 							this->squares[this->pawn_B[6]->x][y]->setFillColor(sf::Color::Red);
 							this->squares[this->pawn_B[6]->x][y - 1]->setFillColor(sf::Color::Red);
+							this->pawn_B[6]->fistMove++;
 						}
 						else {
 							this->squares[this->pawn_B[6]->x][y]->setFillColor(sf::Color::Red);
@@ -471,6 +486,7 @@ void Game::movements() {
 						if (this->pawn_B[7]->fistMove == 0) {
 							this->squares[this->pawn_B[7]->x][y]->setFillColor(sf::Color::Red);
 							this->squares[this->pawn_B[7]->x][y - 1]->setFillColor(sf::Color::Red);
+							this->pawn_B[7]->fistMove++;
 						}
 						else {
 							this->squares[this->pawn_B[7]->x][y]->setFillColor(sf::Color::Red);
@@ -490,9 +506,9 @@ void Game::movements() {
 					//White pawns.
 					if (pawnMoves_W[0]) {
 
-						//TRABAJAR SOLAMENTE CON ESTE PEON PARA IR POCO A POCO ARREGLANDO LOS BUGS
-						//Y LUEGO IMPLEMENTARLO EN LAS OTRAS PIEZAS.
-						//CREO QUE ESA ES LA CLAVE.
+						//New pawn position:
+						this->pawn_W[0]->x = x;
+						this->pawn_W[0]->y = y;
 
 						this->pawn_W[0]->move(board[x][x].x, board[y][y].y); //Aqui debo de actualizar la posicion.
 						aux = this->boardPos[this->pawn_W[0]->x][this->pawn_W[0]->y];
