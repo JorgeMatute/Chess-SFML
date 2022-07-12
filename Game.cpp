@@ -497,287 +497,52 @@ void Game::movements() {
 		}
 
 
-		int aux = 0;
+		int aux = 0; 
+
 		//Verify that the square is a possible move to then move the piece.
 		for (int x = 0; x < 8; x++) {
 			for (int y = 0; y < 8; y++) {
 				if (this->boundsSquares[x][y].contains(mouse) && this->squares[x][y]->getFillColor() == sf::Color::Red) {
-					
-					//White pawns.
-					if (pawnMoves_W[0]) {
+					for (int i = 0; i < 8; i++) {
+						//White pawns.
+						if (pawnMoves_W[i]) {
 
-						//Updating the occupied positions.
-						aux = this->boardPos[this->pawn_W[0]->x][this->pawn_W[0]->y];
-						this->boardPos[this->pawn_W[0]->x][this->pawn_W[0]->y] = this->boardPos[x][y];
-						this->boardPos[x][y] = aux;
+							//Updating the occupied positions.
+							aux = this->boardPos[this->pawn_W[i]->x][this->pawn_W[i]->y];
+							this->boardPos[this->pawn_W[i]->x][this->pawn_W[i]->y] = this->boardPos[x][y];
+							this->boardPos[x][y] = aux;
 
-						//New pawn position.
-						this->pawn_W[0]->x = x;
-						this->pawn_W[0]->y = y;
-						this->pawn_W[0]->move(board[x][x].x, board[y][y].y);
+							//New pawn position.
+							this->pawn_W[i]->x = x;
+							this->pawn_W[i]->y = y;
+							this->pawn_W[i]->move(board[x][x].x, board[y][y].y);
 
-						//Square color reset (transparent).
-						initSquares(); 
-						turn++;
-						this->pawnMoves_W[0] = false;
-					}
-					else if (pawnMoves_W[1]) { 
+							//Square color reset (transparent).
+							initSquares();
+							turn++;
+							this->pawnMoves_W[i] = false;
+						}
 
-						//Updating the occupied positions.
-						aux = this->boardPos[this->pawn_W[1]->x][this->pawn_W[1]->y];
-						this->boardPos[this->pawn_W[1]->x][this->pawn_W[1]->y] = this->boardPos[x][y];
-						this->boardPos[x][y] = aux;
+						//Black pawns.
+						else if (pawnMoves_B[i]) {
 
-						//New pawn position.
-						this->pawn_W[1]->x = x;
-						this->pawn_W[1]->y = y;
-						this->pawn_W[1]->move(board[x][x].x, board[y][y].y);
+							//Updating the occupied positions.
+							aux = this->boardPos[this->pawn_B[i]->x][this->pawn_B[i]->y];
+							this->boardPos[this->pawn_B[i]->x][this->pawn_B[i]->y] = this->boardPos[x][y];
+							this->boardPos[x][y] = aux;
 
-						//Square color reset (transparent).
-						initSquares(); 
-						turn++;
-						this->pawnMoves_W[1] = false;
-					}
-					else if (pawnMoves_W[2]) {
+							//New pawn position.
+							this->pawn_B[i]->x = x;
+							this->pawn_B[i]->y = y;
+							this->pawn_B[i]->move(board[x][x].x, board[y][y].y);
 
-						//Updating the occupied positions.
-						aux = this->boardPos[this->pawn_W[2]->x][this->pawn_W[2]->y];
-						this->boardPos[this->pawn_W[2]->x][this->pawn_W[2]->y] = this->boardPos[x][y];
-						this->boardPos[x][y] = aux;
-
-						//New pawn position.
-						this->pawn_W[2]->x = x;
-						this->pawn_W[2]->y = y;
-						this->pawn_W[2]->move(board[x][x].x, board[y][y].y);
-
-						//Square color reset (transparent).
-						initSquares();
-						turn++;
-						this->pawnMoves_W[2] = false;
-					}
-					else if (pawnMoves_W[3]) {
-
-						//Updating the occupied positions.
-						aux = this->boardPos[this->pawn_W[3]->x][this->pawn_W[3]->y];
-						this->boardPos[this->pawn_W[3]->x][this->pawn_W[3]->y] = this->boardPos[x][y];
-						this->boardPos[x][y] = aux;
-
-						//New pawn position.
-						this->pawn_W[3]->x = x;
-						this->pawn_W[3]->y = y;
-						this->pawn_W[3]->move(board[x][x].x, board[y][y].y);
-
-						//Square color reset (transparent).
-						initSquares();
-						turn++;
-						this->pawnMoves_W[3] = false;
-					}
-					else if (pawnMoves_W[4]) {
-
-						//Updating the occupied positions.
-						aux = this->boardPos[this->pawn_W[4]->x][this->pawn_W[4]->y];
-						this->boardPos[this->pawn_W[4]->x][this->pawn_W[4]->y] = this->boardPos[x][y];
-						this->boardPos[x][y] = aux;
-
-						//New pawn position.
-						this->pawn_W[4]->x = x;
-						this->pawn_W[4]->y = y;
-						this->pawn_W[4]->move(board[x][x].x, board[y][y].y);
-
-						//Square color reset (transparent).
-						initSquares();
-						turn++;
-						this->pawnMoves_W[4] = false;
-					}
-					else if (pawnMoves_W[5]) {
-
-						//Updating the occupied positions.
-						aux = this->boardPos[this->pawn_W[5]->x][this->pawn_W[5]->y];
-						this->boardPos[this->pawn_W[5]->x][this->pawn_W[5]->y] = this->boardPos[x][y];
-						this->boardPos[x][y] = aux;
-
-						//New pawn position.
-						this->pawn_W[5]->x = x;
-						this->pawn_W[5]->y = y;
-						this->pawn_W[5]->move(board[x][x].x, board[y][y].y);
-
-						//Square color reset (transparent).
-						initSquares();
-						turn++;
-						this->pawnMoves_W[5] = false;
-					}
-					else if (pawnMoves_W[6]) {
-					
-						//Updating the occupied positions.
-						aux = this->boardPos[this->pawn_W[6]->x][this->pawn_W[6]->y];
-						this->boardPos[this->pawn_W[6]->x][this->pawn_W[6]->y] = this->boardPos[x][y];
-						this->boardPos[x][y] = aux;
-
-						//New pawn position.
-						this->pawn_W[6]->x = x;
-						this->pawn_W[6]->y = y;
-						this->pawn_W[6]->move(board[x][x].x, board[y][y].y);
-
-						//Square color reset (transparent).
-						initSquares();
-						turn++;
-						this->pawnMoves_W[6] = false;
-					}
-					else if (pawnMoves_W[7]) {
-
-						//Updating the occupied positions.
-						aux = this->boardPos[this->pawn_W[7]->x][this->pawn_W[7]->y];
-						this->boardPos[this->pawn_W[7]->x][this->pawn_W[7]->y] = this->boardPos[x][y];
-						this->boardPos[x][y] = aux;
-
-						//New pawn position.
-						this->pawn_W[7]->x = x;
-						this->pawn_W[7]->y = y;
-						this->pawn_W[7]->move(board[x][x].x, board[y][y].y);
-
-						//Square color reset (transparent).					
-						initSquares();
-						turn++;
-						this->pawnMoves_W[7] = false;
+							//Square color reset (transparent).
+							initSquares();
+							turn++;
+							this->pawnMoves_B[i] = false;
+						}
 					}
 
-					//Black pawns.
-					else if (pawnMoves_B[0]) {
-
-						//Updating the occupied positions.
-						aux = this->boardPos[this->pawn_B[0]->x][this->pawn_B[0]->y];
-						this->boardPos[this->pawn_B[0]->x][this->pawn_B[0]->y] = this->boardPos[x][y];
-						this->boardPos[x][y] = aux;
-
-						//New pawn position.
-						this->pawn_B[0]->x = x;
-						this->pawn_B[0]->y = y;
-						this->pawn_B[0]->move(board[x][x].x, board[y][y].y);
-
-						//Square color reset (transparent).
-						initSquares();
-						turn++;
-						this->pawnMoves_B[0] = false;
-					}
-					else if (pawnMoves_B[1]) {
-
-						//Updating the occupied positions.
-						aux = this->boardPos[this->pawn_B[1]->x][this->pawn_B[1]->y];
-						this->boardPos[this->pawn_B[1]->x][this->pawn_B[1]->y] = this->boardPos[x][y];
-						this->boardPos[x][y] = aux;
-
-						//New pawn position.
-						this->pawn_B[1]->x = x;
-						this->pawn_B[1]->y = y;
-						this->pawn_B[1]->move(board[x][x].x, board[y][y].y);
-
-						//Square color reset (transparent).
-						initSquares();
-						turn++;
-						this->pawnMoves_B[1] = false;
-					}
-					else if (pawnMoves_B[2]) {
-
-						//Updating the occupied positions.
-						aux = this->boardPos[this->pawn_B[2]->x][this->pawn_B[2]->y];
-						this->boardPos[this->pawn_B[2]->x][this->pawn_B[2]->y] = this->boardPos[x][y];
-						this->boardPos[x][y] = aux;
-
-						//New pawn position.
-						this->pawn_B[2]->x = x;
-						this->pawn_B[2]->y = y;
-						this->pawn_B[2]->move(board[x][x].x, board[y][y].y);
-
-						//Square color reset (transparent).
-						initSquares();
-						turn++;
-						this->pawnMoves_B[2] = false;
-					}
-					else if (pawnMoves_B[3]) {
-
-						//Updating the occupied positions.
-						aux = this->boardPos[this->pawn_B[3]->x][this->pawn_B[3]->y];
-						this->boardPos[this->pawn_B[3]->x][this->pawn_B[3]->y] = this->boardPos[x][y];
-						this->boardPos[x][y] = aux;
-
-						//New pawn position.
-						this->pawn_B[3]->x = x;
-						this->pawn_B[3]->y = y;
-						this->pawn_B[3]->move(board[x][x].x, board[y][y].y);
-
-						//Square color reset (transparent).
-						initSquares();
-						turn++;
-						this->pawnMoves_B[3] = false;
-					}
-					else if (pawnMoves_B[4]) {
-
-						//Updating the occupied positions.
-						aux = this->boardPos[this->pawn_B[4]->x][this->pawn_B[4]->y];
-						this->boardPos[this->pawn_B[4]->x][this->pawn_B[4]->y] = this->boardPos[x][y];
-						this->boardPos[x][y] = aux;
-
-						//New pawn position.
-						this->pawn_B[4]->x = x;
-						this->pawn_B[4]->y = y;
-						this->pawn_B[4]->move(board[x][x].x, board[y][y].y);
-
-						//Square color reset (transparent).
-						initSquares();
-						turn++;
-						this->pawnMoves_B[4] = false;
-					}
-					else if (pawnMoves_B[5]) {
-
-						//Updating the occupied positions.
-						aux = this->boardPos[this->pawn_B[5]->x][this->pawn_B[5]->y];
-						this->boardPos[this->pawn_B[5]->x][this->pawn_B[5]->y] = this->boardPos[x][y];
-						this->boardPos[x][y] = aux;
-
-						//New pawn position.
-						this->pawn_B[5]->x = x;
-						this->pawn_B[5]->y = y;
-						this->pawn_B[5]->move(board[x][x].x, board[y][y].y);
-
-						//Square color reset (transparent).
-						initSquares();
-						turn++;
-						this->pawnMoves_B[5] = false;
-					}
-					else if (pawnMoves_B[6]) {
-
-						//Updating the occupied positions.
-						aux = this->boardPos[this->pawn_B[6]->x][this->pawn_B[6]->y];
-						this->boardPos[this->pawn_B[6]->x][this->pawn_B[6]->y] = this->boardPos[x][y];
-						this->boardPos[x][y] = aux;
-
-						//New pawn position.
-						this->pawn_B[6]->x = x;
-						this->pawn_B[6]->y = y;
-						this->pawn_B[6]->move(board[x][x].x, board[y][y].y);
-
-						//Square color reset (transparent).
-						initSquares();
-						turn++;
-						this->pawnMoves_B[6] = false;
-					}
-					else if (pawnMoves_B[7]) {
-
-						//Updating the occupied positions.
-						aux = this->boardPos[this->pawn_B[7]->x][this->pawn_B[7]->y];
-						this->boardPos[this->pawn_B[7]->x][this->pawn_B[7]->y] = this->boardPos[x][y];
-						this->boardPos[x][y] = aux;
-
-						//New pawn position.
-						this->pawn_B[7]->x = x;
-						this->pawn_B[7]->y = y;
-						this->pawn_B[7]->move(board[x][x].x, board[y][y].y);
-
-						//Square color reset (transparent).
-						initSquares();
-						turn++;
-						this->pawnMoves_B[7] = false;
-					}
 				}
 			}
 		}
