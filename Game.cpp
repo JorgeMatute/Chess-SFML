@@ -547,34 +547,6 @@ void Game::movements() {
 			}
 		}
 
-
-		//	bounds = this->squares[0][5]->getGlobalBounds();
-		//	sf::FloatRect bounds2 = this->squares[0][4]->getGlobalBounds();
-
-			//if (bounds.contains(mouse)) {
-			//	cout << endl << endl; //PRUEBA.
-			//	this->squares[0][4]->setFillColor(sf::Color::Transparent);
-			//	this->squares[0][5]->setFillColor(sf::Color::Transparent);
-			//	this->pawn_W[0]->move(board[0][0].x, board[5][5].y);
-
-			//	//Prueba.
-			//	int aux = boardPos[0][6];
-			//	boardPos[0][6] = boardPos[0][5];
-			//	boardPos[0][5] = aux;
-			//	this->printOccupiedAndNonOcuppiedPositions();
-			//	//cout << this->boardPos[0][5] << endl;
-			//	//
-
-			//}
-		//	else if (bounds2.contains(mouse)) {
-		//		this->squares[0][4]->setFillColor(sf::Color::Transparent);
-		//		this->squares[0][5]->setFillColor(sf::Color::Transparent);
-		//		this->pawn_W[0]->move(board[0][0].x, board[4][4].y);
-		//	}
-		//}
-
-
-
 		this->pawn_W[0]->render(*this->window);
 	}
 }
