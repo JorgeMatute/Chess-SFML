@@ -283,7 +283,7 @@ void Game::movements() {
 					}
 				}
 				else if (boundsPawn_W[1].contains(mouse)) {
-					if (pawn_W[0]->isMoveLegal(this->boardPos)) {
+					if (pawn_W[1]->isMoveLegal(this->boardPos)) {
 						int y = this->pawn_W[1]->attack(boardPos);
 						if (this->pawn_W[1]->fistMove == 0) {
 							this->squares[this->pawn_W[1]->x][y]->setFillColor(sf::Color::Red);
@@ -311,7 +311,7 @@ void Game::movements() {
 					}
 				}
 				else if (boundsPawn_W[3].contains(mouse)) {
-					if (pawn_W[0]->isMoveLegal(this->boardPos)) {
+					if (pawn_W[3]->isMoveLegal(this->boardPos)) {
 						int y = this->pawn_W[3]->attack(boardPos);
 						if (this->pawn_W[3]->fistMove == 0) {
 							this->squares[this->pawn_W[3]->x][y]->setFillColor(sf::Color::Red);
@@ -425,7 +425,7 @@ void Game::movements() {
 					}
 				}
 				else if (boundsPawn_B[3].contains(mouse)) {
-					if (pawn_W[3]->isMoveLegal(this->boardPos)) {
+					if (pawn_B[3]->isMoveLegal(this->boardPos)) {
 						int y = this->pawn_B[3]->attack(boardPos);
 						if (this->pawn_B[3]->fistMove == 0) {
 							this->squares[this->pawn_B[3]->x][y]->setFillColor(sf::Color::Red);
