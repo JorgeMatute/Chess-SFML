@@ -12,10 +12,6 @@ Game::Game() {
 	this->initSquareBounds();
 	this->initBoardPos();
 	this->turn = 0; //Pair = white turn.
-
-	//Test
-	printOccupiedAndNonOcuppiedPositions();
-	//
 }
 
 Game::~Game() { //Avoiding memory leaks.
@@ -216,6 +212,7 @@ void Game::movements() {
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 
 		int aux = 0; //Help to exchange values.
+		int y = 0;
 
 		// transform the mouse position from window coordinates to world coordinates
 		sf::Vector2f mouse = this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window));
@@ -266,12 +263,22 @@ void Game::movements() {
 			boundsPawn_B[i] = this->pawn_B[i]->spritePawn.getGlobalBounds();
 		}
 
+
+		/*
+		FALTARIA HACER LO MISMO QUE HICE CON LAS BLANCAS PARA DECIR QUE CASILLAS ESTAN 
+		DISPONIBLES Y LUEGO VER COMO HAGO PARA ELIMINAR LA PIEZA QUE ME HE COMIDO.
+		RECORDAR TAMBIEN LO DE CORONA Y EL PEON PASADO. AUNQUE CREO QUE ESO OTRO
+		YA SERIA AL FINAL COMO ULTIMOS RETOQUES DEL PROGRAMA.
+		*/
+
+
+
 		for (int i = 0; i < 8; i++) {
 			if (whiteTurn()) { //Coloring the possible moves for each piece (WHITE).
 					//Pawns.
 				if (boundsPawn_W[i].contains(mouse)) {
 					if (pawn_W[i]->isMoveLegal(this->boardPos)) {
-						int y = this->pawn_W[i]->movePiece(boardPos);
+						y = this->pawn_W[i]->movePiece(boardPos);
 						if (this->pawn_W[i]->fistMove == 0){
 							this->squares[this->pawn_W[i]->x][y]->setFillColor(sf::Color::Red);
 							this->squares[this->pawn_W[i]->x][y + 1]->setFillColor(sf::Color::Red);
@@ -295,13 +302,22 @@ void Game::movements() {
 			} else {  //Coloring the possible moves for each piece (BLACK).
 					if (boundsPawn_B[i].contains(mouse)) {
 						if (pawn_B[i]->isMoveLegal(this->boardPos)) {
-							int y = this->pawn_B[i]->movePiece(boardPos);
+							y = this->pawn_B[i]->movePiece(boardPos);
 							if (this->pawn_B[i]->fistMove == 0) {
 								this->squares[this->pawn_B[i]->x][y]->setFillColor(sf::Color::Red);
 								this->squares[this->pawn_B[i]->x][y - 1]->setFillColor(sf::Color::Red);
 							}
-							else {
+							else if (boardPos[this->pawn_B[i]->x][this->pawn_B[i]->y + 1] == 2) {
 								this->squares[this->pawn_B[i]->x][y]->setFillColor(sf::Color::Red);
+							}
+
+							//Possible attack moves.
+							if (this->boardPos[this->pawn_B[i]->x + 1][this->pawn_B[i]->y + 1] == 0) {
+								this->squares[this->pawn_B[i]->x + 1][this->pawn_B[i]->y + 1]->setFillColor(sf::Color::Red);
+							}
+							//Possible attack moves.
+							if (this->boardPos[this->pawn_B[i]->x - 1][this->pawn_B[i]->y + 1] == 0) {
+								this->squares[this->pawn_B[i]->x - 1][this->pawn_B[i]->y + 1]->setFillColor(sf::Color::Red);
 							}
 							this->pawnMoves_B[i] = true;	
 					}
@@ -354,9 +370,6 @@ void Game::movements() {
 							this->pawnMoves_B[i] = false;
 						}
 					}
-
-					//cout << endl;
-					//printOccupiedAndNonOcuppiedPositions();
 				}
 			}
 		}
@@ -427,18 +440,16 @@ void Game::printOccupiedAndNonOcuppiedPositions() {
 	for (int x = 0; x < 8; x++) {
 		for (int y = 0; y < 8; y++) {
 			cout << "[" << boardPos[y][x] << "]";
-
-			//cout << "[" << x << "]" << "[" << y  << "]: " << boardPos[x][y] << endl;
 		}
 		cout << endl;
 	}
-	//
 }
+
+//
 
 bool Game::whiteTurn() {
 	return (this->turn % 2) == 0;
 }
-
 
 void Game::initSquareBounds() {
 	for (int x = 0; x < 8; x++) {

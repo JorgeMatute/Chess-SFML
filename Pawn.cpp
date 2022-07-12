@@ -46,6 +46,12 @@ void Pawn::move(const float dirX, const float dirY) {
 	this->spritePawn.setPosition(dirX, dirY);
 }
 
+/*
+0 -> white
+1 -> black
+2 -> empty square
+*/
+
 bool Pawn::isMoveLegal(int board[][8]) {  
 
 	if (color == 0) { 
@@ -56,29 +62,39 @@ bool Pawn::isMoveLegal(int board[][8]) {
 			else if (board[x][y - 1] == 2) {
 				return true;
 			}
-			else if ((((board[x][y - 1] == 1) || (board[x][y - 1] == 0)) && (board[x + 1][y-1] == 1) || (board[x - 1][y-1] == 1))){
+			else if ((((board[x][y - 1] == 1) || (board[x][y - 1] == 0)) && (board[x + 1][y - 1] == 1) || (board[x - 1][y - 1] == 1))) {
 				return true;
 			}
 			else if (((board[x][y - 1] == 1) || (board[x][y - 1] == 0))) {
 				return false;
 			}
-			return true;
+			return false;
 		}
 		else {
-			if ((board[x][y - 1] == 2) || (board[x + 1][y-1] == 1) || (board[x - 1][y-1] == 1)) {
+			if ((board[x][y - 1] == 2) || (board[x + 1][y - 1] == 1) || (board[x - 1][y - 1] == 1)) {
 				return true;
 			}
 		}
 		return false;
 	}
 	else {
-		if (fistMove == 0) { //Fisrt move (BLACK).
-			if ((board[x][y + 1] == 2) || (board[x][y + 2] == 2)) {
+		if (fistMove == 0) { //Fisrt move (WHITE).
+			if ((board[x][y + 1] == 2) && (board[x][y + 2] == 2)) {
 				return true;
 			}
+			else if (board[x][y + 1] == 2) {
+				return true;
+			}
+			else if ((((board[x][y + 1] == 0) || (board[x][y + 1] == 1)) && (board[x + 1][y + 1] == 0) || (board[x - 1][y + 1] == 0))) {
+				return true;
+			}
+			else if (((board[x][y + 1] == 1) || (board[x][y - 1] == 0))) {
+				return false;
+			}
+			return false;
 		}
 		else {
-			if ((board[x][y + 1] == 2)) {
+			if ((board[x][y + 1] == 2) || (board[x + 1][y + 1] == 0) || (board[x - 1][y + 1] == 0)) {
 				return true;
 			}
 		}
@@ -115,6 +131,3 @@ int Pawn::movePiece(int board[][8]) {
 		return 0; 
 	}			  
 }
-
-//
-

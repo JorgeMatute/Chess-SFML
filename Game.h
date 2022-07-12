@@ -84,7 +84,7 @@ private:
 
 	bool pawnMoves_B[8];
 
-	//prueba.
+	//TESTING FUNCTION.
 	void printOccupiedAndNonOcuppiedPositions();
 	//
 
