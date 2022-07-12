@@ -37,7 +37,7 @@ public:
 //Movement functions.
 public:
 	bool isMoveLegal(int board[][8]);
-	int attack(int board[][8]);
+	int movePiece(int board[][8]);
 };
 
 

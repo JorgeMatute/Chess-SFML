@@ -215,6 +215,8 @@ void Game::movements() {
 
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 
+		int aux = 0; //Help to exchange values.
+
 		// transform the mouse position from window coordinates to world coordinates
 		sf::Vector2f mouse = this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window));
 		
@@ -264,240 +266,48 @@ void Game::movements() {
 			boundsPawn_B[i] = this->pawn_B[i]->spritePawn.getGlobalBounds();
 		}
 
-		
-		if (whiteTurn()) { //Coloring the possible moves for each piece (WHITE).
-			
-				//Pawns.
-				if (boundsPawn_W[0].contains(mouse)) { //No entra porque seria solo si esta en boundsPawn1. Entonces talvez con un ||.
-					if (pawn_W[0]->isMoveLegal(this->boardPos)) {
-						int y = this->pawn_W[0]->attack(boardPos);
-						if (this->pawn_W[0]->fistMove == 0) {
-							this->squares[this->pawn_W[0]->x][y]->setFillColor(sf::Color::Red);
-							this->squares[this->pawn_W[0]->x][y+1]->setFillColor(sf::Color::Red);
-							this->pawn_W[0]->fistMove++;
+		for (int i = 0; i < 8; i++) {
+			if (whiteTurn()) { //Coloring the possible moves for each piece (WHITE).
+					//Pawns.
+				if (boundsPawn_W[i].contains(mouse)) {
+					if (pawn_W[i]->isMoveLegal(this->boardPos)) {
+						int y = this->pawn_W[i]->movePiece(boardPos);
+						if (this->pawn_W[i]->fistMove == 0){
+							this->squares[this->pawn_W[i]->x][y]->setFillColor(sf::Color::Red);
+							this->squares[this->pawn_W[i]->x][y + 1]->setFillColor(sf::Color::Red);
 						}
-						else {
-							this->squares[this->pawn_W[0]->x][y]->setFillColor(sf::Color::Red);
+						else if(boardPos[this->pawn_W[i]->x][this->pawn_W[i]->y-1] == 2) {
+							this->squares[this->pawn_W[i]->x][y]->setFillColor(sf::Color::Red);
 						}
-						this->pawnMoves_W[0] = true;
+
+						//Possible attack moves.
+						if (this->boardPos[this->pawn_W[i]->x + 1][this->pawn_W[i]->y-1] == 1) {
+							this->squares[this->pawn_W[i]->x+1][this->pawn_W[i]->y - 1]->setFillColor(sf::Color::Red);
+						}
+						//Possible attack moves.
+						if (this->boardPos[this->pawn_W[i]->x - 1][this->pawn_W[i]->y - 1] == 1) {
+							this->squares[this->pawn_W[i]->x - 1][this->pawn_W[i]->y - 1]->setFillColor(sf::Color::Red);
+						}
+
+						this->pawnMoves_W[i] = true;
 					}
 				}
-				else if (boundsPawn_W[1].contains(mouse)) {
-					if (pawn_W[1]->isMoveLegal(this->boardPos)) {
-						int y = this->pawn_W[1]->attack(boardPos);
-						if (this->pawn_W[1]->fistMove == 0) {
-							this->squares[this->pawn_W[1]->x][y]->setFillColor(sf::Color::Red);
-							this->squares[this->pawn_W[1]->x][y + 1]->setFillColor(sf::Color::Red);
-							this->pawn_W[1]->fistMove++;
-						}
-						else {
-							this->squares[this->pawn_W[1]->x][y]->setFillColor(sf::Color::Red);
-						}
-						this->pawnMoves_W[1] = true;
-					}
-				}
-				else if (boundsPawn_W[2].contains(mouse)) {
-					if (pawn_W[2]->isMoveLegal(this->boardPos)) {
-						int y = this->pawn_W[2]->attack(boardPos);
-						if (this->pawn_W[2]->fistMove == 0) {
-							this->squares[this->pawn_W[2]->x][y]->setFillColor(sf::Color::Red);
-							this->squares[this->pawn_W[2]->x][y + 1]->setFillColor(sf::Color::Red);
-							this->pawn_W[2]->fistMove++;
-						}
-						else {
-							this->squares[this->pawn_W[2]->x][y]->setFillColor(sf::Color::Red);
-						}
-						this->pawnMoves_W[2] = true;
-					}
-				}
-				else if (boundsPawn_W[3].contains(mouse)) {
-					if (pawn_W[3]->isMoveLegal(this->boardPos)) {
-						int y = this->pawn_W[3]->attack(boardPos);
-						if (this->pawn_W[3]->fistMove == 0) {
-							this->squares[this->pawn_W[3]->x][y]->setFillColor(sf::Color::Red);
-							this->squares[this->pawn_W[3]->x][y + 1]->setFillColor(sf::Color::Red);
-							this->pawn_W[3]->fistMove++;
-						}
-						else {
-							this->squares[this->pawn_W[3]->x][y]->setFillColor(sf::Color::Red);
-						}
-						this->pawnMoves_W[3] = true;
-					}
-				}
-				else if (boundsPawn_W[4].contains(mouse)) {
-					if (pawn_W[4]->isMoveLegal(this->boardPos)) {
-						int y = this->pawn_W[4]->attack(boardPos);
-						if (this->pawn_W[4]->fistMove == 0) {
-							this->squares[this->pawn_W[4]->x][y]->setFillColor(sf::Color::Red);
-							this->squares[this->pawn_W[4]->x][y + 1]->setFillColor(sf::Color::Red);
-							this->pawn_W[4]->fistMove++;
-						}
-						else {
-							this->squares[this->pawn_W[4]->x][y]->setFillColor(sf::Color::Red);
-						}
-						this->pawnMoves_W[4] = true;
-					}
-				}
-				else if (boundsPawn_W[5].contains(mouse)) {
-					if (pawn_W[5]->isMoveLegal(this->boardPos)) {
-						int y = this->pawn_W[5]->attack(boardPos);
-						if (this->pawn_W[5]->fistMove == 0) {
-							this->squares[this->pawn_W[5]->x][y]->setFillColor(sf::Color::Red);
-							this->squares[this->pawn_W[5]->x][y + 1]->setFillColor(sf::Color::Red);
-							this->pawn_W[5]->fistMove++;
-						}
-						else {
-							this->squares[this->pawn_W[5]->x][y]->setFillColor(sf::Color::Red);
-						}
-						this->pawnMoves_W[5] = true;
-					}
-				}
-				else if (boundsPawn_W[6].contains(mouse)) {
-					if (pawn_W[6]->isMoveLegal(this->boardPos)) {
-						int y = this->pawn_W[6]->attack(boardPos);
-						if (this->pawn_W[6]->fistMove == 0) {
-							this->squares[this->pawn_W[6]->x][y]->setFillColor(sf::Color::Red);
-							this->squares[this->pawn_W[6]->x][y + 1]->setFillColor(sf::Color::Red);
-							this->pawn_W[6]->fistMove++;
-						}
-						else {
-							this->squares[this->pawn_W[6]->x][y]->setFillColor(sf::Color::Red);
-						}
-						this->pawnMoves_W[6] = true;
-					}
-				}
-				else if (boundsPawn_W[7].contains(mouse)) {
-					if (pawn_W[7]->isMoveLegal(this->boardPos)) {
-						int y = this->pawn_W[7]->attack(boardPos);
-						if (this->pawn_W[7]->fistMove == 0) {
-							this->squares[this->pawn_W[7]->x][y]->setFillColor(sf::Color::Red);
-							this->squares[this->pawn_W[7]->x][y + 1]->setFillColor(sf::Color::Red);
-							this->pawn_W[7]->fistMove++;
-						}
-						else {
-							this->squares[this->pawn_W[7]->x][y]->setFillColor(sf::Color::Red);
-						}
-						this->pawnMoves_W[7] = true;
+			} else {  //Coloring the possible moves for each piece (BLACK).
+					if (boundsPawn_B[i].contains(mouse)) {
+						if (pawn_B[i]->isMoveLegal(this->boardPos)) {
+							int y = this->pawn_B[i]->movePiece(boardPos);
+							if (this->pawn_B[i]->fistMove == 0) {
+								this->squares[this->pawn_B[i]->x][y]->setFillColor(sf::Color::Red);
+								this->squares[this->pawn_B[i]->x][y - 1]->setFillColor(sf::Color::Red);
+							}
+							else {
+								this->squares[this->pawn_B[i]->x][y]->setFillColor(sf::Color::Red);
+							}
+							this->pawnMoves_B[i] = true;	
 					}
 				}
 			}
-			else {  //Coloring the possible moves for each piece (BLACK).
-				if (boundsPawn_B[0].contains(mouse)) {
-					if (pawn_B[0]->isMoveLegal(this->boardPos)) {
-						int y = this->pawn_B[0]->attack(boardPos);
-						if (this->pawn_B[0]->fistMove == 0) {
-							this->squares[this->pawn_B[0]->x][y]->setFillColor(sf::Color::Red);
-							this->squares[this->pawn_B[0]->x][y - 1]->setFillColor(sf::Color::Red);
-							this->pawn_B[0]->fistMove++;
-						}
-						else {
-							this->squares[this->pawn_B[0]->x][y]->setFillColor(sf::Color::Red);
-						}
-						this->pawnMoves_B[0] = true;
-					}
-				}
-				else if (boundsPawn_B[1].contains(mouse)) {
-					if (pawn_B[1]->isMoveLegal(this->boardPos)) {
-						int y = this->pawn_B[1]->attack(boardPos);
-						if (this->pawn_B[1]->fistMove == 0) {
-							this->squares[this->pawn_B[1]->x][y]->setFillColor(sf::Color::Red);
-							this->squares[this->pawn_B[1]->x][y - 1]->setFillColor(sf::Color::Red);
-							this->pawn_B[1]->fistMove++;
-						}
-						else {
-							this->squares[this->pawn_B[1]->x][y]->setFillColor(sf::Color::Red);
-						}
-						this->pawnMoves_B[1] = true;
-					}
-				}
-				else if (boundsPawn_B[2].contains(mouse)) {
-					if (pawn_B[2]->isMoveLegal(this->boardPos)) {
-						int y = this->pawn_B[2]->attack(boardPos);
-						if (this->pawn_B[2]->fistMove == 0) {
-							this->squares[this->pawn_B[2]->x][y]->setFillColor(sf::Color::Red);
-							this->squares[this->pawn_B[2]->x][y - 1]->setFillColor(sf::Color::Red);
-							this->pawn_B[2]->fistMove++;
-						}
-						else {
-							this->squares[this->pawn_B[2]->x][y]->setFillColor(sf::Color::Red);
-						}
-						this->pawnMoves_B[2] = true;
-					}
-				}
-				else if (boundsPawn_B[3].contains(mouse)) {
-					if (pawn_B[3]->isMoveLegal(this->boardPos)) {
-						int y = this->pawn_B[3]->attack(boardPos);
-						if (this->pawn_B[3]->fistMove == 0) {
-							this->squares[this->pawn_B[3]->x][y]->setFillColor(sf::Color::Red);
-							this->squares[this->pawn_B[3]->x][y - 1]->setFillColor(sf::Color::Red);
-							this->pawn_B[3]->fistMove++;
-						}
-						else {
-							this->squares[this->pawn_B[3]->x][y]->setFillColor(sf::Color::Red);
-						}
-						this->pawnMoves_B[3] = true;
-					}
-				}
-				else if (boundsPawn_B[4].contains(mouse)) {
-					if (pawn_B[0]->isMoveLegal(this->boardPos)) {
-						int y = this->pawn_B[4]->attack(boardPos);
-						if (this->pawn_B[4]->fistMove == 0) {
-							this->squares[this->pawn_B[4]->x][y]->setFillColor(sf::Color::Red);
-							this->squares[this->pawn_B[4]->x][y - 1]->setFillColor(sf::Color::Red);
-							this->pawn_B[4]->fistMove++;
-						}
-						else {
-							this->squares[this->pawn_B[4]->x][y]->setFillColor(sf::Color::Red);
-						}
-						this->pawnMoves_B[4] = true;
-					}
-				}
-				else if (boundsPawn_B[5].contains(mouse)) {
-					if (pawn_B[5]->isMoveLegal(this->boardPos)) {
-						int y = this->pawn_B[5]->attack(boardPos);
-						if (this->pawn_B[5]->fistMove == 0) {
-							this->squares[this->pawn_B[5]->x][y]->setFillColor(sf::Color::Red);
-							this->squares[this->pawn_B[5]->x][y - 1]->setFillColor(sf::Color::Red);
-							this->pawn_B[5]->fistMove++;
-						}
-						else {
-							this->squares[this->pawn_B[5]->x][y]->setFillColor(sf::Color::Red);
-						}
-						this->pawnMoves_B[5] = true;
-					}
-				}
-				else if (boundsPawn_B[6].contains(mouse)) {
-					if (pawn_B[6]->isMoveLegal(this->boardPos)) {
-						int y = this->pawn_B[6]->attack(boardPos);
-						if (this->pawn_B[6]->fistMove == 0) {
-							this->squares[this->pawn_B[6]->x][y]->setFillColor(sf::Color::Red);
-							this->squares[this->pawn_B[6]->x][y - 1]->setFillColor(sf::Color::Red);
-							this->pawn_B[6]->fistMove++;
-						}
-						else {
-							this->squares[this->pawn_B[6]->x][y]->setFillColor(sf::Color::Red);
-						}
-						this->pawnMoves_B[6] = true;
-					}
-				}
-				else if (boundsPawn_B[7].contains(mouse)) {
-					if (pawn_B[7]->isMoveLegal(this->boardPos)) {
-						int y = this->pawn_B[7]->attack(boardPos);
-						if (this->pawn_B[7]->fistMove == 0) {
-							this->squares[this->pawn_B[7]->x][y]->setFillColor(sf::Color::Red);
-							this->squares[this->pawn_B[7]->x][y - 1]->setFillColor(sf::Color::Red);
-							this->pawn_B[7]->fistMove++;
-						}
-						else {
-							this->squares[this->pawn_B[7]->x][y]->setFillColor(sf::Color::Red);
-						}
-						this->pawnMoves_B[7] = true;
-					}
-				}
 		}
-
-
-		int aux = 0; 
 
 		//Verify that the square is a possible move to then move the piece.
 		for (int x = 0; x < 8; x++) {
@@ -520,6 +330,7 @@ void Game::movements() {
 							//Square color reset (transparent).
 							initSquares();
 							turn++;
+							this->pawn_W[i]->fistMove++;
 							this->pawnMoves_W[i] = false;
 						}
 
@@ -539,10 +350,13 @@ void Game::movements() {
 							//Square color reset (transparent).
 							initSquares();
 							turn++;
+							this->pawn_B[i]->fistMove++;
 							this->pawnMoves_B[i] = false;
 						}
 					}
 
+					//cout << endl;
+					//printOccupiedAndNonOcuppiedPositions();
 				}
 			}
 		}
@@ -581,7 +395,7 @@ void Game::initSquares() {
 	}
 }
 
-void Game::initBoardPos() { //Creo que es aqui donde tengo que hacer las modificaciones.
+void Game::initBoardPos() {
 	//Occupied squares.
 
 	//White.
@@ -607,7 +421,7 @@ void Game::initBoardPos() { //Creo que es aqui donde tengo que hacer las modific
 }
 
 
-//PRUEBA.
+//TESTING FUNCTION.
 void Game::printOccupiedAndNonOcuppiedPositions() {
 	//PRUEBA
 	for (int x = 0; x < 8; x++) {

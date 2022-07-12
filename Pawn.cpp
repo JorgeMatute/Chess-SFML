@@ -46,17 +46,26 @@ void Pawn::move(const float dirX, const float dirY) {
 	this->spritePawn.setPosition(dirX, dirY);
 }
 
+bool Pawn::isMoveLegal(int board[][8]) {  
 
-bool Pawn::isMoveLegal(int board[][8]) { //*SOLO HE VERIFICADO PARA PASOS ENFRENTE.
-	//Aqui verificar si hay algo enfrente, 
-	if (color == 0) {
+	if (color == 0) { 
 		if (fistMove == 0) { //Fisrt move (WHITE).
-			if ((board[x][y - 1] == 2) || (board[x][y - 2] == 2)) {
+			if ((board[x][y - 1] == 2) && (board[x][y - 2] == 2)) {
 				return true;
 			}
+			else if (board[x][y - 1] == 2) {
+				return true;
+			}
+			else if ((((board[x][y - 1] == 1) || (board[x][y - 1] == 0)) && (board[x + 1][y-1] == 1) || (board[x - 1][y-1] == 1))){
+				return true;
+			}
+			else if (((board[x][y - 1] == 1) || (board[x][y - 1] == 0))) {
+				return false;
+			}
+			return true;
 		}
 		else {
-			if ((board[x][y - 1] == 2)) {
+			if ((board[x][y - 1] == 2) || (board[x + 1][y-1] == 1) || (board[x - 1][y-1] == 1)) {
 				return true;
 			}
 		}
@@ -77,8 +86,8 @@ bool Pawn::isMoveLegal(int board[][8]) { //*SOLO HE VERIFICADO PARA PASOS ENFREN
 	}
 }
 
-int Pawn::attack(int board[][8]) {
-	//Aqui verificar si hay algo enfrente, 
+//Only forward movement.
+int Pawn::movePiece(int board[][8]) {
 	if (color == 0) {
 		if (fistMove == 0) { //Fisrt move (WHITE).
 			if (((board[x][y - 1] == 2) || (board[x][y - 2] == 2)) && (board[x][y - 1] != 0) || (board[x][y - 2] == 0)) {
@@ -103,11 +112,9 @@ int Pawn::attack(int board[][8]) {
 				return (y + 1);
 			}
 		}
-		return 0;
-	}
+		return 0; 
+	}			  
 }
 
+//
 
-//Tener cuidado porque a veces parece que no se actualiza bien el numero
-//de posiciones ocupadas. Es como que vuelve al mismo.
-//Ver el comportamiento que tiene en la consola.
