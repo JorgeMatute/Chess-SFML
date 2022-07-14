@@ -78,7 +78,7 @@ bool Pawn::isMoveLegal(int board[][8]) {
 		return false;
 	}
 	else {
-		if (fistMove == 0) { //Fisrt move (WHITE).
+		if (fistMove == 0) { //Fisrt move (BLACK).
 			if ((board[x][y + 1] == 2) && (board[x][y + 2] == 2)) {
 				return true;
 			}

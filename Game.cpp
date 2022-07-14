@@ -211,8 +211,8 @@ void Game::movements() {
 
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 
-		int aux = 0; //Help to exchange values.
-		int yNormalMove = 0;
+		//Help to exchange values.
+		int aux = 0;
 
 		//Old positions.
 		int oldXpos;
@@ -272,14 +272,13 @@ void Game::movements() {
 					//Pawns.
 				if (boundsPawn_W[i].contains(mouse)) {
 					if (pawn_W[i]->isMoveLegal(this->boardPos)) {
-						
-						yNormalMove = this->pawn_W[i]->movePiece(boardPos);
-						if (this->pawn_W[i]->fistMove == 0) {
-							this->squares[this->pawn_W[i]->x][yNormalMove]->setFillColor(sf::Color::Red);
-							this->squares[this->pawn_W[i]->x][yNormalMove + 1]->setFillColor(sf::Color::Red);
+
+						if (this->pawn_W[i]->fistMove == 0 && boardPos[this->pawn_W[i]->x][this->pawn_W[i]->y - 2] == 2) {
+							this->squares[this->pawn_W[i]->x][this->pawn_W[i]->y - 1]->setFillColor(sf::Color::Red);
+							this->squares[this->pawn_W[i]->x][this->pawn_W[i]->y - 2]->setFillColor(sf::Color::Red);
 						}
 						else if (boardPos[this->pawn_W[i]->x][this->pawn_W[i]->y - 1] == 2) {
-							this->squares[this->pawn_W[i]->x][yNormalMove]->setFillColor(sf::Color::Red);
+							this->squares[this->pawn_W[i]->x][this->pawn_W[i]->y - 1]->setFillColor(sf::Color::Red);
 						}
 
 						//Making sure it doesn't go out range (array boardPos).
@@ -305,13 +304,13 @@ void Game::movements() {
 			else {  //Coloring the possible moves for each piece (BLACK).
 				if (boundsPawn_B[i].contains(mouse)) {
 					if (pawn_B[i]->isMoveLegal(this->boardPos)) {
-						yNormalMove = this->pawn_B[i]->movePiece(boardPos);
-						if (this->pawn_B[i]->fistMove == 0) {
-							this->squares[this->pawn_B[i]->x][yNormalMove]->setFillColor(sf::Color::Red);
-							this->squares[this->pawn_B[i]->x][yNormalMove - 1]->setFillColor(sf::Color::Red);
+
+						if (this->pawn_B[i]->fistMove == 0 && boardPos[this->pawn_B[i]->x][this->pawn_B[i]->y + 2] == 2) {
+							this->squares[this->pawn_B[i]->x][this->pawn_B[i]->y + 1]->setFillColor(sf::Color::Red);
+							this->squares[this->pawn_B[i]->x][this->pawn_B[i]->y + 2]->setFillColor(sf::Color::Red);
 						}
 						else if (boardPos[this->pawn_B[i]->x][this->pawn_B[i]->y + 1] == 2) {
-							this->squares[this->pawn_B[i]->x][yNormalMove]->setFillColor(sf::Color::Red);
+							this->squares[this->pawn_B[i]->x][this->pawn_B[i]->y + 1]->setFillColor(sf::Color::Red);
 						}
 
 						//Making sure it doesn't go out range (array boardPos).
@@ -329,7 +328,7 @@ void Game::movements() {
 								this->squares[this->pawn_B[i]->x - 1][this->pawn_B[i]->y + 1]->setFillColor(sf::Color::Red);
 							}
 						}
-						
+
 						this->pawnMoves_B[i] = true;
 					}
 				}
