@@ -83,7 +83,7 @@ void Game::update() {
 
 void Game::render() {
 	this->window->clear();
-	
+
 	//Render stuff.
 	this->window->draw(this->spriteBoard);
 	this->initBackground();
@@ -100,7 +100,7 @@ void Game::render() {
 	//Kings.
 	this->king_W->render(*this->window);
 	this->king_B->render(*this->window);
-	
+
 	//Queens.
 	this->queen_W->render(*this->window);
 	this->queen_B->render(*this->window);
@@ -140,7 +140,7 @@ void Game::initWindow() {
 	this->window->setFramerateLimit(10);
 }
 
-void Game::initVariables(){
+void Game::initVariables() {
 	this->endGame = false;
 }
 
@@ -212,11 +212,11 @@ void Game::movements() {
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 
 		int aux = 0; //Help to exchange values.
-		int y = 0;
+		int yNormalMove = 0;
 
 		// transform the mouse position from window coordinates to world coordinates
 		sf::Vector2f mouse = this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window));
-		
+
 		//White pieces (BOUNDS).
 		sf::FloatRect boundsPawn_W[8];
 		sf::FloatRect boundsKing_W;
@@ -265,7 +265,7 @@ void Game::movements() {
 
 
 		/*
-		FALTARIA HACER LO MISMO QUE HICE CON LAS BLANCAS PARA DECIR QUE CASILLAS ESTAN 
+		FALTARIA HACER LO MISMO QUE HICE CON LAS BLANCAS PARA DECIR QUE CASILLAS ESTAN
 		DISPONIBLES Y LUEGO VER COMO HAGO PARA ELIMINAR LA PIEZA QUE ME HE COMIDO.
 		RECORDAR TAMBIEN LO DE CORONA Y EL PEON PASADO. AUNQUE CREO QUE ESO OTRO
 		YA SERIA AL FINAL COMO ULTIMOS RETOQUES DEL PROGRAMA.
@@ -278,18 +278,19 @@ void Game::movements() {
 					//Pawns.
 				if (boundsPawn_W[i].contains(mouse)) {
 					if (pawn_W[i]->isMoveLegal(this->boardPos)) {
-						y = this->pawn_W[i]->movePiece(boardPos);
-						if (this->pawn_W[i]->fistMove == 0){
-							this->squares[this->pawn_W[i]->x][y]->setFillColor(sf::Color::Red);
-							this->squares[this->pawn_W[i]->x][y + 1]->setFillColor(sf::Color::Red);
+						
+						yNormalMove = this->pawn_W[i]->movePiece(boardPos);
+						if (this->pawn_W[i]->fistMove == 0) {
+							this->squares[this->pawn_W[i]->x][yNormalMove]->setFillColor(sf::Color::Red);
+							this->squares[this->pawn_W[i]->x][yNormalMove + 1]->setFillColor(sf::Color::Red);
 						}
-						else if(boardPos[this->pawn_W[i]->x][this->pawn_W[i]->y-1] == 2) {
-							this->squares[this->pawn_W[i]->x][y]->setFillColor(sf::Color::Red);
+						else if (boardPos[this->pawn_W[i]->x][this->pawn_W[i]->y - 1] == 2) {
+							this->squares[this->pawn_W[i]->x][yNormalMove]->setFillColor(sf::Color::Red);
 						}
 
 						//Possible attack moves.
-						if (this->boardPos[this->pawn_W[i]->x + 1][this->pawn_W[i]->y-1] == 1) {
-							this->squares[this->pawn_W[i]->x+1][this->pawn_W[i]->y - 1]->setFillColor(sf::Color::Red);
+						if (this->boardPos[this->pawn_W[i]->x + 1][this->pawn_W[i]->y - 1] == 1) {
+							this->squares[this->pawn_W[i]->x + 1][this->pawn_W[i]->y - 1]->setFillColor(sf::Color::Red);
 						}
 						//Possible attack moves.
 						if (this->boardPos[this->pawn_W[i]->x - 1][this->pawn_W[i]->y - 1] == 1) {
@@ -299,27 +300,28 @@ void Game::movements() {
 						this->pawnMoves_W[i] = true;
 					}
 				}
-			} else {  //Coloring the possible moves for each piece (BLACK).
-					if (boundsPawn_B[i].contains(mouse)) {
-						if (pawn_B[i]->isMoveLegal(this->boardPos)) {
-							y = this->pawn_B[i]->movePiece(boardPos);
-							if (this->pawn_B[i]->fistMove == 0) {
-								this->squares[this->pawn_B[i]->x][y]->setFillColor(sf::Color::Red);
-								this->squares[this->pawn_B[i]->x][y - 1]->setFillColor(sf::Color::Red);
-							}
-							else if (boardPos[this->pawn_B[i]->x][this->pawn_B[i]->y + 1] == 2) {
-								this->squares[this->pawn_B[i]->x][y]->setFillColor(sf::Color::Red);
-							}
+			}
+			else {  //Coloring the possible moves for each piece (BLACK).
+				if (boundsPawn_B[i].contains(mouse)) {
+					if (pawn_B[i]->isMoveLegal(this->boardPos)) {
+						yNormalMove = this->pawn_B[i]->movePiece(boardPos);
+						if (this->pawn_B[i]->fistMove == 0) {
+							this->squares[this->pawn_B[i]->x][yNormalMove]->setFillColor(sf::Color::Red);
+							this->squares[this->pawn_B[i]->x][yNormalMove - 1]->setFillColor(sf::Color::Red);
+						}
+						else if (boardPos[this->pawn_B[i]->x][this->pawn_B[i]->y + 1] == 2) {
+							this->squares[this->pawn_B[i]->x][yNormalMove]->setFillColor(sf::Color::Red);
+						}
 
-							//Possible attack moves.
-							if (this->boardPos[this->pawn_B[i]->x + 1][this->pawn_B[i]->y + 1] == 0) {
-								this->squares[this->pawn_B[i]->x + 1][this->pawn_B[i]->y + 1]->setFillColor(sf::Color::Red);
-							}
-							//Possible attack moves.
-							if (this->boardPos[this->pawn_B[i]->x - 1][this->pawn_B[i]->y + 1] == 0) {
-								this->squares[this->pawn_B[i]->x - 1][this->pawn_B[i]->y + 1]->setFillColor(sf::Color::Red);
-							}
-							this->pawnMoves_B[i] = true;	
+						//Possible attack moves.
+						if (this->boardPos[this->pawn_B[i]->x + 1][this->pawn_B[i]->y + 1] == 0) {
+							this->squares[this->pawn_B[i]->x + 1][this->pawn_B[i]->y + 1]->setFillColor(sf::Color::Red);
+						}
+						//Possible attack moves.
+						if (this->boardPos[this->pawn_B[i]->x - 1][this->pawn_B[i]->y + 1] == 0) {
+							this->squares[this->pawn_B[i]->x - 1][this->pawn_B[i]->y + 1]->setFillColor(sf::Color::Red);
+						}
+						this->pawnMoves_B[i] = true;
 					}
 				}
 			}
@@ -338,10 +340,25 @@ void Game::movements() {
 							this->boardPos[this->pawn_W[i]->x][this->pawn_W[i]->y] = this->boardPos[x][y];
 							this->boardPos[x][y] = aux;
 
-							//New pawn position.
+							//Saving the old white pawn position.
+							int preX = pawn_W[i]->x;
+							int preY = pawn_W[i]->y;
+
+							//New white pawn position.
 							this->pawn_W[i]->x = x;
 							this->pawn_W[i]->y = y;
 							this->pawn_W[i]->move(board[x][x].x, board[y][y].y);
+
+							//In case of attack.
+							for (int u = 0; u < 8; u++) {
+								if ((this->pawn_W[i]->x == this->pawn_B[u]->x) && (this->pawn_W[i]->y == this->pawn_B[u]->y)) {
+									this->boardPos[preX][preY] = 2;
+									this->pawn_B[u]->move(-100.0f, -100.0f);
+								}
+							}
+
+							cout << endl;
+							printOccupiedAndNonOcuppiedPositions();
 
 							//Square color reset (transparent).
 							initSquares();
@@ -368,12 +385,17 @@ void Game::movements() {
 							turn++;
 							this->pawn_B[i]->fistMove++;
 							this->pawnMoves_B[i] = false;
+
+
+							//Test.
+							cout << endl;
+							printOccupiedAndNonOcuppiedPositions();
+							//
 						}
 					}
 				}
 			}
 		}
-
 		this->pawn_W[0]->render(*this->window);
 	}
 }
@@ -458,4 +480,3 @@ void Game::initSquareBounds() {
 		}
 	}
 }
-
