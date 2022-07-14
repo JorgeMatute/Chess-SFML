@@ -161,10 +161,10 @@ void Game::initPieces() {
 	}
 
 	//Rooks.
-	this->rook1_W = new Rook(0, board[0][0].x, board[7][7].y);
-	this->rook2_W = new Rook(0, board[7][7].x, board[7][7].y);
-	this->rook1_B = new Rook(1, board[0][0].x, board[0][0].y);
-	this->rook2_B = new Rook(1, board[7][7].x, board[0][0].y);
+	this->rook1_W = new Rook(0, board[0][0].x, board[7][7].y, 0, 7);
+	this->rook2_W = new Rook(0, board[7][7].x, board[7][7].y, 7, 7);
+	this->rook1_B = new Rook(1, board[0][0].x, board[0][0].y, 0, 0);
+	this->rook2_B = new Rook(1, board[7][7].x, board[0][0].y, 0, 7);
 
 	//Knights.
 	this->knight1_W = new Knight(0, board[1][1].x, board[7][7].y);
@@ -267,9 +267,11 @@ void Game::movements() {
 			boundsPawn_B[i] = this->pawn_B[i]->spritePawn.getGlobalBounds();
 		}
 
+
 		for (int i = 0; i < 8; i++) {
 			if (whiteTurn()) { //Coloring the possible moves for each piece (WHITE).
-					//Pawns.
+				
+				//Pawns.
 				if (boundsPawn_W[i].contains(mouse)) {
 					if (pawn_W[i]->isMoveLegal(this->boardPos)) {
 
@@ -300,6 +302,11 @@ void Game::movements() {
 						this->pawnMoves_W[i] = true;
 					}
 				}
+
+
+				//Rooks.
+
+
 			}
 			else {  //Coloring the possible moves for each piece (BLACK).
 				if (boundsPawn_B[i].contains(mouse)) {
@@ -410,7 +417,6 @@ void Game::movements() {
 				}
 			}
 		}
-		this->pawn_W[0]->render(*this->window);
 	}
 }
 
@@ -421,8 +427,8 @@ void Game::setSquaresPositions() {
 
 	for (int row = 0; row < 8; row++) {
 		for (int col = 0; col < 8; col++) {
-			sf::Vector2f nuevoVector(x, y);
-			this->squarePositions[col][row] = nuevoVector; //row-col.
+			sf::Vector2f newVector(x, y);
+			this->squarePositions[col][row] = newVector; //row-col.
 			y += 75.0;
 		}
 		y = 37.5;

@@ -34,10 +34,6 @@ void Pawn::initSprite() {
 	this->spritePawn.scale(0.5f, 0.5f);
 }
 
-void Pawn::update() {
-
-}
-
 void Pawn::render(sf::RenderTarget& target) {
 	target.draw(this->spritePawn);
 }
@@ -100,34 +96,4 @@ bool Pawn::isMoveLegal(int board[][8]) {
 		}
 		return false;
 	}
-}
-
-//Only forward movement.
-int Pawn::movePiece(int board[][8]) {
-	if (color == 0) {
-		if (fistMove == 0) { //Fisrt move (WHITE).
-			if (((board[x][y - 1] == 2) || (board[x][y - 2] == 2)) && (board[x][y - 1] != 0) || (board[x][y - 2] == 0)) {
-				return (y - 2);
-			}
-		}
-		else {
-			if ((board[x][y - 1] == 2) && (board[x][y - 1] != 0)) {
-				return (y - 1);
-			}
-		}
-		return 0;
-	}
-	else {
-		if (fistMove == 0) { //Fisrt move (BLACK).
-			if ((board[x][y + 1] == 2) || (board[x][y + 2] == 2) && (board[x][y + 1] != 1) || (board[x][y + 2] != 1)) {
-				return (y + 2);
-			}
-		}
-		else {
-			if ((board[x][y + 1] == 2) && (board[x][y + 1] != 1)) {
-				return (y + 1);
-			}
-		}
-		return 0; 
-	}			  
 }

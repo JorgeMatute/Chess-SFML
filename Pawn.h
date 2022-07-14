@@ -17,27 +17,25 @@ public:
 	virtual ~Pawn();
 
 	//Functions.
-	void update();
 	void render(sf::RenderTarget& target);
 
+	//Movement functions.
 	void move(const float dirX, const float dirY);
+	bool isMoveLegal(int board[][8]);
 
 private:
 	void initTexture();
 	void initSprite();
 
-public:
+private:
 	sf::Texture texturePawn;
+
+public:
 	int color;
 	int x;
 	int y;
-	sf::Sprite spritePawn;
 	int fistMove = 0;
-
-//Movement functions.
-public:
-	bool isMoveLegal(int board[][8]);
-	int movePiece(int board[][8]);
+	sf::Sprite spritePawn;
 };
 
 

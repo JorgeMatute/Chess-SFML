@@ -5,12 +5,14 @@ Rook::Rook() {
 
 }
 
-Rook::Rook(int color, float dirX, float dirY) {
+Rook::Rook(int color, float dirX, float dirY, int x, int y) {
 	this->color = color;
 	this->initTexture();
 	this->initSprite();
 	this->spriteRook.setPosition(sf::Vector2f(dirX, dirY));
 	this->spriteRook.setOrigin(75.f, 75.f);
+	this->x = x;
+	this->y = y;
 }
 
 Rook::~Rook() {
@@ -32,14 +34,25 @@ void Rook::initSprite() {
 	this->spriteRook.scale(0.5f, 0.5f);
 }
 
-void Rook::update() {
-
-}
-
 void Rook::render(sf::RenderTarget& target) {
 	target.draw(this->spriteRook);
 }
 
-void Rook::move(const float dirX, const float dirY) {
 
+
+void Rook::move(const float dirX, const float dirY) {
+	this->spriteRook.setPosition(dirX, dirY);
+}
+
+/*
+0 -> white
+1 -> black
+2 -> empty square
+*/
+
+bool Rook::isMoveLegal(int board[][8]) {
+
+
+
+	return false;
 }
