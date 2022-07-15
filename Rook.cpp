@@ -45,12 +45,12 @@ void Rook::move(const float dirX, const float dirY) {
 }
 
 /*
-0 -> white
-1 -> black
-2 -> empty square
+	0 -> white
+	1 -> black
+	2 -> empty square
 */
 
-//Return true if there is at least one square to move.
+//Return true if there is at least one square where to move.
 bool Rook::isMoveLegal(int board[][8]) {
 	
 	//White.
@@ -64,8 +64,7 @@ bool Rook::isMoveLegal(int board[][8]) {
 		else if (((x - 1) >= 0) && (board[x - 1][y] == 2 || board[x - 1][y] == 1))
 			return true;
 	}
-	//Black.
-	else {
+	else { //Black.
 		if (((y + 1) < 8) && (board[x][y + 1] == 2 || board[x][y + 1] == 0))//Making sure of the max and min range.
 			return true;
 		else if (((y - 1) >= 0) && (board[x][y - 1] == 2 || board[x][y - 1] == 0))

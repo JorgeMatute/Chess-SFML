@@ -44,12 +44,12 @@ void Pawn::move(const float dirX, const float dirY) {
 }
 
 /*
-0 -> white
-1 -> black
-2 -> empty square
+	0 -> white
+	1 -> black
+	2 -> empty square
 */
 
-//Return true if there is at least one square to move.
+//Return true if there is at least one square where to move.
 bool Pawn::isMoveLegal(int board[][8]) {  
 
 	if (color == 0) { 
