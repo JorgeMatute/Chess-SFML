@@ -84,6 +84,7 @@ private:
 	bool rookMoves_W[2];
 
 	bool pawnMoves_B[8];
+	bool rookMoves_B[2];
 
 	//TESTING FUNCTION.
 	void printOccupiedAndNonOcuppiedPositions();
