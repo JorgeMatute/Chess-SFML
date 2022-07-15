@@ -34,7 +34,7 @@ public:
 	int color;
 	int x;
 	int y;
-	int fistMove = 0;
+	int fistMove;
 	sf::Sprite spritePawn;
 };
 

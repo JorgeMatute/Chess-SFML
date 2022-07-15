@@ -81,6 +81,7 @@ private:
 	bool whiteTurn();
 	int turn;
 	bool pawnMoves_W[8]; //Al coronar, el bool pasaria a esa nueva piece.
+	bool rookMoves_W[2];
 
 	bool pawnMoves_B[8];
 

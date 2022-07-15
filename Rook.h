@@ -33,7 +33,6 @@ public:
 	int color;
 	int x;
 	int y;
-	int firstMove = 0;
 	sf::Sprite spriteRook;
 };
 

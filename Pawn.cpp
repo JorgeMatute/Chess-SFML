@@ -13,6 +13,7 @@ Pawn::Pawn(int color, float dirX, float dirY, int x, int y) {
 	this->spritePawn.setOrigin(75.f, 75.f);
 	this->x = x;
 	this->y = y;
+	this->fistMove = 0;
 }
 
 Pawn::~Pawn() {
@@ -48,6 +49,7 @@ void Pawn::move(const float dirX, const float dirY) {
 2 -> empty square
 */
 
+//Return true if there is at least one square to move.
 bool Pawn::isMoveLegal(int board[][8]) {  
 
 	if (color == 0) { 

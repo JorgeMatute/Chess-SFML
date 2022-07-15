@@ -277,6 +277,11 @@ void Game::movements() {
 					for (int h = 0; h < 8; h++) {
 						this->pawnMoves_W[h] = false;
 					}
+
+					//ROOK - KNIGHT - BISHOP -> Reset.
+					for (int h = 0; h < 2; h++) {
+						this->rookMoves_W[h] = false;
+					}
 					
 					if (pawn_W[i]->isMoveLegal(this->boardPos)) {
 						initSquares();
@@ -305,12 +310,78 @@ void Game::movements() {
 							}
 						}
 
-						this->pawnMoves_W[i] = true; //VOY A TENER QUE ITERAR ARRIBA PARA QUE TODOS ESTEN EN FALSE CADA VEZ QUE REINICIE.
+						this->pawnMoves_W[i] = true;
 					}
 				}
 
 
-				//Rooks.
+				//Rook 1.
+				if (boundsRook1_W.contains(mouse)) {
+					
+					//Reset the pawn to move.
+					for (int h = 0; h < 8; h++) {
+						this->pawnMoves_W[h] = false;
+					}
+
+					for (int h = 0; h < 8; h++) {
+						this->pawnMoves_B[h] = false;
+					}
+					
+					//ROOK - KNIGHT - BISHOP -> Reset.
+					for (int h = 0; h < 2; h++) {
+						this->rookMoves_W[h] = false;
+					}
+
+
+					if (this->rook1_W->isMoveLegal(this->boardPos)) {
+						initSquares();
+
+						//VERTICAL - UP.
+						for (int s = 1; s <= 7; s++) {
+							if (this->rook1_W->y - s >= 0) {
+								if (boardPos[this->rook1_W->x][this->rook1_W->y - s] == 2) {
+									this->squares[this->rook1_W->x][this->rook1_W->y - s]->setFillColor(sf::Color::Red);
+								}
+								else if (boardPos[this->rook1_W->x][this->rook1_W->y - s] == 1) {
+									this->squares[this->rook1_W->x][this->rook1_W->y - s]->setFillColor(sf::Color::Red);
+									break;
+								}
+								else
+									break;
+							}
+						}
+
+						//VERTICAL - DOWN.
+						for (int s = 1; s <= 7; s++) {
+							if (this->rook1_W->y + s <= 7) {
+								if (boardPos[this->rook1_W->x][this->rook1_W->y + s] == 2) {
+									this->squares[this->rook1_W->x][this->rook1_W->y + s]->setFillColor(sf::Color::Red);
+								}
+								else if (boardPos[this->rook1_W->x][this->rook1_W->y + s] == 1) {
+									this->squares[this->rook1_W->x][this->rook1_W->y + s]->setFillColor(sf::Color::Red);
+									break;
+								}
+								else
+									break;
+							}
+						}
+
+
+
+
+						
+
+						this->rookMoves_W[0] = true;
+					}
+				}
+
+
+				//Rook 2.
+				if (boundsRook1_W.contains(mouse)) {
+					if (this->rook1_W->isMoveLegal(this->boardPos)) {
+
+					}
+				}
 
 
 			}
@@ -322,6 +393,12 @@ void Game::movements() {
 					for (int h = 0; h < 8; h++) {
 						this->pawnMoves_B[h] = false;
 					}
+
+					//ROOK - KNIGHT - BISHOP -> Reset.
+					for (int h = 0; h < 2; h++) {
+						this->rookMoves_W[h] = false;
+					}
+
 
 					if (pawn_B[i]->isMoveLegal(this->boardPos)) {
 						initSquares();
@@ -431,6 +508,54 @@ void Game::movements() {
 
 						}
 					}
+
+					//ROOKS.
+					if (rookMoves_W[0]) {
+
+						//Updating the occupied positions.
+						aux = this->boardPos[this->rook1_W->x][this->rook1_W->y];
+						this->boardPos[this->rook1_W->x][this->rook1_W->y] = this->boardPos[x][y];
+						this->boardPos[x][y] = aux;
+
+						//Saving the old white pawn position.
+						oldXpos = this->rook1_W->x;
+						oldYpos = this->rook1_W->y;
+
+						//New pawn position.
+						this->rook1_W->x = x;
+						this->rook1_W->y = y;
+						this->rook1_W->move(board[x][x].x, board[y][y].y);
+
+
+						//In case of attack.
+						for (int u = 0; u < 8; u++) {
+
+							//Pawns.
+							if ((this->rook1_W->x == this->pawn_B[u]->x) && (this->rook1_W->y == this->pawn_B[u]->y)) {
+								this->boardPos[oldXpos][oldYpos] = 2;
+								//Removing the attacked piece.
+								this->pawn_W[u]->move(-100.0f, -100.0f);
+							}
+
+							//Rooks.
+
+						}
+
+
+
+
+
+						//Square color reset (transparent).
+						initSquares();
+						turn++;
+						this->rookMoves_W[0] = false;
+
+
+
+						printOccupiedAndNonOcuppiedPositions();
+					}
+					
+
 				}
 			}
 		}
@@ -495,13 +620,14 @@ void Game::initBoardPos() {
 
 //TESTING FUNCTION.
 void Game::printOccupiedAndNonOcuppiedPositions() {
-	//PRUEBA
 	for (int x = 0; x < 8; x++) {
 		for (int y = 0; y < 8; y++) {
 			cout << "[" << boardPos[y][x] << "]";
 		}
 		cout << endl;
 	}
+
+	cout << endl;
 }
 
 //
