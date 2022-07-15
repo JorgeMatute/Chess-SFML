@@ -267,13 +267,19 @@ void Game::movements() {
 			boundsPawn_B[i] = this->pawn_B[i]->spritePawn.getGlobalBounds();
 		}
 
-
 		for (int i = 0; i < 8; i++) {
 			if (whiteTurn()) { //Coloring the possible moves for each piece (WHITE).
 				
 				//Pawns.
 				if (boundsPawn_W[i].contains(mouse)) {
+
+					//Reset the pawn to move.
+					for (int h = 0; h < 8; h++) {
+						this->pawnMoves_W[h] = false;
+					}
+					
 					if (pawn_W[i]->isMoveLegal(this->boardPos)) {
+						initSquares();
 
 						if (this->pawn_W[i]->fistMove == 0 && boardPos[this->pawn_W[i]->x][this->pawn_W[i]->y - 2] == 2) {
 							this->squares[this->pawn_W[i]->x][this->pawn_W[i]->y - 1]->setFillColor(sf::Color::Red);
@@ -299,7 +305,7 @@ void Game::movements() {
 							}
 						}
 
-						this->pawnMoves_W[i] = true;
+						this->pawnMoves_W[i] = true; //VOY A TENER QUE ITERAR ARRIBA PARA QUE TODOS ESTEN EN FALSE CADA VEZ QUE REINICIE.
 					}
 				}
 
@@ -309,8 +315,16 @@ void Game::movements() {
 
 			}
 			else {  //Coloring the possible moves for each piece (BLACK).
+
 				if (boundsPawn_B[i].contains(mouse)) {
+
+					//Reset the pawn to move.
+					for (int h = 0; h < 8; h++) {
+						this->pawnMoves_B[h] = false;
+					}
+
 					if (pawn_B[i]->isMoveLegal(this->boardPos)) {
+						initSquares();
 
 						if (this->pawn_B[i]->fistMove == 0 && boardPos[this->pawn_B[i]->x][this->pawn_B[i]->y + 2] == 2) {
 							this->squares[this->pawn_B[i]->x][this->pawn_B[i]->y + 1]->setFillColor(sf::Color::Red);
@@ -341,6 +355,9 @@ void Game::movements() {
 				}
 			}
 		}
+
+
+
 
 		//Verify that the square is a possible move to then move the piece.
 		for (int x = 0; x < 8; x++) {
