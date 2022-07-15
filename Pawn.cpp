@@ -54,47 +54,37 @@ bool Pawn::isMoveLegal(int board[][8]) {
 
 	if (color == 0) { 
 		if (fistMove == 0) { //Fisrt move (WHITE).
-			if ((board[x][y - 1] == 2) && (board[x][y - 2] == 2)) {
+			if ((board[x][y - 1] == 2) && (board[x][y - 2] == 2))
 				return true;
-			}
-			else if (board[x][y - 1] == 2) {
+			else if (board[x][y - 1] == 2)
 				return true;
-			}
-			else if ((((board[x][y - 1] == 1) || (board[x][y - 1] == 0)) && (board[x + 1][y - 1] == 1) || (board[x - 1][y - 1] == 1))) {
+			else if ((((board[x][y - 1] == 1) || (board[x][y - 1] == 0)) && (board[x + 1][y - 1] == 1) || (board[x - 1][y - 1] == 1)))
 				return true;
-			}
-			else if (((board[x][y - 1] == 1) || (board[x][y - 1] == 0))) {
+			else if (((board[x][y - 1] == 1) || (board[x][y - 1] == 0)))
 				return false;
-			}
 			return false;
 		}
-		else {
+		else
 			if ((board[x][y - 1] == 2) || (board[x + 1][y - 1] == 1) || (board[x - 1][y - 1] == 1)) {
 				return true;
-			}
 		}
 		return false;
 	}
 	else {
 		if (fistMove == 0) { //Fisrt move (BLACK).
-			if ((board[x][y + 1] == 2) && (board[x][y + 2] == 2)) {
+			if ((board[x][y + 1] == 2) && (board[x][y + 2] == 2))
 				return true;
-			}
-			else if (board[x][y + 1] == 2) {
+			else if (board[x][y + 1] == 2)
 				return true;
-			}
-			else if ((((board[x][y + 1] == 0) || (board[x][y + 1] == 1)) && (board[x + 1][y + 1] == 0) || (board[x - 1][y + 1] == 0))) {
+			else if ((((board[x][y + 1] == 0) || (board[x][y + 1] == 1)) && (board[x + 1][y + 1] == 0) || (board[x - 1][y + 1] == 0)))
 				return true;
-			}
-			else if (((board[x][y + 1] == 1) || (board[x][y - 1] == 0))) {
+			else if (((board[x][y + 1] == 1) || (board[x][y - 1] == 0)))
 				return false;
-			}
 			return false;
 		}
 		else {
-			if ((board[x][y + 1] == 2) || (board[x + 1][y + 1] == 0) || (board[x - 1][y + 1] == 0)) {
+			if ((board[x][y + 1] == 2) || (board[x + 1][y + 1] == 0) || (board[x - 1][y + 1] == 0))
 				return true;
-			}
 		}
 		return false;
 	}

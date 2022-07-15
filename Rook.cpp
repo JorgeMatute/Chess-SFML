@@ -55,48 +55,26 @@ bool Rook::isMoveLegal(int board[][8]) {
 	
 	//White.
 	if (color == 0) {
-		if ((y + 1) < 8) { //Making sure of the max and min range.
-			if (board[x][y + 1] == 2 || board[x][y + 1] == 1)
-				return true;
-		}
-		else if ((y - 1) >= 0) {
-			if (board[x][y - 1] == 2 || board[x][y - 1] == 1)
-				return true;
-		}
-		else if ((x + 1) < 8) {
-			if (board[x+1][y] == 2 || board[x+1][y] == 1)
-				return true;
-		}
-		else if ((x - 1) >= 0) {
-			if (board[x - 1][y] == 2 || board[x - 1][y] == 1)
-				return true;
-		}
+		if (((y + 1) < 8) && (board[x][y + 1] == 2 || board[x][y + 1] == 1)) //Making sure of the max and min range.
+			return true;
+		else if (((y - 1) >= 0) && (board[x][y - 1] == 2 || board[x][y - 1] == 1))
+			return true;
+		else if (((x + 1) < 8) && (board[x + 1][y] == 2 || board[x + 1][y] == 1))
+			return true;
+		else if (((x - 1) >= 0) && (board[x - 1][y] == 2 || board[x - 1][y] == 1))
+			return true;
 	}
 	//Black.
 	else {
-		if ((y + 1) < 8) { //Making sure of the max and min range.
-			if (board[x][y + 1] == 2 || board[x][y + 1] == 0)
-				return true;
-		}
-		else if ((y - 1) >= 0) {
-			if (board[x][y - 1] == 2 || board[x][y - 1] == 0)
-				return true;
-		}
-		else if ((x + 1) < 8) {
-			if (board[x + 1][y] == 2 || board[x + 1][y] == 0)
-				return true;
-		}
-		else if ((x - 1) >= 0) {
-			if (board[x - 1][y] == 2 || board[x - 1][y] == 0)
-				return true;
-		}
+		if (((y + 1) < 8) && (board[x][y + 1] == 2 || board[x][y + 1] == 0))//Making sure of the max and min range.
+			return true;
+		else if (((y - 1) >= 0) && (board[x][y - 1] == 2 || board[x][y - 1] == 0))
+			return true;
+		else if (((x + 1) < 8) && (board[x + 1][y] == 2 || board[x + 1][y] == 0))
+			return true;
+		else if (((x - 1) >= 0) && (board[x - 1][y] == 2 || board[x - 1][y] == 0))
+			return true;
 	}
 
 	return false;
 }
-
-
-//En el game puedo hacer un loop y hasta que sea igual a 0 o se llegue al limite del array
-//poner un break y asi para cada direccion o algo asi. Y que si llega a un 1 tambien 
-//poner un break porque hasta ahi pintaria o algo asi. Esto para las blancas.
-//Para las negras la misma idea.

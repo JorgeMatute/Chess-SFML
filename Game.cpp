@@ -366,10 +366,35 @@ void Game::movements() {
 							}
 						}
 
+						//HORIZONTAL - LEFT.
+						for (int s = 1; s <= 7; s++) {
+							if (this->rook1_W->x - s >= 0) {
+								if (boardPos[this->rook1_W->x - s][this->rook1_W->y] == 2) {
+									this->squares[this->rook1_W->x - s][this->rook1_W->y]->setFillColor(sf::Color::Red);
+								}
+								else if (boardPos[this->rook1_W->x - s][this->rook1_W->y] == 1) {
+									this->squares[this->rook1_W->x - s][this->rook1_W->y]->setFillColor(sf::Color::Red);
+									break;
+								}
+								else
+									break;
+							}
+						}
 
-
-
-						
+						//HORIZONTAL - LEFT.
+						for (int s = 1; s <= 7; s++) {
+							if (this->rook1_W->x + s <= 7) {
+								if (boardPos[this->rook1_W->x + s][this->rook1_W->y] == 2) {
+									this->squares[this->rook1_W->x + s][this->rook1_W->y]->setFillColor(sf::Color::Red);
+								}
+								else if (boardPos[this->rook1_W->x + s][this->rook1_W->y] == 1) {
+									this->squares[this->rook1_W->x + s][this->rook1_W->y]->setFillColor(sf::Color::Red);
+									break;
+								}
+								else
+									break;
+							}
+						}
 
 						this->rookMoves_W[0] = true;
 					}
@@ -472,6 +497,9 @@ void Game::movements() {
 							turn++;
 							this->pawn_W[i]->fistMove++;
 							this->pawnMoves_W[i] = false;
+
+							//
+							printOccupiedAndNonOcuppiedPositions();
 						}
 
 						//Black pawns.
@@ -506,6 +534,9 @@ void Game::movements() {
 							this->pawn_B[i]->fistMove++;
 							this->pawnMoves_B[i] = false;
 
+							//
+							printOccupiedAndNonOcuppiedPositions();
+
 						}
 					}
 
@@ -534,24 +565,19 @@ void Game::movements() {
 							if ((this->rook1_W->x == this->pawn_B[u]->x) && (this->rook1_W->y == this->pawn_B[u]->y)) {
 								this->boardPos[oldXpos][oldYpos] = 2;
 								//Removing the attacked piece.
-								this->pawn_W[u]->move(-100.0f, -100.0f);
+								this->pawn_B[u]->move(-100.0f, -100.0f);
 							}
 
 							//Rooks.
 
 						}
 
-
-
-
-
 						//Square color reset (transparent).
 						initSquares();
 						turn++;
 						this->rookMoves_W[0] = false;
 
-
-
+						//
 						printOccupiedAndNonOcuppiedPositions();
 					}
 					
