@@ -533,6 +533,8 @@ void Game::movements() {
 						this->pawnMoves_B[i] = true;
 					}
 				}
+
+				//
 			}
 		}
 
