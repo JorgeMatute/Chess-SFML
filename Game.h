@@ -49,8 +49,7 @@ private:
 	Rook* rook_W[2];
 	Knight* knight1_W;
 	Knight* knight2_W;
-	Bishop* bishop1_W;
-	Bishop* bishop2_W;
+	Bishop* bishop_W[2];
 
 	King* king_B;
 	Queen* queen_B;
