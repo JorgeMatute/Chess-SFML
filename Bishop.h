@@ -13,14 +13,14 @@ class Bishop {
 public:
 	//Constructors and destructor.
 	Bishop();
-	Bishop(int color, float dirX, float dirY);
+	Bishop(int color, float dirX, float dirY, int x, int y);
 	virtual ~Bishop();
 
 	//Functions.
-	void update();
 	void render(sf::RenderTarget& target);
 
 	void move(const float dirX, const float dirY);
+	bool isMoveLegal(int board[][8]);
 
 private:
 	void initTexture();
@@ -28,8 +28,11 @@ private:
 
 private:
 	sf::Texture textureBishop;
-	int color;
+
 public:
+	int color;
+	int x;
+	int y;
 	sf::Sprite spriteBishop;
 };
 

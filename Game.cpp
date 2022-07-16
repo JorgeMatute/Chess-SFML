@@ -173,10 +173,10 @@ void Game::initPieces() {
 	this->knight2_B = new Knight(1, board[6][6].x, board[0][0].y);
 
 	//Bishops.
-	this->bishop1_W = new Bishop(0, board[2][2].x, board[7][7].y);
-	this->bishop2_W = new Bishop(0, board[5][5].x, board[7][7].y);
-	this->bishop1_B = new Bishop(1, board[2][2].x, board[0][0].y);
-	this->bishop2_B = new Bishop(1, board[5][5].x, board[0][0].y);
+	this->bishop1_W = new Bishop(0, board[2][2].x, board[7][7].y, 2, 7);
+	this->bishop2_W = new Bishop(0, board[5][5].x, board[7][7].y, 5, 7);
+	this->bishop1_B = new Bishop(1, board[2][2].x, board[0][0].y, 2, 0);
+	this->bishop2_B = new Bishop(1, board[5][5].x, board[0][0].y, 5, 0);
 }
 
 void Game::initBackground() {
@@ -229,8 +229,8 @@ void Game::movements() {
 		sf::FloatRect boundsRook2_W;
 		sf::FloatRect boundsKnight1_W;
 		sf::FloatRect boundsKnight2_W;
-		sf::FloatRect boundsBisho1_W;
-		sf::FloatRect boundsBisho2_W;
+		sf::FloatRect boundsBishop1_W;
+		sf::FloatRect boundsBishop2_W;
 
 		//Black pieces (BOUNDS).
 		sf::FloatRect boundsPawn_B[8];
@@ -240,8 +240,8 @@ void Game::movements() {
 		sf::FloatRect boundsRook2_B;
 		sf::FloatRect boundsKnight1_B;
 		sf::FloatRect boundsKnight2_B;
-		sf::FloatRect boundsBisho1_B;
-		sf::FloatRect boundsBisho2_B;
+		sf::FloatRect boundsBishop1_B;
+		sf::FloatRect boundsBishop2_B;
 
 		//Defining pieces bounds.
 		boundsKing_W = this->king_W->spriteKing.getGlobalBounds();
@@ -250,8 +250,8 @@ void Game::movements() {
 		boundsRook2_W = this->rook2_W->spriteRook.getGlobalBounds();
 		boundsKnight1_W = this->knight1_W->spriteKnight.getGlobalBounds();
 		boundsKnight2_W = this->knight2_W->spriteKnight.getGlobalBounds();
-		boundsBisho1_W = this->bishop1_W->spriteBishop.getGlobalBounds();
-		boundsBisho2_W = this->bishop2_W->spriteBishop.getGlobalBounds();
+		boundsBishop1_W = this->bishop1_W->spriteBishop.getGlobalBounds();
+		boundsBishop2_W = this->bishop2_W->spriteBishop.getGlobalBounds();
 
 		boundsKing_B = this->king_B->spriteKing.getGlobalBounds();
 		boundsQueen_B = this->queen_B->spriteQueen.getGlobalBounds();
@@ -259,8 +259,8 @@ void Game::movements() {
 		boundsRook2_B = this->rook2_B->spriteRook.getGlobalBounds();
 		boundsKnight1_B = this->knight1_B->spriteKnight.getGlobalBounds();
 		boundsKnight2_B = this->knight2_B->spriteKnight.getGlobalBounds();
-		boundsBisho1_B = this->bishop1_B->spriteBishop.getGlobalBounds();
-		boundsBisho2_B = this->bishop2_B->spriteBishop.getGlobalBounds();
+		boundsBishop1_B = this->bishop1_B->spriteBishop.getGlobalBounds();
+		boundsBishop2_B = this->bishop2_B->spriteBishop.getGlobalBounds();
 
 		for (int i = 0; i < 8; i++) {
 			boundsPawn_W[i] = this->pawn_W[i]->spritePawn.getGlobalBounds();
@@ -281,8 +281,13 @@ void Game::movements() {
 					//ROOK - KNIGHT - BISHOP -> Reset.
 					for (int h = 0; h < 2; h++) {
 						this->rookMoves_W[h] = false;
+						this->bishopMoves_W[h] = false;
+						this->knightMoves_W[h] = false;
 					}
+					this->kingMoves_W = false;
+					this->queenMoves_W = false;
 					
+
 					if (pawn_W[i]->isMoveLegal(this->boardPos)) {
 						initSquares();
 
@@ -326,8 +331,11 @@ void Game::movements() {
 					//ROOK - KNIGHT - BISHOP -> Reset.
 					for (int h = 0; h < 2; h++) {
 						this->rookMoves_W[h] = false;
+						this->bishopMoves_W[h] = false;
+						this->knightMoves_W[h] = false;
 					}
-
+					this->kingMoves_W = false;
+					this->queenMoves_W = false;
 
 					if (this->rook1_W->isMoveLegal(this->boardPos)) {
 						initSquares();
@@ -408,8 +416,11 @@ void Game::movements() {
 					//ROOK - KNIGHT - BISHOP -> Reset.
 					for (int h = 0; h < 2; h++) {
 						this->rookMoves_W[h] = false;
+						this->bishopMoves_W[h] = false;
+						this->knightMoves_W[h] = false;
 					}
-
+					this->kingMoves_W = false;
+					this->queenMoves_W = false;
 
 					if (this->rook2_W->isMoveLegal(this->boardPos)) {
 						initSquares();
@@ -477,6 +488,93 @@ void Game::movements() {
 						this->rookMoves_W[1] = true;
 					}
 				}
+
+
+				//Bishop 1.
+				if (boundsBishop1_W.contains(mouse)) {
+
+					//Reset the pawn to move.
+					for (int h = 0; h < 8; h++) {
+						this->pawnMoves_W[h] = false;
+					}
+
+					//ROOK - KNIGHT - BISHOP -> Reset.
+					for (int h = 0; h < 2; h++) {
+						this->rookMoves_W[h] = false;
+						this->bishopMoves_W[h] = false;
+						this->knightMoves_W[h] = false;
+					}
+					this->kingMoves_W = false;
+					this->queenMoves_W = false;
+
+					if (this->bishop1_W->isMoveLegal(this->boardPos)) {
+						initSquares();
+
+						//LEFT - UP.
+						for (int s = 1; s <= 7; s++) {
+							if ((this->bishop1_W->x - s >= 0) && (this->bishop1_W->y - s >= 0)) {
+								if (boardPos[this->bishop1_W->x - s][this->bishop1_W->y - s] == 2) {
+									this->squares[this->bishop1_W->x - s][this->bishop1_W->y - s]->setFillColor(sf::Color::Red);
+								}
+								else if (boardPos[this->bishop1_W->x - s][this->bishop1_W->y - s] == 1) {
+									this->squares[this->bishop1_W->x - s][this->bishop1_W->y - s]->setFillColor(sf::Color::Red);
+									break;
+								}
+								else
+									break;
+							}
+						}
+
+						//LEFT - DOWN.
+						for (int s = 1; s <= 7; s++) {
+							if ((this->bishop1_W->x - s >= 0) && (this->bishop1_W->y + s <= 7)) {
+								if (boardPos[this->bishop1_W->x - s][this->bishop1_W->y + s] == 2) {
+									this->squares[this->bishop1_W->x - s][this->bishop1_W->y - s]->setFillColor(sf::Color::Red);
+								}
+								else if (boardPos[this->bishop1_W->x - s][this->bishop1_W->y + s] == 1) {
+									this->squares[this->bishop1_W->x - s][this->bishop1_W->y + s]->setFillColor(sf::Color::Red);
+									break;
+								}
+								else
+									break;
+							}
+						}
+						
+						//RIGHT - UP.
+						for (int s = 1; s <= 7; s++) {
+							if ((this->bishop1_W->x + s <= 7) && (this->bishop1_W->y - s >= 0)) {
+								if (boardPos[this->bishop1_W->x + s][this->bishop1_W->y - s] == 2) {
+									this->squares[this->bishop1_W->x + s][this->bishop1_W->y - s]->setFillColor(sf::Color::Red);
+								}
+								else if (boardPos[this->bishop1_W->x + s][this->bishop1_W->y - s] == 1) {
+									this->squares[this->bishop1_W->x + s][this->bishop1_W->y - s]->setFillColor(sf::Color::Red);
+									break;
+								}
+								else
+									break;
+							}
+						}
+
+						//RIGHT - DOWN.
+						for (int s = 1; s <= 7; s++) {
+							if ((this->bishop1_W->x + s <= 7) && (this->bishop1_W->y + s <= 7)) {
+								if (boardPos[this->bishop1_W->x + s][this->bishop1_W->y + s] == 2) {
+									this->squares[this->bishop1_W->x + s][this->bishop1_W->y + s]->setFillColor(sf::Color::Red);
+								}
+								else if (boardPos[this->bishop1_W->x + s][this->bishop1_W->y + s] == 1) {
+									this->squares[this->bishop1_W->x + s][this->bishop1_W->y + s]->setFillColor(sf::Color::Red);
+									break;
+								}
+								else
+									break;
+							}
+						}
+
+
+						this->bishopMoves_W[0] = false;
+					}
+				}
+
 
 
 			}

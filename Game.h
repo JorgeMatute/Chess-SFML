@@ -80,11 +80,20 @@ private:
 	//Turns.
 	bool whiteTurn();
 	int turn;
+
 	bool pawnMoves_W[8]; //Al coronar, el bool pasaria a esa nueva piece.
 	bool rookMoves_W[2];
+	bool bishopMoves_W[2];
+	bool knightMoves_W[2];
+	bool kingMoves_W;
+	bool queenMoves_W;
 
 	bool pawnMoves_B[8];
 	bool rookMoves_B[2];
+	bool bishopMoves_B[2];
+	bool knightMoves_B[2];
+	bool kingMoves_B;
+	bool queenMoves_B;
 
 	//TESTING FUNCTION.
 	void printOccupiedAndNonOcuppiedPositions();
