@@ -46,8 +46,7 @@ private:
 	King* king_W;
 	Queen* queen_W;
 	Pawn* pawn_W[8];
-	Rook* rook1_W;
-	Rook* rook2_W;
+	Rook* rook_W[2];
 	Knight* knight1_W;
 	Knight* knight2_W;
 	Bishop* bishop1_W;
@@ -56,8 +55,7 @@ private:
 	King* king_B;
 	Queen* queen_B;
 	Pawn* pawn_B[8];
-	Rook* rook1_B;
-	Rook* rook2_B;
+	Rook* rook_B[2];
 	Knight* knight1_B;
 	Knight* knight2_B;
 	Bishop* bishop1_B;

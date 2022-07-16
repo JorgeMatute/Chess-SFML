@@ -33,11 +33,12 @@ Game::~Game() { //Avoiding memory leaks.
 		delete pawn_W[i];
 	}
 
-	//Rooks.
-	delete this->rook1_W;
-	delete this->rook2_W;
-	delete this->rook1_B;
-	delete this->rook2_B;
+	//Rooks //Knights // Bishops.
+	for (int i = 0; i < 2; i++) {
+		delete this->rook_W[i];
+		delete this->rook_B[i];
+	}
+
 
 	//Knights.
 	delete this->knight1_W;
@@ -112,10 +113,10 @@ void Game::render() {
 	}
 
 	//Rooks.
-	this->rook1_W->render(*this->window);
-	this->rook2_W->render(*this->window);
-	this->rook1_B->render(*this->window);
-	this->rook2_B->render(*this->window);
+	this->rook_W[0]->render(*this->window);
+	this->rook_W[1]->render(*this->window);
+	this->rook_B[0]->render(*this->window);
+	this->rook_B[1]->render(*this->window);
 
 	//Knights.
 	this->knight1_W->render(*this->window);
@@ -161,10 +162,10 @@ void Game::initPieces() {
 	}
 
 	//Rooks.
-	this->rook1_W = new Rook(0, board[0][0].x, board[7][7].y, 0, 7);
-	this->rook2_W = new Rook(0, board[7][7].x, board[7][7].y, 7, 7);
-	this->rook1_B = new Rook(1, board[0][0].x, board[0][0].y, 0, 0);
-	this->rook2_B = new Rook(1, board[7][7].x, board[0][0].y, 7, 0);
+	this->rook_W[0] = new Rook(0, board[0][0].x, board[7][7].y, 0, 7);
+	this->rook_W[1] = new Rook(0, board[7][7].x, board[7][7].y, 7, 7);
+	this->rook_B[0] = new Rook(1, board[0][0].x, board[0][0].y, 0, 0);
+	this->rook_B[1] = new Rook(1, board[7][7].x, board[0][0].y, 7, 0);
 
 	//Knights.
 	this->knight1_W = new Knight(0, board[1][1].x, board[7][7].y);
@@ -225,7 +226,7 @@ void Game::movements() {
 		sf::FloatRect boundsPawn_W[8];
 		sf::FloatRect boundsKing_W;
 		sf::FloatRect boundsQueen_W;
-		sf::FloatRect boundsRook1_W;
+		sf::FloatRect boundsRook_W[2];
 		sf::FloatRect boundsRook2_W;
 		sf::FloatRect boundsKnight1_W;
 		sf::FloatRect boundsKnight2_W;
@@ -236,8 +237,7 @@ void Game::movements() {
 		sf::FloatRect boundsPawn_B[8];
 		sf::FloatRect boundsKing_B;
 		sf::FloatRect boundsQueen_B;
-		sf::FloatRect boundsRook1_B;
-		sf::FloatRect boundsRook2_B;
+		sf::FloatRect boundsRook_B[2];
 		sf::FloatRect boundsKnight1_B;
 		sf::FloatRect boundsKnight2_B;
 		sf::FloatRect boundsBishop1_B;
@@ -246,8 +246,6 @@ void Game::movements() {
 		//Defining pieces bounds.
 		boundsKing_W = this->king_W->spriteKing.getGlobalBounds();
 		boundsQueen_W = this->queen_W->spriteQueen.getGlobalBounds();
-		boundsRook1_W = this->rook1_W->spriteRook.getGlobalBounds();
-		boundsRook2_W = this->rook2_W->spriteRook.getGlobalBounds();
 		boundsKnight1_W = this->knight1_W->spriteKnight.getGlobalBounds();
 		boundsKnight2_W = this->knight2_W->spriteKnight.getGlobalBounds();
 		boundsBishop1_W = this->bishop1_W->spriteBishop.getGlobalBounds();
@@ -255,22 +253,27 @@ void Game::movements() {
 
 		boundsKing_B = this->king_B->spriteKing.getGlobalBounds();
 		boundsQueen_B = this->queen_B->spriteQueen.getGlobalBounds();
-		boundsRook1_B = this->rook1_B->spriteRook.getGlobalBounds();
-		boundsRook2_B = this->rook2_B->spriteRook.getGlobalBounds();
 		boundsKnight1_B = this->knight1_B->spriteKnight.getGlobalBounds();
 		boundsKnight2_B = this->knight2_B->spriteKnight.getGlobalBounds();
 		boundsBishop1_B = this->bishop1_B->spriteBishop.getGlobalBounds();
 		boundsBishop2_B = this->bishop2_B->spriteBishop.getGlobalBounds();
 
+		//Pawns (BOUNDS).
 		for (int i = 0; i < 8; i++) {
 			boundsPawn_W[i] = this->pawn_W[i]->spritePawn.getGlobalBounds();
 			boundsPawn_B[i] = this->pawn_B[i]->spritePawn.getGlobalBounds();
 		}
 
+		//Rooks-Knights-Bishops (BOUNDS)
+		for (int i = 0; i < 2; i++) {
+			boundsRook_W[i] = this->rook_W[i]->spriteRook.getGlobalBounds();
+			boundsRook_B[i] = this->rook_B[i]->spriteRook.getGlobalBounds();
+		}
+
 		for (int i = 0; i < 8; i++) {
 			if (whiteTurn()) { //Coloring the possible moves for each piece (WHITE).
 				
-				//Pawns.
+				//PAWNS.
 				if (boundsPawn_W[i].contains(mouse)) {
 
 					//Reset the pawn to move.
@@ -320,176 +323,94 @@ void Game::movements() {
 				}
 
 
-				//Rook 1.
-				if (boundsRook1_W.contains(mouse)) {
-					
-					//Reset the pawn to move.
-					for (int h = 0; h < 8; h++) {
-						this->pawnMoves_W[h] = false;
-					}
+				//Rooks. // - // - 
+				for (int g = 0; g < 2; g++) {
+					if (boundsRook_W[g].contains(mouse)) {
 
-					//ROOK - KNIGHT - BISHOP -> Reset.
-					for (int h = 0; h < 2; h++) {
-						this->rookMoves_W[h] = false;
-						this->bishopMoves_W[h] = false;
-						this->knightMoves_W[h] = false;
-					}
-					this->kingMoves_W = false;
-					this->queenMoves_W = false;
-
-					if (this->rook1_W->isMoveLegal(this->boardPos)) {
-						initSquares();
-
-						//VERTICAL - UP.
-						for (int s = 1; s <= 7; s++) {
-							if (this->rook1_W->y - s >= 0) {
-								if (boardPos[this->rook1_W->x][this->rook1_W->y - s] == 2) {
-									this->squares[this->rook1_W->x][this->rook1_W->y - s]->setFillColor(sf::Color::Red);
-								}
-								else if (boardPos[this->rook1_W->x][this->rook1_W->y - s] == 1) {
-									this->squares[this->rook1_W->x][this->rook1_W->y - s]->setFillColor(sf::Color::Red);
-									break;
-								}
-								else
-									break;
-							}
+						//Reset the pawn to move.
+						for (int h = 0; h < 8; h++) {
+							this->pawnMoves_W[h] = false;
 						}
 
-						//VERTICAL - DOWN.
-						for (int s = 1; s <= 7; s++) {
-							if (this->rook1_W->y + s <= 7) {
-								if (boardPos[this->rook1_W->x][this->rook1_W->y + s] == 2) {
-									this->squares[this->rook1_W->x][this->rook1_W->y + s]->setFillColor(sf::Color::Red);
-								}
-								else if (boardPos[this->rook1_W->x][this->rook1_W->y + s] == 1) {
-									this->squares[this->rook1_W->x][this->rook1_W->y + s]->setFillColor(sf::Color::Red);
-									break;
-								}
-								else
-									break;
-							}
+						//ROOK - KNIGHT - BISHOP -> Reset.
+						for (int h = 0; h < 2; h++) {
+							this->rookMoves_W[h] = false;
+							this->bishopMoves_W[h] = false;
+							this->knightMoves_W[h] = false;
 						}
+						this->kingMoves_W = false;
+						this->queenMoves_W = false;
 
-						//HORIZONTAL - LEFT.
-						for (int s = 1; s <= 7; s++) {
-							if (this->rook1_W->x - s >= 0) {
-								if (boardPos[this->rook1_W->x - s][this->rook1_W->y] == 2) {
-									this->squares[this->rook1_W->x - s][this->rook1_W->y]->setFillColor(sf::Color::Red);
+						if (this->rook_W[g]->isMoveLegal(this->boardPos)) {
+							initSquares();
+
+							//VERTICAL - UP.
+							for (int s = 1; s <= 7; s++) {
+								if (this->rook_W[g]->y - s >= 0) {
+									if (boardPos[this->rook_W[g]->x][this->rook_W[g]->y - s] == 2) {
+										this->squares[this->rook_W[g]->x][this->rook_W[g]->y - s]->setFillColor(sf::Color::Red);
+									}
+									else if (boardPos[this->rook_W[g]->x][this->rook_W[g]->y - s] == 1) {
+										this->squares[this->rook_W[g]->x][this->rook_W[g]->y - s]->setFillColor(sf::Color::Red);
+										break;
+									}
+									else
+										break;
 								}
-								else if (boardPos[this->rook1_W->x - s][this->rook1_W->y] == 1) {
-									this->squares[this->rook1_W->x - s][this->rook1_W->y]->setFillColor(sf::Color::Red);
-									break;
-								}
-								else
-									break;
 							}
-						}
 
-						//HORIZONTAL - LEFT.
-						for (int s = 1; s <= 7; s++) {
-							if (this->rook1_W->x + s <= 7) {
-								if (boardPos[this->rook1_W->x + s][this->rook1_W->y] == 2) {
-									this->squares[this->rook1_W->x + s][this->rook1_W->y]->setFillColor(sf::Color::Red);
+							//VERTICAL - DOWN.
+							for (int s = 1; s <= 7; s++) {
+								if (this->rook_W[g]->y + s <= 7) {
+									if (boardPos[this->rook_W[g]->x][this->rook_W[g]->y + s] == 2) {
+										this->squares[this->rook_W[g]->x][this->rook_W[g]->y + s]->setFillColor(sf::Color::Red);
+									}
+									else if (boardPos[this->rook_W[g]->x][this->rook_W[g]->y + s] == 1) {
+										this->squares[this->rook_W[g]->x][this->rook_W[g]->y + s]->setFillColor(sf::Color::Red);
+										break;
+									}
+									else
+										break;
 								}
-								else if (boardPos[this->rook1_W->x + s][this->rook1_W->y] == 1) {
-									this->squares[this->rook1_W->x + s][this->rook1_W->y]->setFillColor(sf::Color::Red);
-									break;
-								}
-								else
-									break;
 							}
-						}
 
-						this->rookMoves_W[0] = true;
-					}
-				}
-
-
-				//Rook 2.
-				if (boundsRook2_W.contains(mouse)) {
-
-					//Reset the pawn to move.
-					for (int h = 0; h < 8; h++) {
-						this->pawnMoves_W[h] = false;
-					}
-
-					//ROOK - KNIGHT - BISHOP -> Reset.
-					for (int h = 0; h < 2; h++) {
-						this->rookMoves_W[h] = false;
-						this->bishopMoves_W[h] = false;
-						this->knightMoves_W[h] = false;
-					}
-					this->kingMoves_W = false;
-					this->queenMoves_W = false;
-
-					if (this->rook2_W->isMoveLegal(this->boardPos)) {
-						initSquares();
-
-						//VERTICAL - UP.
-						for (int s = 1; s <= 7; s++) {
-							if (this->rook2_W->y - s >= 0) {
-								if (boardPos[this->rook2_W->x][this->rook2_W->y - s] == 2) {
-									this->squares[this->rook2_W->x][this->rook2_W->y - s]->setFillColor(sf::Color::Red);
+							//HORIZONTAL - LEFT.
+							for (int s = 1; s <= 7; s++) {
+								if (this->rook_W[g]->x - s >= 0) {
+									if (boardPos[this->rook_W[g]->x - s][this->rook_W[g]->y] == 2) {
+										this->squares[this->rook_W[g]->x - s][this->rook_W[g]->y]->setFillColor(sf::Color::Red);
+									}
+									else if (boardPos[this->rook_W[g]->x - s][this->rook_W[g]->y] == 1) {
+										this->squares[this->rook_W[g]->x - s][this->rook_W[g]->y]->setFillColor(sf::Color::Red);
+										break;
+									}
+									else
+										break;
 								}
-								else if (boardPos[this->rook2_W->x][this->rook2_W->y - s] == 1) {
-									this->squares[this->rook2_W->x][this->rook2_W->y - s]->setFillColor(sf::Color::Red);
-									break;
-								}
-								else
-									break;
 							}
-						}
 
-						//VERTICAL - DOWN.
-						for (int s = 1; s <= 7; s++) {
-							if (this->rook2_W->y + s <= 7) {
-								if (boardPos[this->rook2_W->x][this->rook2_W->y + s] == 2) {
-									this->squares[this->rook2_W->x][this->rook2_W->y + s]->setFillColor(sf::Color::Red);
+							//HORIZONTAL - LEFT.
+							for (int s = 1; s <= 7; s++) {
+								if (this->rook_W[g]->x + s <= 7) {
+									if (boardPos[this->rook_W[g]->x + s][this->rook_W[g]->y] == 2) {
+										this->squares[this->rook_W[g]->x + s][this->rook_W[g]->y]->setFillColor(sf::Color::Red);
+									}
+									else if (boardPos[this->rook_W[g]->x + s][this->rook_W[g]->y] == 1) {
+										this->squares[this->rook_W[g]->x + s][this->rook_W[g]->y]->setFillColor(sf::Color::Red);
+										break;
+									}
+									else
+										break;
 								}
-								else if (boardPos[this->rook2_W->x][this->rook2_W->y + s] == 1) {
-									this->squares[this->rook2_W->x][this->rook2_W->y + s]->setFillColor(sf::Color::Red);
-									break;
-								}
-								else
-									break;
 							}
-						}
 
-						//HORIZONTAL - LEFT.
-						for (int s = 1; s <= 7; s++) {
-							if (this->rook2_W->x - s >= 0) {
-								if (boardPos[this->rook2_W->x - s][this->rook2_W->y] == 2) {
-									this->squares[this->rook2_W->x - s][this->rook2_W->y]->setFillColor(sf::Color::Red);
-								}
-								else if (boardPos[this->rook2_W->x - s][this->rook2_W->y] == 1) {
-									this->squares[this->rook2_W->x - s][this->rook2_W->y]->setFillColor(sf::Color::Red);
-									break;
-								}
-								else
-									break;
-							}
+							this->rookMoves_W[g] = true;
 						}
-
-						//HORIZONTAL - LEFT.
-						for (int s = 1; s <= 7; s++) {
-							if (this->rook2_W->x + s <= 7) {
-								if (boardPos[this->rook2_W->x + s][this->rook2_W->y] == 2) {
-									this->squares[this->rook2_W->x + s][this->rook2_W->y]->setFillColor(sf::Color::Red);
-								}
-								else if (boardPos[this->rook2_W->x + s][this->rook2_W->y] == 1) {
-									this->squares[this->rook2_W->x + s][this->rook2_W->y]->setFillColor(sf::Color::Red);
-									break;
-								}
-								else
-									break;
-							}
-						}
-
-						this->rookMoves_W[1] = true;
 					}
 				}
 
 
+				
 				//Bishop 1.
 				if (boundsBishop1_W.contains(mouse)) {
 
@@ -580,6 +501,7 @@ void Game::movements() {
 			}
 			else {  //Coloring the possible moves for each piece (BLACK).
 
+				//PAWNS.
 				if (boundsPawn_B[i].contains(mouse)) {
 
 					//Reset the pawn to move.
@@ -624,166 +546,88 @@ void Game::movements() {
 					}
 				}
 
-				//Rook 1.
-				if (boundsRook1_B.contains(mouse)) {
+				//ROOKS - KNIGHTS - BISHOPS.
+				for (int g = 0; g < 2; g++) {
 
-					//Reset the pawn to move.
-					for (int h = 0; h < 8; h++) {
-						this->pawnMoves_B[h] = false;
-					}
+					//Rook 1.
+					if (boundsRook_B[g].contains(mouse)) {
 
-					//ROOK - KNIGHT - BISHOP -> Reset.
-					for (int h = 0; h < 2; h++) {
-						this->rookMoves_B[h] = false;
-					}
-
-
-					if (this->rook1_B->isMoveLegal(this->boardPos)) {
-						initSquares();
-
-						//VERTICAL - UP.
-						for (int s = 1; s <= 7; s++) {
-							if (this->rook1_B->y - s >= 0) {
-								if (boardPos[this->rook1_B->x][this->rook1_B->y - s] == 2) {
-									this->squares[this->rook1_B->x][this->rook1_B->y - s]->setFillColor(sf::Color::Red);
-								}
-								else if (boardPos[this->rook1_B->x][this->rook1_B->y - s] == 0) {
-									this->squares[this->rook1_B->x][this->rook1_B->y - s]->setFillColor(sf::Color::Red);
-									break;
-								}
-								else
-									break;
-							}
+						//Reset the pawn to move.
+						for (int h = 0; h < 8; h++) {
+							this->pawnMoves_B[h] = false;
 						}
 
-						//VERTICAL - DOWN.
-						for (int s = 1; s <= 7; s++) {
-							if (this->rook1_B->y + s <= 7) {
-								if (boardPos[this->rook1_B->x][this->rook1_B->y + s] == 2) {
-									this->squares[this->rook1_B->x][this->rook1_B->y + s]->setFillColor(sf::Color::Red);
-								}
-								else if (boardPos[this->rook1_B->x][this->rook1_B->y + s] == 0) {
-									this->squares[this->rook1_B->x][this->rook1_B->y + s]->setFillColor(sf::Color::Red);
-									break;
-								}
-								else
-									break;
-							}
+						//ROOK - KNIGHT - BISHOP -> Reset.
+						for (int h = 0; h < 2; h++) {
+							this->rookMoves_B[h] = false;
 						}
 
-						//HORIZONTAL - LEFT.
-						for (int s = 1; s <= 7; s++) {
-							if (this->rook1_B->x - s >= 0) {
-								if (boardPos[this->rook1_B->x - s][this->rook1_B->y] == 2) {
-									this->squares[this->rook1_B->x - s][this->rook1_B->y]->setFillColor(sf::Color::Red);
+
+						if (this->rook_B[g]->isMoveLegal(this->boardPos)) {
+							initSquares();
+
+							//VERTICAL - UP.
+							for (int s = 1; s <= 7; s++) {
+								if (this->rook_B[g]->y - s >= 0) {
+									if (boardPos[this->rook_B[g]->x][this->rook_B[g]->y - s] == 2) {
+										this->squares[this->rook_B[g]->x][this->rook_B[g]->y - s]->setFillColor(sf::Color::Red);
+									}
+									else if (boardPos[this->rook_B[g]->x][this->rook_B[g]->y - s] == 0) {
+										this->squares[this->rook_B[g]->x][this->rook_B[g]->y - s]->setFillColor(sf::Color::Red);
+										break;
+									}
+									else
+										break;
 								}
-								else if (boardPos[this->rook1_B->x - s][this->rook1_B->y] == 0) {
-									this->squares[this->rook1_B->x - s][this->rook1_B->y]->setFillColor(sf::Color::Red);
-									break;
-								}
-								else
-									break;
 							}
-						}
 
-						//HORIZONTAL - LEFT.
-						for (int s = 1; s <= 7; s++) {
-							if (this->rook1_B->x + s <= 7) {
-								if (boardPos[this->rook1_B->x + s][this->rook1_B->y] == 2) {
-									this->squares[this->rook1_B->x + s][this->rook1_B->y]->setFillColor(sf::Color::Red);
+							//VERTICAL - DOWN.
+							for (int s = 1; s <= 7; s++) {
+								if (this->rook_B[g]->y + s <= 7) {
+									if (boardPos[this->rook_B[g]->x][this->rook_B[g]->y + s] == 2) {
+										this->squares[this->rook_B[g]->x][this->rook_B[g]->y + s]->setFillColor(sf::Color::Red);
+									}
+									else if (boardPos[this->rook_B[g]->x][this->rook_B[g]->y + s] == 0) {
+										this->squares[this->rook_B[g]->x][this->rook_B[g]->y + s]->setFillColor(sf::Color::Red);
+										break;
+									}
+									else
+										break;
 								}
-								else if (boardPos[this->rook1_B->x + s][this->rook1_B->y] == 0) {
-									this->squares[this->rook1_B->x + s][this->rook1_B->y]->setFillColor(sf::Color::Red);
-									break;
-								}
-								else
-									break;
 							}
-						}
 
-						this->rookMoves_B[0] = true;
-					}
-				}
-
-
-				//Rook 2.
-				if (boundsRook2_B.contains(mouse)) {
-
-					//Reset the pawn to move.
-					for (int h = 0; h < 8; h++) {
-						this->pawnMoves_B[h] = false;
-					}
-
-					//ROOK - KNIGHT - BISHOP -> Reset.
-					for (int h = 0; h < 2; h++) {
-						this->rookMoves_B[h] = false;
-					}
-
-
-					if (this->rook2_B->isMoveLegal(this->boardPos)) {
-						initSquares();
-
-						//VERTICAL - UP.
-						for (int s = 1; s <= 7; s++) {
-							if (this->rook2_B->y - s >= 0) {
-								if (boardPos[this->rook2_B->x][this->rook2_B->y - s] == 2) {
-									this->squares[this->rook2_B->x][this->rook2_B->y - s]->setFillColor(sf::Color::Red);
+							//HORIZONTAL - LEFT.
+							for (int s = 1; s <= 7; s++) {
+								if (this->rook_B[g]->x - s >= 0) {
+									if (boardPos[this->rook_B[g]->x - s][this->rook_B[g]->y] == 2) {
+										this->squares[this->rook_B[g]->x - s][this->rook_B[g]->y]->setFillColor(sf::Color::Red);
+									}
+									else if (boardPos[this->rook_B[g]->x - s][this->rook_B[g]->y] == 0) {
+										this->squares[this->rook_B[g]->x - s][this->rook_B[g]->y]->setFillColor(sf::Color::Red);
+										break;
+									}
+									else
+										break;
 								}
-								else if (boardPos[this->rook2_B->x][this->rook2_B->y - s] == 0) {
-									this->squares[this->rook2_B->x][this->rook2_B->y - s]->setFillColor(sf::Color::Red);
-									break;
-								}
-								else
-									break;
 							}
-						}
 
-						//VERTICAL - DOWN.
-						for (int s = 1; s <= 7; s++) {
-							if (this->rook2_B->y + s <= 7) {
-								if (boardPos[this->rook2_B->x][this->rook2_B->y + s] == 2) {
-									this->squares[this->rook2_B->x][this->rook2_B->y + s]->setFillColor(sf::Color::Red);
+							//HORIZONTAL - LEFT.
+							for (int s = 1; s <= 7; s++) {
+								if (this->rook_B[g]->x + s <= 7) {
+									if (boardPos[this->rook_B[g]->x + s][this->rook_B[g]->y] == 2) {
+										this->squares[this->rook_B[g]->x + s][this->rook_B[g]->y]->setFillColor(sf::Color::Red);
+									}
+									else if (boardPos[this->rook_B[g]->x + s][this->rook_B[g]->y] == 0) {
+										this->squares[this->rook_B[g]->x + s][this->rook_B[g]->y]->setFillColor(sf::Color::Red);
+										break;
+									}
+									else
+										break;
 								}
-								else if (boardPos[this->rook2_B->x][this->rook2_B->y + s] == 0) {
-									this->squares[this->rook2_B->x][this->rook2_B->y + s]->setFillColor(sf::Color::Red);
-									break;
-								}
-								else
-									break;
 							}
-						}
 
-						//HORIZONTAL - LEFT.
-						for (int s = 1; s <= 7; s++) {
-							if (this->rook2_B->x - s >= 0) {
-								if (boardPos[this->rook2_B->x - s][this->rook2_B->y] == 2) {
-									this->squares[this->rook2_B->x - s][this->rook2_B->y]->setFillColor(sf::Color::Red);
-								}
-								else if (boardPos[this->rook2_B->x - s][this->rook2_B->y] == 0) {
-									this->squares[this->rook2_B->x - s][this->rook2_B->y]->setFillColor(sf::Color::Red);
-									break;
-								}
-								else
-									break;
-							}
+							this->rookMoves_B[g] = true;
 						}
-
-						//HORIZONTAL - LEFT.
-						for (int s = 1; s <= 7; s++) {
-							if (this->rook2_B->x + s <= 7) {
-								if (boardPos[this->rook2_B->x + s][this->rook2_B->y] == 2) {
-									this->squares[this->rook2_B->x + s][this->rook2_B->y]->setFillColor(sf::Color::Red);
-								}
-								else if (boardPos[this->rook2_B->x + s][this->rook2_B->y] == 0) {
-									this->squares[this->rook2_B->x + s][this->rook2_B->y]->setFillColor(sf::Color::Red);
-									break;
-								}
-								else
-									break;
-							}
-						}
-
-						this->rookMoves_B[1] = true;
 					}
 				}
 			}
@@ -814,6 +658,8 @@ void Game::movements() {
 							this->pawn_W[i]->move(board[x][x].x, board[y][y].y);
 
 							//In case of attack.
+
+							//Pawns.
 							for (int u = 0; u < 8; u++) {
 								if ((this->pawn_W[i]->x == this->pawn_B[u]->x) && (this->pawn_W[i]->y == this->pawn_B[u]->y)) {
 									this->boardPos[oldXpos][oldYpos] = 2;
@@ -821,19 +667,14 @@ void Game::movements() {
 									this->pawn_B[u]->move(-100.0f, -100.0f);
 								}
 							}
-							//Rooks.
-							if ((this->pawn_W[i]->x == this->rook1_B->x) && (this->pawn_W[i]->y == this->rook1_B->y)) {
-								this->boardPos[oldXpos][oldYpos] = 2;
-								this->rook1_B->move(-100.0f, -100.0f);
+
+							//Rooks - knights - bishops.
+							for (int u = 0; u < 8; u++) {
+								if ((this->pawn_W[i]->x == this->rook_B[u]->x) && (this->pawn_W[i]->y == this->rook_B[u]->y)) {
+									this->boardPos[oldXpos][oldYpos] = 2;
+									this->rook_B[u]->move(-100.0f, -100.0f);
+								}
 							}
-							else if ((this->pawn_W[i]->x == this->rook2_B->x) && (this->pawn_W[i]->y == this->rook2_B->y)) {
-								this->boardPos[oldXpos][oldYpos] = 2;
-								this->rook2_B->move(-100.0f, -100.0f);
-							}
-
-							//Bishops.
-
-
 
 							//Square color reset (transparent).
 							initSquares();
@@ -869,19 +710,13 @@ void Game::movements() {
 								}
 							}
 
-							//Rooks.
-							if ((this->pawn_B[i]->x == this->rook1_W->x) && (this->pawn_B[i]->y == this->rook1_W->y)) {
-								this->boardPos[oldXpos][oldYpos] = 2;
-								this->rook1_W->move(-100.0f, -100.0f);
+							//Rooks - knights - bishops.
+							for (int u = 0; u < 2; u++) {
+								if ((this->pawn_B[i]->x == this->rook_W[u]->x) && (this->pawn_B[i]->y == this->rook_W[u]->y)) {
+									this->boardPos[oldXpos][oldYpos] = 2;
+									this->rook_W[u]->move(-100.0f, -100.0f);
+								}
 							}
-							else if ((this->pawn_B[i]->x == this->rook2_W->x) && (this->pawn_B[i]->y == this->rook2_W->y)) {
-								this->boardPos[oldXpos][oldYpos] = 2;
-								this->rook2_W->move(-100.0f, -100.0f);
-							}
-
-							//Bishops.
-
-
 
 							//Square color reset (transparent).
 							initSquares();
@@ -891,198 +726,93 @@ void Game::movements() {
 						}
 					}
 
-					//ROOKS 1 (WHITE)
-					if (rookMoves_W[0]) {
+					for (int k = 0; k < 2; k++) {
 
-						//Updating the occupied positions.
-						aux = this->boardPos[this->rook1_W->x][this->rook1_W->y];
-						this->boardPos[this->rook1_W->x][this->rook1_W->y] = this->boardPos[x][y];
-						this->boardPos[x][y] = aux;
+						//ROOKS (WHITE)
+						if (rookMoves_W[k]) {
 
-						//Saving the old white pawn position.
-						oldXpos = this->rook1_W->x;
-						oldYpos = this->rook1_W->y;
+							//Updating the occupied positions.
+							aux = this->boardPos[this->rook_W[k]->x][this->rook_W[k]->y];
+							this->boardPos[this->rook_W[k]->x][this->rook_W[k]->y] = this->boardPos[x][y];
+							this->boardPos[x][y] = aux;
 
-						//New pawn position.
-						this->rook1_W->x = x;
-						this->rook1_W->y = y;
-						this->rook1_W->move(board[x][x].x, board[y][y].y);
+							//Saving the old white pawn position.
+							oldXpos = this->rook_W[k]->x;
+							oldYpos = this->rook_W[k]->y;
+
+							//New pawn position.
+							this->rook_W[k]->x = x;
+							this->rook_W[k]->y = y;
+							this->rook_W[k]->move(board[x][x].x, board[y][y].y);
 
 
-						//In case of attack.
-						for (int u = 0; u < 8; u++) {
-							//Pawns.
-							if ((this->rook1_W->x == this->pawn_B[u]->x) && (this->rook1_W->y == this->pawn_B[u]->y)) {
-								this->boardPos[oldXpos][oldYpos] = 2;
-								//Removing the attacked piece.
-								this->pawn_B[u]->move(-100.0f, -100.0f);
+							//In case of attack.
+							for (int u = 0; u < 8; u++) {
+								//Pawns.
+								if ((this->rook_W[k]->x == this->pawn_B[u]->x) && (this->rook_W[k]->y == this->pawn_B[u]->y)) {
+									this->boardPos[oldXpos][oldYpos] = 2;
+									//Removing the attacked piece.
+									this->pawn_B[u]->move(-100.0f, -100.0f);
+								}
 							}
-						}
 
-						//Rooks.
-						if ((this->rook1_W->x == this->rook1_B->x) && (this->rook1_W->y == this->rook1_B->y)) {
-							this->boardPos[oldXpos][oldYpos] = 2;
-							this->rook1_B->move(-100.0f, -100.0f);
-						}
-						else if ((this->rook1_W->x == this->rook2_B->x) && (this->rook1_W->y == this->rook2_B->y)) {
-							this->boardPos[oldXpos][oldYpos] = 2;
-							this->rook2_B->move(-100.0f, -100.0f);
-						}
-
-						//Bishops.
-
-
-
-						//Square color reset (transparent).
-						initSquares();
-						turn++;
-						this->rookMoves_W[0] = false;
-					}
-
-					//Rook 2 (WHITE)
-					if (rookMoves_W[1]) {
-
-						//Updating the occupied positions.
-						aux = this->boardPos[this->rook2_W->x][this->rook2_W->y];
-						this->boardPos[this->rook2_W->x][this->rook2_W->y] = this->boardPos[x][y];
-						this->boardPos[x][y] = aux;
-
-						//Saving the old white pawn position.
-						oldXpos = this->rook2_W->x;
-						oldYpos = this->rook2_W->y;
-
-						//New pawn position.
-						this->rook2_W->x = x;
-						this->rook2_W->y = y;
-						this->rook2_W->move(board[x][x].x, board[y][y].y);
-
-
-						//In case of attack.
-						for (int u = 0; u < 8; u++) {
-							//Pawns.
-							if ((this->rook2_W->x == this->pawn_B[u]->x) && (this->rook2_W->y == this->pawn_B[u]->y)) {
-								this->boardPos[oldXpos][oldYpos] = 2;
-								//Removing the attacked piece.
-								this->pawn_B[u]->move(-100.0f, -100.0f);
+							//Rooks - knights - bishops.
+							for (int u = 0; u < 2; u++) {
+								if ((this->rook_W[k]->x == this->rook_B[u]->x) && (this->rook_W[k]->y == this->rook_B[u]->y)) {
+									this->boardPos[oldXpos][oldYpos] = 2;
+									this->rook_B[u]->move(-100.0f, -100.0f);
+								}
 							}
+
+							//Square color reset (transparent).
+							initSquares();
+							turn++;
+							this->rookMoves_W[k] = false;
 						}
 
-						//Rooks.
-						if ((this->rook2_W->x == this->rook1_B->x) && (this->rook2_W->y == this->rook1_B->y)) {
-							this->boardPos[oldXpos][oldYpos] = 2;
-							this->rook1_B->move(-100.0f, -100.0f);
-						}
-						else if ((this->rook2_W->x == this->rook2_B->x) && (this->rook2_W->y == this->rook2_B->y)) {
-							this->boardPos[oldXpos][oldYpos] = 2;
-							this->rook2_B->move(-100.0f, -100.0f);
-						}
+						//ROOKS (BLACK)
+						if (rookMoves_B[k]) {
 
-						//Bishops.
+							//Updating the occupied positions.
+							aux = this->boardPos[this->rook_B[k]->x][this->rook_B[k]->y];
+							this->boardPos[this->rook_B[k]->x][this->rook_B[k]->y] = this->boardPos[x][y];
+							this->boardPos[x][y] = aux;
 
+							//Saving the old white pawn position.
+							oldXpos = this->rook_B[k]->x;
+							oldYpos = this->rook_B[k]->y;
 
-						//Square color reset (transparent).
-						initSquares();
-						turn++;
-						this->rookMoves_W[1] = false;
-					}
+							//New pawn position.
+							this->rook_B[k]->x = x;
+							this->rook_B[k]->y = y;
+							this->rook_B[k]->move(board[x][x].x, board[y][y].y);
 
 
-					//ROOKS 1 (BLACK)
-					if (rookMoves_B[0]) {
-
-						//Updating the occupied positions.
-						aux = this->boardPos[this->rook1_B->x][this->rook1_B->y];
-						this->boardPos[this->rook1_B->x][this->rook1_B->y] = this->boardPos[x][y];
-						this->boardPos[x][y] = aux;
-
-						//Saving the old white pawn position.
-						oldXpos = this->rook1_B->x;
-						oldYpos = this->rook1_B->y;
-
-						//New pawn position.
-						this->rook1_B->x = x;
-						this->rook1_B->y = y;
-						this->rook1_B->move(board[x][x].x, board[y][y].y);
-
-
-						//In case of attack.
-						for (int u = 0; u < 8; u++) {
+							//In case of attack.
+							
 							//Pawns.
-							if ((this->rook1_B->x == this->pawn_W[u]->x) && (this->rook1_B->y == this->pawn_W[u]->y)) {
-								this->boardPos[oldXpos][oldYpos] = 2;
-								//Removing the attacked piece.
-								this->pawn_W[u]->move(-100.0f, -100.0f);
+							for (int u = 0; u < 8; u++) {
+								if ((this->rook_B[k]->x == this->pawn_W[u]->x) && (this->rook_B[k]->y == this->pawn_W[u]->y)) {
+									this->boardPos[oldXpos][oldYpos] = 2;
+									//Removing the attacked piece.
+									this->pawn_W[u]->move(-100.0f, -100.0f);
+								}
 							}
-						}
 
-						//Rooks.
-						if ((this->rook1_B->x == this->rook1_W->x) && (this->rook1_B->y == this->rook1_W->y)) {
-							this->boardPos[oldXpos][oldYpos] = 2;
-							this->rook1_W->move(-100.0f, -100.0f);
-						}
-						else if ((this->rook1_B->x == this->rook2_W->x) && (this->rook1_B->y == this->rook2_W->y)) {
-							this->boardPos[oldXpos][oldYpos] = 2;
-							this->rook2_W->move(-100.0f, -100.0f);
-						}
-
-						//Bishops.
-
-
-
-						//Square color reset (transparent).
-						initSquares();
-						turn++;
-						this->rookMoves_B[0] = false;
-					}
-
-					//Rook 2 (BLACK)
-					if (rookMoves_B[1]) {
-
-						//Updating the occupied positions.
-						aux = this->boardPos[this->rook2_B->x][this->rook2_B->y];
-						this->boardPos[this->rook2_B->x][this->rook2_B->y] = this->boardPos[x][y];
-						this->boardPos[x][y] = aux;
-
-						//Saving the old white pawn position.
-						oldXpos = this->rook2_B->x;
-						oldYpos = this->rook2_B->y;
-
-						//New pawn position.
-						this->rook2_B->x = x;
-						this->rook2_B->y = y;
-						this->rook2_B->move(board[x][x].x, board[y][y].y);
-
-
-						//In case of attack.
-						for (int u = 0; u < 8; u++) {
-							//Pawns.
-							if ((this->rook2_B->x == this->pawn_W[u]->x) && (this->rook2_B->y == this->pawn_W[u]->y)) {
-								this->boardPos[oldXpos][oldYpos] = 2;
-								//Removing the attacked piece.
-								this->pawn_W[u]->move(-100.0f, -100.0f);
+							//Rooks - knights - bishops.
+							for (int u = 0; u < 2; u++) {
+								if ((this->rook_B[k]->x == this->rook_W[u]->x) && (this->rook_B[k]->y == this->rook_W[u]->y)) {
+									this->boardPos[oldXpos][oldYpos] = 2;
+									this->rook_W[u]->move(-100.0f, -100.0f);
+								}
 							}
+
+							//Square color reset (transparent).
+							initSquares();
+							turn++;
+							this->rookMoves_B[k] = false;
 						}
-
-						//Rooks.
-						if ((this->rook2_B->x == this->rook1_W->x) && (this->rook2_B->y == this->rook1_W->y)) {
-							this->boardPos[oldXpos][oldYpos] = 2;
-							this->rook1_W->move(-100.0f, -100.0f);
-						}
-						else if ((this->rook2_B->x == this->rook2_W->x) && (this->rook2_B->y == this->rook2_W->y)) {
-							this->boardPos[oldXpos][oldYpos] = 2;
-							this->rook2_W->move(-100.0f, -100.0f);
-						}
-
-						//Bishops.
-
-
-						//Square color reset (transparent).
-						initSquares();
-						turn++;
-						this->rookMoves_B[1] = false;
 					}
-					
-
 				}
 			}
 		}
