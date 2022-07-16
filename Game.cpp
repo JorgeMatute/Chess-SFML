@@ -105,23 +105,17 @@ void Game::render() {
 		this->pawn_B[i]->render(*this->window);
 	}
 
-	//Rooks.
-	this->rook_W[0]->render(*this->window);
-	this->rook_W[1]->render(*this->window);
-	this->rook_B[0]->render(*this->window);
-	this->rook_B[1]->render(*this->window);
+	//Rooks - knights - Bishops.
+	for (int i = 0; i < 2; i++) {
+		this->rook_W[i]->render(*this->window);
+		this->rook_B[i]->render(*this->window);
 
-	//Knights.
-	this->knight_W[0]->render(*this->window);
-	this->knight_W[1]->render(*this->window);
-	this->knight_B[0]->render(*this->window);
-	this->knight_B[1]->render(*this->window);
+		this->knight_W[i]->render(*this->window);
+		this->knight_B[i]->render(*this->window);
 
-	//Bishops.
-	this->bishop_W[0]->render(*this->window);
-	this->bishop_W[1]->render(*this->window);
-	this->bishop_B[0]->render(*this->window);
-	this->bishop_B[1]->render(*this->window);
+		this->bishop_W[i]->render(*this->window);
+		this->bishop_B[i]->render(*this->window);
+	}
 
 	this->window->display();
 }

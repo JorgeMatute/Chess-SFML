@@ -33,7 +33,6 @@ private:
 	sf::Texture textureBoard;
 	sf::Sprite spriteBoard;
 
-
 	//Init functions.
 	void initWindow();
 	void initVariables();
@@ -43,19 +42,19 @@ private:
 	void initSquareBounds();
 
 	//Pieces.
-	King* king_W;
-	Queen* queen_W;
 	Pawn* pawn_W[8];
 	Rook* rook_W[2];
 	Knight* knight_W[2];
 	Bishop* bishop_W[2];
+	King* king_W;
+	Queen* queen_W;
 
-	King* king_B;
-	Queen* queen_B;
 	Pawn* pawn_B[8];
 	Rook* rook_B[2];
 	Knight* knight_B[2];
 	Bishop* bishop_B[2];
+	King* king_B;
+	Queen* queen_B;
 
 	//Square shapes to determine the valid moves.
 	sf::RectangleShape* squares[8][8];
@@ -75,17 +74,17 @@ private:
 	bool whiteTurn();
 	int turn;
 
-	bool pawnMoves_W[8]; //Al coronar, el bool pasaria a esa nueva piece.
+	bool pawnMoves_W[8]; 
 	bool rookMoves_W[2];
-	bool bishopMoves_W[2];
 	bool knightMoves_W[2];
+	bool bishopMoves_W[2];
 	bool kingMoves_W;
 	bool queenMoves_W;
 
 	bool pawnMoves_B[8];
 	bool rookMoves_B[2];
-	bool bishopMoves_B[2];
 	bool knightMoves_B[2];
+	bool bishopMoves_B[2];
 	bool kingMoves_B;
 	bool queenMoves_B;
 
