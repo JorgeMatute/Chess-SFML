@@ -432,7 +432,7 @@ void Game::movements() {
 							for (int s = 1; s <= 7; s++) {
 								if ((this->bishop_W[g]->x - s >= 0) && (this->bishop_W[g]->y + s <= 7)) {
 									if (boardPos[this->bishop_W[g]->x - s][this->bishop_W[g]->y + s] == 2) {
-										this->squares[this->bishop_W[g]->x - s][this->bishop_W[g]->y - s]->setFillColor(sf::Color::Red);
+										this->squares[this->bishop_W[g]->x - s][this->bishop_W[g]->y + s]->setFillColor(sf::Color::Red);
 									}
 									else if (boardPos[this->bishop_W[g]->x - s][this->bishop_W[g]->y + s] == 1) {
 										this->squares[this->bishop_W[g]->x - s][this->bishop_W[g]->y + s]->setFillColor(sf::Color::Red);
@@ -473,7 +473,7 @@ void Game::movements() {
 								}
 							}
 
-							this->bishopMoves_W[g] = false;
+							this->bishopMoves_W[g] = true;
 						}
 					}
 				}
@@ -608,6 +608,92 @@ void Game::movements() {
 							this->rookMoves_B[g] = true;
 						}
 					}
+
+
+					//Bishops
+					if (boundsBishop_B[g].contains(mouse)) {
+
+						//Reset the pawn to move.
+						for (int h = 0; h < 8; h++) {
+							this->pawnMoves_B[h] = false;
+						}
+
+						//ROOK - KNIGHT - BISHOP -> Reset.
+						for (int h = 0; h < 2; h++) {
+							this->rookMoves_B[h] = false;
+							this->bishopMoves_B[h] = false;
+							this->knightMoves_B[h] = false;
+						}
+						this->kingMoves_B = false;
+						this->queenMoves_B = false;
+
+						if (this->bishop_B[g]->isMoveLegal(this->boardPos)) {
+							initSquares();
+
+							//LEFT - UP.
+							for (int s = 1; s <= 7; s++) {
+								if ((this->bishop_B[g]->x - s >= 0) && (this->bishop_B[g]->y - s >= 0)) {
+									if (boardPos[this->bishop_B[g]->x - s][this->bishop_B[g]->y - s] == 2) {
+										this->squares[this->bishop_B[g]->x - s][this->bishop_B[g]->y - s]->setFillColor(sf::Color::Red);
+									}
+									else if (boardPos[this->bishop_B[g]->x - s][this->bishop_B[g]->y - s] == 0) {
+										this->squares[this->bishop_B[g]->x - s][this->bishop_B[g]->y - s]->setFillColor(sf::Color::Red);
+										break;
+									}
+									else
+										break;
+								}
+							}
+
+							//LEFT - DOWN.
+							for (int s = 1; s <= 7; s++) {
+								if ((this->bishop_B[g]->x - s >= 0) && (this->bishop_B[g]->y + s <= 7)) {
+									if (boardPos[this->bishop_B[g]->x - s][this->bishop_B[g]->y + s] == 2) {
+										this->squares[this->bishop_B[g]->x - s][this->bishop_B[g]->y + s]->setFillColor(sf::Color::Red);
+									}
+									else if (boardPos[this->bishop_B[g]->x - s][this->bishop_B[g]->y + s] == 0) {
+										this->squares[this->bishop_B[g]->x - s][this->bishop_B[g]->y + s]->setFillColor(sf::Color::Red);
+										break;
+									}
+									else
+										break;
+								}
+							}
+
+							//RIGHT - UP.
+							for (int s = 1; s <= 7; s++) {
+								if ((this->bishop_B[g]->x + s <= 7) && (this->bishop_B[g]->y - s >= 0)) {
+									if (boardPos[this->bishop_B[g]->x + s][this->bishop_B[g]->y - s] == 2) {
+										this->squares[this->bishop_B[g]->x + s][this->bishop_B[g]->y - s]->setFillColor(sf::Color::Red);
+									}
+									else if (boardPos[this->bishop_B[g]->x + s][this->bishop_B[g]->y - s] == 0) {
+										this->squares[this->bishop_B[g]->x + s][this->bishop_B[g]->y - s]->setFillColor(sf::Color::Red);
+										break;
+									}
+									else
+										break;
+								}
+							}
+
+							//RIGHT - DOWN.
+							for (int s = 1; s <= 7; s++) {
+								if ((this->bishop_B[g]->x + s <= 7) && (this->bishop_B[g]->y + s <= 7)) {
+									if (boardPos[this->bishop_B[g]->x + s][this->bishop_B[g]->y + s] == 2) {
+										this->squares[this->bishop_B[g]->x + s][this->bishop_B[g]->y + s]->setFillColor(sf::Color::Red);
+									}
+									else if (boardPos[this->bishop_B[g]->x + s][this->bishop_B[g]->y + s] == 0) {
+										this->squares[this->bishop_B[g]->x + s][this->bishop_B[g]->y + s]->setFillColor(sf::Color::Red);
+										break;
+									}
+									else
+										break;
+								}
+							}
+
+							this->bishopMoves_B[g] = true;
+						}
+					}
+
 				}
 			}
 		}
@@ -705,6 +791,7 @@ void Game::movements() {
 						}
 					}
 
+					//ROOKS - KNIGHTS - BISHOPS.
 					for (int k = 0; k < 2; k++) {
 
 						//ROOKS (WHITE)
@@ -791,6 +878,104 @@ void Game::movements() {
 							turn++;
 							this->rookMoves_B[k] = false;
 						}
+
+
+						//BISHOPS (WHITE)
+						if (bishopMoves_W[k]) {
+
+							//Updating the occupied positions.
+							aux = this->boardPos[this->bishop_W[k]->x][this->bishop_W[k]->y];
+							this->boardPos[this->bishop_W[k]->x][this->bishop_W[k]->y] = this->boardPos[x][y];
+							this->boardPos[x][y] = aux;
+
+							//Saving the old white pawn position.
+							oldXpos = this->bishop_W[k]->x;
+							oldYpos = this->bishop_W[k]->y;
+
+							//New pawn position.
+							this->bishop_W[k]->x = x;
+							this->bishop_W[k]->y = y;
+							this->bishop_W[k]->move(board[x][x].x, board[y][y].y);
+
+
+							//In case of attack.
+
+							//Pawns.
+							for (int u = 0; u < 8; u++) {
+								if ((this->bishop_W[k]->x == this->pawn_B[u]->x) && (this->bishop_W[k]->y == this->pawn_B[u]->y)) {
+									this->boardPos[oldXpos][oldYpos] = 2;
+									//Removing the attacked piece.
+									this->pawn_B[u]->move(-100.0f, -100.0f);
+								}
+							}
+
+							//Rooks - knights - bishops.
+							for (int u = 0; u < 2; u++) {
+								if ((this->bishop_W[k]->x == this->rook_B[u]->x) && (this->bishop_W[k]->y == this->rook_B[u]->y)) {
+									this->boardPos[oldXpos][oldYpos] = 2;
+									this->rook_B[u]->move(-100.0f, -100.0f);
+								}else if ((this->bishop_W[k]->x == this->bishop_B[u]->x) && (this->bishop_W[k]->y == this->bishop_B[u]->y)) {
+									this->boardPos[oldXpos][oldYpos] = 2;
+									this->bishop_B[u]->move(-100.0f, -100.0f);
+								}
+							}
+
+							//Square color reset (transparent).
+							initSquares();
+							turn++;
+							this->bishopMoves_W[k] = false;
+						}
+
+						//BISHOPS (BLACK)
+						if (bishopMoves_B[k]) {
+
+							//Updating the occupied positions.
+							aux = this->boardPos[this->bishop_B[k]->x][this->bishop_B[k]->y];
+							this->boardPos[this->bishop_B[k]->x][this->bishop_B[k]->y] = this->boardPos[x][y];
+							this->boardPos[x][y] = aux;
+
+							//Saving the old white pawn position.
+							oldXpos = this->bishop_B[k]->x;
+							oldYpos = this->bishop_B[k]->y;
+
+							//New pawn position.
+							this->bishop_B[k]->x = x;
+							this->bishop_B[k]->y = y;
+							this->bishop_B[k]->move(board[x][x].x, board[y][y].y);
+
+
+							//In case of attack.
+
+							//Pawns.
+							for (int u = 0; u < 8; u++) {
+								if ((this->bishop_B[k]->x == this->pawn_W[u]->x) && (this->bishop_B[k]->y == this->pawn_W[u]->y)) {
+									this->boardPos[oldXpos][oldYpos] = 2;
+									//Removing the attacked piece.
+									this->pawn_W[u]->move(-100.0f, -100.0f);
+								}
+							}
+
+							//Rooks - knights - bishops.
+							for (int u = 0; u < 2; u++) {
+								if ((this->bishop_B[k]->x == this->rook_W[u]->x) && (this->bishop_B[k]->y == this->rook_W[u]->y)) {
+									this->boardPos[oldXpos][oldYpos] = 2;
+									this->rook_W[u]->move(-100.0f, -100.0f);
+								}
+								else if ((this->bishop_B[k]->x == this->bishop_W[u]->x) && (this->bishop_B[k]->y == this->bishop_W[u]->y)) {
+									this->boardPos[oldXpos][oldYpos] = 2;
+									this->bishop_W[u]->move(-100.0f, -100.0f);
+								}
+							}
+
+							//Square color reset (transparent).
+							initSquares();
+							turn++;
+							this->bishopMoves_B[k] = false;
+						}
+
+
+
+						
 					}
 				}
 			}
