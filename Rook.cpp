@@ -55,12 +55,16 @@ bool Rook::isMoveLegal(int board[][8]) {
 	
 	//White.
 	if (color == 0) {
+		//DOWN.
 		if (((y + 1) < 8) && (board[x][y + 1] == 2 || board[x][y + 1] == 1)) //Making sure of the max and min range.
 			return true;
+		//UP.
 		else if (((y - 1) >= 0) && (board[x][y - 1] == 2 || board[x][y - 1] == 1))
 			return true;
+		//RIGHT.
 		else if (((x + 1) < 8) && (board[x + 1][y] == 2 || board[x + 1][y] == 1))
 			return true;
+		//LEFT.
 		else if (((x - 1) >= 0) && (board[x - 1][y] == 2 || board[x - 1][y] == 1))
 			return true;
 	}

@@ -139,8 +139,8 @@ void Game::initPieces() {
 	this->king_B = new King(1, board[4][4].x, board[0][0].y);
 
 	//Queens.
-	this->queen_W = new Queen(0, board[3][3].x, board[7][7].y);
-	this->queen_B = new Queen(1, board[3][3].x, board[0][0].y);
+	this->queen_W = new Queen(0, board[3][3].x, board[7][7].y, 3, 7);
+	this->queen_B = new Queen(1, board[3][3].x, board[0][0].y, 3, 0);
 
 	//Pawns.
 	for (int col = 0; col < 8; col++) {
@@ -329,7 +329,7 @@ void Game::movements() {
 						if (this->rook_W[g]->isMoveLegal(this->boardPos)) {
 							initSquares();
 
-							//VERTICAL - UP.
+							//UP.
 							for (int s = 1; s <= 7; s++) {
 								if (this->rook_W[g]->y - s >= 0) {
 									if (boardPos[this->rook_W[g]->x][this->rook_W[g]->y - s] == 2) {
@@ -344,7 +344,7 @@ void Game::movements() {
 								}
 							}
 
-							//VERTICAL - DOWN.
+							//DOWN.
 							for (int s = 1; s <= 7; s++) {
 								if (this->rook_W[g]->y + s <= 7) {
 									if (boardPos[this->rook_W[g]->x][this->rook_W[g]->y + s] == 2) {
@@ -359,7 +359,7 @@ void Game::movements() {
 								}
 							}
 
-							//HORIZONTAL - LEFT.
+							//LEFT.
 							for (int s = 1; s <= 7; s++) {
 								if (this->rook_W[g]->x - s >= 0) {
 									if (boardPos[this->rook_W[g]->x - s][this->rook_W[g]->y] == 2) {
@@ -374,7 +374,7 @@ void Game::movements() {
 								}
 							}
 
-							//HORIZONTAL - LEFT.
+							//RIGHT.
 							for (int s = 1; s <= 7; s++) {
 								if (this->rook_W[g]->x + s <= 7) {
 									if (boardPos[this->rook_W[g]->x + s][this->rook_W[g]->y] == 2) {
@@ -477,6 +477,154 @@ void Game::movements() {
 						}
 					}
 				}
+
+				//QUEEN.
+				if (boundsQueen_W.contains(mouse)) {
+
+					//Reset the pawn to move.
+					for (int h = 0; h < 8; h++) {
+						this->pawnMoves_W[h] = false;
+					}
+
+					//ROOK - KNIGHT - BISHOP -> Reset.
+					for (int h = 0; h < 2; h++) {
+						this->rookMoves_W[h] = false;
+						this->bishopMoves_W[h] = false;
+						this->knightMoves_W[h] = false;
+					}
+					this->kingMoves_W = false;
+					this->queenMoves_W = false;
+
+					if (this->queen_W->isMoveLegal(this->boardPos)) {
+						initSquares();
+
+						//UP.
+						for (int s = 1; s <= 7; s++) {
+							if (this->queen_W->y - s >= 0) {
+								if (boardPos[this->queen_W->x][this->queen_W->y - s] == 2) {
+									this->squares[this->queen_W->x][this->queen_W->y - s]->setFillColor(sf::Color::Red);
+								}
+								else if (boardPos[this->queen_W->x][this->queen_W->y - s] == 1) {
+									this->squares[this->queen_W->x][this->queen_W->y - s]->setFillColor(sf::Color::Red);
+									break;
+								}
+								else
+									break;
+							}
+						}
+
+						//DOWN.
+						for (int s = 1; s <= 7; s++) {
+							if (this->queen_W->y + s <= 7) {
+								if (boardPos[this->queen_W->x][this->queen_W->y + s] == 2) {
+									this->squares[this->queen_W->x][this->queen_W->y + s]->setFillColor(sf::Color::Red);
+								}
+								else if (boardPos[this->queen_W->x][this->queen_W->y + s] == 1) {
+									this->squares[this->queen_W->x][this->queen_W->y + s]->setFillColor(sf::Color::Red);
+									break;
+								}
+								else
+									break;
+							}
+						}
+
+						//LEFT.
+						for (int s = 1; s <= 7; s++) {
+							if (this->queen_W->x - s >= 0) {
+								if (boardPos[this->queen_W->x - s][this->queen_W->y] == 2) {
+									this->squares[this->queen_W->x - s][this->queen_W->y]->setFillColor(sf::Color::Red);
+								}
+								else if (boardPos[this->queen_W->x - s][this->queen_W->y] == 1) {
+									this->squares[this->queen_W->x - s][this->queen_W->y]->setFillColor(sf::Color::Red);
+									break;
+								}
+								else
+									break;
+							}
+						}
+
+						//RIGHT.
+						for (int s = 1; s <= 7; s++) {
+							if (this->queen_W->x + s <= 7) {
+								if (boardPos[this->queen_W->x + s][this->queen_W->y] == 2) {
+									this->squares[this->queen_W->x + s][this->queen_W->y]->setFillColor(sf::Color::Red);
+								}
+								else if (boardPos[this->queen_W->x + s][this->queen_W->y] == 1) {
+									this->squares[this->queen_W->x + s][this->queen_W->y]->setFillColor(sf::Color::Red);
+									break;
+								}
+								else
+									break;
+							}
+						}
+
+						//LEFT - UP.
+						for (int s = 1; s <= 7; s++) {
+							if ((this->queen_W->x - s >= 0) && (this->queen_W->y - s >= 0)) {
+								if (boardPos[this->queen_W->x - s][this->queen_W->y - s] == 2) {
+									this->squares[this->queen_W->x - s][this->queen_W->y - s]->setFillColor(sf::Color::Red);
+								}
+								else if (boardPos[this->queen_W->x - s][this->queen_W->y - s] == 1) {
+									this->squares[this->queen_W->x - s][this->queen_W->y - s]->setFillColor(sf::Color::Red);
+									break;
+								}
+								else
+									break;
+							}
+						}
+
+						//LEFT - DOWN.
+						for (int s = 1; s <= 7; s++) {
+							if ((this->queen_W->x - s >= 0) && (this->queen_W->y + s <= 7)) {
+								if (boardPos[this->queen_W->x - s][this->queen_W->y + s] == 2) {
+									this->squares[this->queen_W->x - s][this->queen_W->y + s]->setFillColor(sf::Color::Red);
+								}
+								else if (boardPos[this->queen_W->x - s][this->queen_W->y + s] == 1) {
+									this->squares[this->queen_W->x - s][this->queen_W->y + s]->setFillColor(sf::Color::Red);
+									break;
+								}
+								else
+									break;
+							}
+						}
+
+						//RIGHT - UP.
+						for (int s = 1; s <= 7; s++) {
+							if ((this->queen_W->x + s <= 7) && (this->queen_W->y - s >= 0)) {
+								if (boardPos[this->queen_W->x + s][this->queen_W->y - s] == 2) {
+									this->squares[this->queen_W->x + s][this->queen_W->y - s]->setFillColor(sf::Color::Red);
+								}
+								else if (boardPos[this->queen_W->x + s][this->queen_W->y - s] == 1) {
+									this->squares[this->queen_W->x + s][this->queen_W->y - s]->setFillColor(sf::Color::Red);
+									break;
+								}
+								else
+									break;
+							}
+						}
+
+						//RIGHT - DOWN.
+						for (int s = 1; s <= 7; s++) {
+							if ((this->queen_W->x + s <= 7) && (this->queen_W->y + s <= 7)) {
+								if (boardPos[this->queen_W->x + s][this->queen_W->y + s] == 2) {
+									this->squares[this->queen_W->x + s][this->queen_W->y + s]->setFillColor(sf::Color::Red);
+								}
+								else if (boardPos[this->queen_W->x + s][this->queen_W->y + s] == 1) {
+									this->squares[this->queen_W->x + s][this->queen_W->y + s]->setFillColor(sf::Color::Red);
+									break;
+								}
+								else
+									break;
+							}
+						}
+
+						this->queenMoves_W = true;
+					}
+				}
+
+
+
+
 			}
 			else {  //Coloring the possible moves for each piece (BLACK).
 
@@ -545,7 +693,7 @@ void Game::movements() {
 						if (this->rook_B[g]->isMoveLegal(this->boardPos)) {
 							initSquares();
 
-							//VERTICAL - UP.
+							//UP.
 							for (int s = 1; s <= 7; s++) {
 								if (this->rook_B[g]->y - s >= 0) {
 									if (boardPos[this->rook_B[g]->x][this->rook_B[g]->y - s] == 2) {
@@ -560,7 +708,7 @@ void Game::movements() {
 								}
 							}
 
-							//VERTICAL - DOWN.
+							//DOWN.
 							for (int s = 1; s <= 7; s++) {
 								if (this->rook_B[g]->y + s <= 7) {
 									if (boardPos[this->rook_B[g]->x][this->rook_B[g]->y + s] == 2) {
@@ -575,7 +723,7 @@ void Game::movements() {
 								}
 							}
 
-							//HORIZONTAL - LEFT.
+							//LEFT.
 							for (int s = 1; s <= 7; s++) {
 								if (this->rook_B[g]->x - s >= 0) {
 									if (boardPos[this->rook_B[g]->x - s][this->rook_B[g]->y] == 2) {
@@ -590,7 +738,7 @@ void Game::movements() {
 								}
 							}
 
-							//HORIZONTAL - LEFT.
+							//LEFT.
 							for (int s = 1; s <= 7; s++) {
 								if (this->rook_B[g]->x + s <= 7) {
 									if (boardPos[this->rook_B[g]->x + s][this->rook_B[g]->y] == 2) {

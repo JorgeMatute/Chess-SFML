@@ -70,16 +70,12 @@ bool Bishop::isMoveLegal(int board[][8]) {
 	}
 	else { //Black.
 
-		//Left - UP.
 		if ((((x - 1) >= 0) && ((y - 1) >= 0)) && (board[x - 1][y - 1] == 2 || board[x - 1][y - 1] == 0))
 			return true;
-		//Left - DOWN.
 		else if ((((x - 1) >= 0) && ((y + 1) <= 7)) && (board[x - 1][y + 1] == 2 || board[x - 1][y + 1] == 0))
 			return true;
-		//Right - UP.
 		if ((((x + 1) <= 7) && ((y - 1) >= 0)) && (board[x + 1][y - 1] == 2 || board[x + 1][y - 1] == 0))
 			return true;
-		//Right - DOWN.
 		if ((((x + 1) <= 7) && ((y + 1) <= 7)) && (board[x + 1][y + 1] == 2 || board[x + 1][y + 1] == 0))
 			return true;
 	}

@@ -13,14 +13,14 @@ class Queen {
 public:
 	//Constructors and destructor.
 	Queen();
-	Queen(int color, float dirX, float dirY);
+	Queen(int color, float dirX, float dirY, int x, int y);
 	virtual ~Queen();
 
 	//Functions.
-	void update();
 	void render(sf::RenderTarget& target);
 
 	void move(const float dirX, const float dirY);
+	bool isMoveLegal(int board[][8]);
 
 private:
 	void initTexture();
@@ -28,8 +28,11 @@ private:
 
 private:
 	sf::Texture textureQueen;
-	int color;
+
 public:
+	int color;
+	int x;
+	int y;
 	sf::Sprite spriteQueen;
 };
 
