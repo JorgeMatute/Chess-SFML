@@ -704,29 +704,29 @@ void Game::movements() {
 		for (int x = 0; x < 8; x++) {
 			for (int y = 0; y < 8; y++) {
 				if (this->boundsSquares[x][y].contains(mouse) && this->squares[x][y]->getFillColor() == sf::Color::Red) {
-					for (int i = 0; i < 8; i++) {
+					for (int k = 0; k < 8; k++) {
 						//White pawns.
-						if (pawnMoves_W[i]) {
+						if (pawnMoves_W[k]) {
 
 							//Updating the occupied positions.
-							aux = this->boardPos[this->pawn_W[i]->x][this->pawn_W[i]->y];
-							this->boardPos[this->pawn_W[i]->x][this->pawn_W[i]->y] = this->boardPos[x][y];
+							aux = this->boardPos[this->pawn_W[k]->x][this->pawn_W[k]->y];
+							this->boardPos[this->pawn_W[k]->x][this->pawn_W[k]->y] = this->boardPos[x][y];
 							this->boardPos[x][y] = aux;
 
 							//Saving the old white pawn position.
-							oldXpos = pawn_W[i]->x;
-							oldYpos = pawn_W[i]->y;
+							oldXpos = pawn_W[k]->x;
+							oldYpos = pawn_W[k]->y;
 
 							//New white pawn position.
-							this->pawn_W[i]->x = x;
-							this->pawn_W[i]->y = y;
-							this->pawn_W[i]->move(board[x][x].x, board[y][y].y);
+							this->pawn_W[k]->x = x;
+							this->pawn_W[k]->y = y;
+							this->pawn_W[k]->move(board[x][x].x, board[y][y].y);
 
 							//In case of attack.
 
 							//Pawns.
 							for (int u = 0; u < 8; u++) {
-								if ((this->pawn_W[i]->x == this->pawn_B[u]->x) && (this->pawn_W[i]->y == this->pawn_B[u]->y)) {
+								if ((this->pawn_W[k]->x == this->pawn_B[u]->x) && (this->pawn_W[k]->y == this->pawn_B[u]->y)) {
 									this->boardPos[oldXpos][oldYpos] = 2;
 									//Removing the attacked piece.
 									this->pawn_B[u]->move(-100.0f, -100.0f);
@@ -735,40 +735,44 @@ void Game::movements() {
 
 							//Rooks - knights - bishops.
 							for (int u = 0; u < 8; u++) {
-								if ((this->pawn_W[i]->x == this->rook_B[u]->x) && (this->pawn_W[i]->y == this->rook_B[u]->y)) {
+								if ((this->pawn_W[k]->x == this->rook_B[u]->x) && (this->pawn_W[k]->y == this->rook_B[u]->y)) {
 									this->boardPos[oldXpos][oldYpos] = 2;
 									this->rook_B[u]->move(-100.0f, -100.0f);
+								}
+								else if ((this->pawn_W[k]->x == this->bishop_W[u]->x) && (this->pawn_W[k]->y == this->bishop_W[u]->y)) {
+									this->boardPos[oldXpos][oldYpos] = 2;
+									this->bishop_B[u]->move(-100.0f, -100.0f);
 								}
 							}
 
 							//Square color reset (transparent).
 							initSquares();
 							turn++;
-							this->pawn_W[i]->fistMove++;
-							this->pawnMoves_W[i] = false;
+							this->pawn_W[k]->fistMove++;
+							this->pawnMoves_W[k] = false;
 						}
 
 						//Black pawns.
-						else if (pawnMoves_B[i]) {
+						else if (pawnMoves_B[k]) {
 
 							//Updating the occupied positions.
-							aux = this->boardPos[this->pawn_B[i]->x][this->pawn_B[i]->y];
-							this->boardPos[this->pawn_B[i]->x][this->pawn_B[i]->y] = this->boardPos[x][y];
+							aux = this->boardPos[this->pawn_B[k]->x][this->pawn_B[k]->y];
+							this->boardPos[this->pawn_B[k]->x][this->pawn_B[k]->y] = this->boardPos[x][y];
 							this->boardPos[x][y] = aux;
 
 							//Saving the old white pawn position.
-							oldXpos = pawn_B[i]->x;
-							oldYpos = pawn_B[i]->y;
+							oldXpos = pawn_B[k]->x;
+							oldYpos = pawn_B[k]->y;
 
 							//New pawn position.
-							this->pawn_B[i]->x = x;
-							this->pawn_B[i]->y = y;
-							this->pawn_B[i]->move(board[x][x].x, board[y][y].y);
+							this->pawn_B[k]->x = x;
+							this->pawn_B[k]->y = y;
+							this->pawn_B[k]->move(board[x][x].x, board[y][y].y);
 
 							//In case of attack.
 							for (int u = 0; u < 8; u++) {
 								//Pawns.
-								if ((this->pawn_B[i]->x == this->pawn_W[u]->x) && (this->pawn_B[i]->y == this->pawn_W[u]->y)) {
+								if ((this->pawn_B[k]->x == this->pawn_W[u]->x) && (this->pawn_B[k]->y == this->pawn_W[u]->y)) {
 									this->boardPos[oldXpos][oldYpos] = 2;
 									//Removing the attacked piece.
 									this->pawn_W[u]->move(-100.0f, -100.0f);
@@ -777,17 +781,21 @@ void Game::movements() {
 
 							//Rooks - knights - bishops.
 							for (int u = 0; u < 2; u++) {
-								if ((this->pawn_B[i]->x == this->rook_W[u]->x) && (this->pawn_B[i]->y == this->rook_W[u]->y)) {
+								if ((this->pawn_B[k]->x == this->rook_W[u]->x) && (this->pawn_B[k]->y == this->rook_W[u]->y)) {
 									this->boardPos[oldXpos][oldYpos] = 2;
 									this->rook_W[u]->move(-100.0f, -100.0f);
+								}
+								else if ((this->pawn_B[k]->x == this->bishop_W[u]->x) && (this->pawn_B[k]->y == this->bishop_W[u]->y)) {
+									this->boardPos[oldXpos][oldYpos] = 2;
+									this->bishop_W[u]->move(-100.0f, -100.0f);
 								}
 							}
 
 							//Square color reset (transparent).
 							initSquares();
 							turn++;
-							this->pawn_B[i]->fistMove++;
-							this->pawnMoves_B[i] = false;
+							this->pawn_B[k]->fistMove++;
+							this->pawnMoves_B[k] = false;
 						}
 					}
 
@@ -827,6 +835,10 @@ void Game::movements() {
 								if ((this->rook_W[k]->x == this->rook_B[u]->x) && (this->rook_W[k]->y == this->rook_B[u]->y)) {
 									this->boardPos[oldXpos][oldYpos] = 2;
 									this->rook_B[u]->move(-100.0f, -100.0f);
+								}
+								else if ((this->rook_W[k]->x == this->bishop_B[u]->x) && (this->rook_W[k]->y == this->bishop_B[u]->y)) {
+									this->boardPos[oldXpos][oldYpos] = 2;
+									this->bishop_B[u]->move(-100.0f, -100.0f);
 								}
 							}
 
@@ -871,6 +883,10 @@ void Game::movements() {
 									this->boardPos[oldXpos][oldYpos] = 2;
 									this->rook_W[u]->move(-100.0f, -100.0f);
 								}
+								else if ((this->rook_B[k]->x == this->bishop_W[u]->x) && (this->rook_B[k]->y == this->bishop_W[u]->y)) {
+									this->boardPos[oldXpos][oldYpos] = 2;
+									this->bishop_W[u]->move(-100.0f, -100.0f);
+								}
 							}
 
 							//Square color reset (transparent).
@@ -914,7 +930,8 @@ void Game::movements() {
 								if ((this->bishop_W[k]->x == this->rook_B[u]->x) && (this->bishop_W[k]->y == this->rook_B[u]->y)) {
 									this->boardPos[oldXpos][oldYpos] = 2;
 									this->rook_B[u]->move(-100.0f, -100.0f);
-								}else if ((this->bishop_W[k]->x == this->bishop_B[u]->x) && (this->bishop_W[k]->y == this->bishop_B[u]->y)) {
+								}
+								else if ((this->bishop_W[k]->x == this->bishop_B[u]->x) && (this->bishop_W[k]->y == this->bishop_B[u]->y)) {
 									this->boardPos[oldXpos][oldYpos] = 2;
 									this->bishop_B[u]->move(-100.0f, -100.0f);
 								}
