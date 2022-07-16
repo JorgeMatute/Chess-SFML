@@ -42,7 +42,6 @@ void Queen::move(const float dirX, const float dirY) {
 	this->spriteQueen.setPosition(dirX, dirY);
 }
 
-
 /*
 	0 -> white
 	1 -> black
