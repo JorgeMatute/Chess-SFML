@@ -47,18 +47,15 @@ private:
 	Queen* queen_W;
 	Pawn* pawn_W[8];
 	Rook* rook_W[2];
-	Knight* knight1_W;
-	Knight* knight2_W;
+	Knight* knight_W[2];
 	Bishop* bishop_W[2];
 
 	King* king_B;
 	Queen* queen_B;
 	Pawn* pawn_B[8];
 	Rook* rook_B[2];
-	Knight* knight1_B;
-	Knight* knight2_B;
-	Bishop* bishop1_B;
-	Bishop* bishop2_B;
+	Knight* knight_B[2];
+	Bishop* bishop_B[2];
 
 	//Square shapes to determine the valid moves.
 	sf::RectangleShape* squares[8][8];

@@ -39,18 +39,11 @@ Game::~Game() { //Avoiding memory leaks.
 		delete this->rook_B[i];
 
 		delete this->bishop_W[i];
+		delete this->bishop_B[i];
+
+		delete this->knight_W[i];
+		delete this->knight_B[i];
 	}
-
-
-	//Knights.
-	delete this->knight1_W;
-	delete this->knight2_W;
-	delete this->knight1_B;
-	delete this->knight2_B;
-
-	//Bishops.
-	delete this->bishop1_B;
-	delete this->bishop2_B;
 
 	//Squares.
 	for (int row = 0; row < 8; row++) {
@@ -119,16 +112,16 @@ void Game::render() {
 	this->rook_B[1]->render(*this->window);
 
 	//Knights.
-	this->knight1_W->render(*this->window);
-	this->knight2_W->render(*this->window);
-	this->knight1_B->render(*this->window);
-	this->knight2_B->render(*this->window);
+	this->knight_W[0]->render(*this->window);
+	this->knight_W[1]->render(*this->window);
+	this->knight_B[0]->render(*this->window);
+	this->knight_B[1]->render(*this->window);
 
 	//Bishops.
 	this->bishop_W[0]->render(*this->window);
 	this->bishop_W[1]->render(*this->window);
-	this->bishop1_B->render(*this->window);
-	this->bishop2_B->render(*this->window);
+	this->bishop_B[0]->render(*this->window);
+	this->bishop_B[1]->render(*this->window);
 
 	this->window->display();
 }
@@ -168,16 +161,16 @@ void Game::initPieces() {
 	this->rook_B[1] = new Rook(1, board[7][7].x, board[0][0].y, 7, 0);
 
 	//Knights.
-	this->knight1_W = new Knight(0, board[1][1].x, board[7][7].y);
-	this->knight2_W = new Knight(0, board[6][6].x, board[7][7].y);
-	this->knight1_B = new Knight(1, board[1][1].x, board[0][0].y);
-	this->knight2_B = new Knight(1, board[6][6].x, board[0][0].y);
+	this->knight_W[0] = new Knight(0, board[1][1].x, board[7][7].y);
+	this->knight_W[1] = new Knight(0, board[6][6].x, board[7][7].y);
+	this->knight_B[0] = new Knight(1, board[1][1].x, board[0][0].y);
+	this->knight_B[1]= new Knight(1, board[6][6].x, board[0][0].y);
 
 	//Bishops.
 	this->bishop_W[0] = new Bishop(0, board[2][2].x, board[7][7].y, 2, 7);
 	this->bishop_W[1] = new Bishop(0, board[5][5].x, board[7][7].y, 5, 7);
-	this->bishop1_B = new Bishop(1, board[2][2].x, board[0][0].y, 2, 0);
-	this->bishop2_B = new Bishop(1, board[5][5].x, board[0][0].y, 5, 0);
+	this->bishop_B[0] = new Bishop(1, board[2][2].x, board[0][0].y, 2, 0);
+	this->bishop_B[1] = new Bishop(1, board[5][5].x, board[0][0].y, 5, 0);
 }
 
 void Game::initBackground() {
@@ -224,36 +217,29 @@ void Game::movements() {
 
 		//White pieces (BOUNDS).
 		sf::FloatRect boundsPawn_W[8];
+		sf::FloatRect boundsRook_W[2];
+		sf::FloatRect boundsKnight_W[2];
+		sf::FloatRect boundsBishop_W[2];
 		sf::FloatRect boundsKing_W;
 		sf::FloatRect boundsQueen_W;
-		sf::FloatRect boundsRook_W[2];
-		sf::FloatRect boundsKnight1_W;
-		sf::FloatRect boundsKnight2_W;
-		sf::FloatRect boundsBishop_W[2];
+
 
 		//Black pieces (BOUNDS).
 		sf::FloatRect boundsPawn_B[8];
+		sf::FloatRect boundsRook_B[2];
+		sf::FloatRect boundsKnight_B[2];
+		sf::FloatRect boundsBishop_B[2];
 		sf::FloatRect boundsKing_B;
 		sf::FloatRect boundsQueen_B;
-		sf::FloatRect boundsRook_B[2];
-		sf::FloatRect boundsKnight1_B;
-		sf::FloatRect boundsKnight2_B;
-		sf::FloatRect boundsBishop1_B;
-		sf::FloatRect boundsBishop2_B;
 
 		//Defining pieces bounds.
+
+		//Queens - kings (BOUNDS).
 		boundsKing_W = this->king_W->spriteKing.getGlobalBounds();
 		boundsQueen_W = this->queen_W->spriteQueen.getGlobalBounds();
-		boundsKnight1_W = this->knight1_W->spriteKnight.getGlobalBounds();
-		boundsKnight2_W = this->knight2_W->spriteKnight.getGlobalBounds();
-
 
 		boundsKing_B = this->king_B->spriteKing.getGlobalBounds();
 		boundsQueen_B = this->queen_B->spriteQueen.getGlobalBounds();
-		boundsKnight1_B = this->knight1_B->spriteKnight.getGlobalBounds();
-		boundsKnight2_B = this->knight2_B->spriteKnight.getGlobalBounds();
-		boundsBishop1_B = this->bishop1_B->spriteBishop.getGlobalBounds();
-		boundsBishop2_B = this->bishop2_B->spriteBishop.getGlobalBounds();
 
 		//Pawns (BOUNDS).
 		for (int i = 0; i < 8; i++) {
@@ -261,12 +247,16 @@ void Game::movements() {
 			boundsPawn_B[i] = this->pawn_B[i]->spritePawn.getGlobalBounds();
 		}
 
-		//Rooks-Knights-Bishops (BOUNDS)
+		//Rooks - Knights - Bishops (BOUNDS).
 		for (int i = 0; i < 2; i++) {
 			boundsRook_W[i] = this->rook_W[i]->spriteRook.getGlobalBounds();
 			boundsRook_B[i] = this->rook_B[i]->spriteRook.getGlobalBounds();
 
 			boundsBishop_W[i] = this->bishop_W[i]->spriteBishop.getGlobalBounds();
+			boundsBishop_B[i] = this->bishop_B[i]->spriteBishop.getGlobalBounds();
+
+			boundsKnight_W[i] = this->knight_W[i]->spriteKnight.getGlobalBounds();
+			boundsKnight_B[i] = this->knight_B[i]->spriteKnight.getGlobalBounds();
 		}
 
 		for (int i = 0; i < 8; i++) {
