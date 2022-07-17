@@ -135,8 +135,8 @@ void Game::initVariables() {
 void Game::initPieces() {
 
 	//Kings.
-	this->king_W = new King(0, board[4][4].x, board[7][7].y);
-	this->king_B = new King(1, board[4][4].x, board[0][0].y);
+	this->king_W = new King(0, board[4][4].x, board[7][7].y, 4, 7);
+	this->king_B = new King(1, board[4][4].x, board[0][0].y, 4, 0);
 
 	//Queens.
 	this->queen_W = new Queen(0, board[3][3].x, board[7][7].y, 3, 7);
@@ -622,7 +622,79 @@ void Game::movements() {
 					}
 				}
 
+				//KING.
+				if (boundsKing_W.contains(mouse)) {
 
+					//Reset the pawn to move.
+					for (int h = 0; h < 8; h++) {
+						this->pawnMoves_W[h] = false;
+					}
+
+					//ROOK - KNIGHT - BISHOP -> Reset.
+					for (int h = 0; h < 2; h++) {
+						this->rookMoves_W[h] = false;
+						this->bishopMoves_W[h] = false;
+						this->knightMoves_W[h] = false;
+					}
+					this->kingMoves_W = false;
+					this->queenMoves_W = false;
+
+					if (this->king_W->isMoveLegal(this->boardPos)) {
+						initSquares();
+
+						//UP.
+						if (this->king_W->y - 1 >= 0) {
+							if (boardPos[this->king_W->x][this->king_W->y - 1] == 2 || boardPos[this->king_W->x][this->king_W->y - 1] == 1)
+								this->squares[this->king_W->x][this->king_W->y - 1]->setFillColor(sf::Color::Red);
+						}
+
+						//DOWN.
+						if (this->king_W->y + 1 <= 7) {
+							if (boardPos[this->king_W->x][this->king_W->y + 1] == 2 || boardPos[this->king_W->x][this->king_W->y + 1] == 1)
+								this->squares[this->king_W->x][this->king_W->y + 1]->setFillColor(sf::Color::Red);
+						}
+
+						//LEFT.
+						if (this->king_W->x - 1 >= 0) {
+							if (boardPos[this->king_W->x - 1][this->king_W->y] == 2 || boardPos[this->king_W->x - 1][this->king_W->y] == 1)
+								this->squares[this->king_W->x - 1][this->king_W->y]->setFillColor(sf::Color::Red);
+						}
+
+						//RIGHT.
+						if (this->king_W->x + 1 <= 7) {
+							if (boardPos[this->king_W->x + 1][this->king_W->y] == 2 || boardPos[this->king_W->x + 1][this->king_W->y] == 1)
+								this->squares[this->king_W->x + 1][this->king_W->y]->setFillColor(sf::Color::Red);
+						}
+
+						//LEFT - UP.
+						if ((this->king_W->x - 1 >= 0) && (this->king_W->y - 1 >= 0)) {
+							if (boardPos[this->king_W->x - 1][this->king_W->y - 1] == 2 || (boardPos[this->king_W->x - 1][this->king_W->y - 1] == 1))
+								this->squares[this->king_W->x - 1][this->king_W->y - 1]->setFillColor(sf::Color::Red);
+						}
+
+						//LEFT - DOWN.
+						if ((this->king_W->x - 1 >= 0) && (this->king_W->y + 1 <= 7)) {
+							if (boardPos[this->king_W->x - 1][this->king_W->y + 1] == 2 || boardPos[this->king_W->x - 1][this->king_W->y + 1] == 1)
+								this->squares[this->king_W->x - 1][this->king_W->y + 1]->setFillColor(sf::Color::Red);
+						}
+
+
+						//RIGHT - UP.
+						if ((this->king_W->x + 1 <= 7) && (this->king_W->y - 1 >= 0)) {
+							if (boardPos[this->king_W->x + 1][this->king_W->y - 1] == 2 || boardPos[this->king_W->x + 1][this->king_W->y - 1] == 1)
+								this->squares[this->king_W->x + 1][this->king_W->y - 1]->setFillColor(sf::Color::Red);
+						}
+
+
+						//RIGHT - DOWN.
+						if ((this->king_W->x + 1 <= 7) && (this->king_W->y + 1 <= 7)) {
+							if (boardPos[this->king_W->x + 1][this->king_W->y + 1] == 2 || boardPos[this->king_W->x + 1][this->king_W->y + 1] == 1)
+								this->squares[this->king_W->x + 1][this->king_W->y + 1]->setFillColor(sf::Color::Red);
+						}
+
+						this->kingMoves_W = true;
+					}
+				}
 
 
 			}
@@ -986,6 +1058,80 @@ void Game::movements() {
 						}
 
 						this->queenMoves_B = true;
+					}
+				}
+
+				//KING.
+				if (boundsKing_B.contains(mouse)) {
+
+					//Reset the pawn to move.
+					for (int h = 0; h < 8; h++) {
+						this->pawnMoves_B[h] = false;
+					}
+
+					//ROOK - KNIGHT - BISHOP -> Reset.
+					for (int h = 0; h < 2; h++) {
+						this->rookMoves_B[h] = false;
+						this->bishopMoves_B[h] = false;
+						this->knightMoves_B[h] = false;
+					}
+					this->kingMoves_B = false;
+					this->queenMoves_B = false;
+
+					if (this->king_B->isMoveLegal(this->boardPos)) {
+						initSquares();
+
+						//UP.
+						if (this->king_B->y - 1 >= 0) {
+							if (boardPos[this->king_B->x][this->king_B->y - 1] == 2 || boardPos[this->king_B->x][this->king_B->y - 1] == 0)
+								this->squares[this->king_B->x][this->king_B->y - 1]->setFillColor(sf::Color::Red);
+						}
+
+						//DOWN.
+						if (this->king_B->y + 1 <= 7) {
+							if (boardPos[this->king_B->x][this->king_B->y + 1] == 2 || boardPos[this->king_B->x][this->king_B->y + 1] == 0)
+								this->squares[this->king_B->x][this->king_B->y + 1]->setFillColor(sf::Color::Red);
+						}
+
+						//LEFT.
+						if (this->king_B->x - 1 >= 0) {
+							if (boardPos[this->king_B->x - 1][this->king_B->y] == 2 || boardPos[this->king_B->x - 1][this->king_B->y] == 0)
+								this->squares[this->king_B->x - 1][this->king_B->y]->setFillColor(sf::Color::Red);
+						}
+
+						//RIGHT.
+						if (this->king_B->x + 1 <= 7) {
+							if (boardPos[this->king_B->x + 1][this->king_B->y] == 2 || boardPos[this->king_B->x + 1][this->king_B->y] == 0)
+								this->squares[this->king_B->x + 1][this->king_B->y]->setFillColor(sf::Color::Red);
+						}
+
+						//LEFT - UP.
+						if ((this->king_B->x - 1 >= 0) && (this->king_B->y - 1 >= 0)) {
+							if (boardPos[this->king_B->x - 1][this->king_B->y - 1] == 2 || (boardPos[this->king_B->x - 1][this->king_B->y - 1] == 0))
+								this->squares[this->king_B->x - 1][this->king_B->y - 1]->setFillColor(sf::Color::Red);
+						}
+
+						//LEFT - DOWN.
+						if ((this->king_B->x - 1 >= 0) && (this->king_B->y + 1 <= 7)) {
+							if (boardPos[this->king_B->x - 1][this->king_B->y + 1] == 2 || boardPos[this->king_B->x - 1][this->king_B->y + 1] == 0)
+								this->squares[this->king_B->x - 1][this->king_B->y + 1]->setFillColor(sf::Color::Red);
+						}
+
+
+						//RIGHT - UP.
+						if ((this->king_B->x + 1 <= 7) && (this->king_B->y - 1 >= 0)) {
+							if (boardPos[this->king_B->x + 1][this->king_B->y - 1] == 2 || boardPos[this->king_B->x + 1][this->king_B->y - 1] == 0)
+								this->squares[this->king_B->x + 1][this->king_B->y - 1]->setFillColor(sf::Color::Red);
+						}
+
+
+						//RIGHT - DOWN.
+						if ((this->king_B->x + 1 <= 7) && (this->king_B->y + 1 <= 7)) {
+							if (boardPos[this->king_B->x + 1][this->king_B->y + 1] == 2 || boardPos[this->king_B->x + 1][this->king_B->y + 1] == 0)
+								this->squares[this->king_B->x + 1][this->king_B->y + 1]->setFillColor(sf::Color::Red);
+						}
+
+						this->kingMoves_B = true;
 					}
 				}
 			}
@@ -1371,7 +1517,7 @@ void Game::movements() {
 						}
 
 						//QUEEN (BLACK)
-						if (queenMoves_B) { //PARECE QUE SE QUEDA EN TRUE. BUSCAR DONDE PUEDE ESTAR EL ERROR. Y ES COMO QUE SOLO A VECES.
+						if (queenMoves_B) {
 
 							//Updating the occupied positions.
 							aux = this->boardPos[this->queen_B->x][this->queen_B->y];
@@ -1422,10 +1568,108 @@ void Game::movements() {
 							this->queenMoves_B = false;
 						}
 
+						//KING (WHITE)
+						if (kingMoves_W) {
+
+							//Updating the occupied positions.
+							aux = this->boardPos[this->king_W->x][this->king_W->y];
+							this->boardPos[this->king_W->x][this->king_W->y] = this->boardPos[x][y];
+							this->boardPos[x][y] = aux;
+
+							//Saving the old white pawn position.
+							oldXpos = this->king_W->x;
+							oldYpos = this->king_W->y;
+
+							//New pawn position.
+							this->king_W->x = x;
+							this->king_W->y = y;
+							this->king_W->move(board[x][x].x, board[y][y].y);
+
+							//In case of attack.
+							for (int u = 0; u < 8; u++) {
+								//Pawns.
+								if ((this->king_W->x == this->pawn_B[u]->x) && (this->king_W->y == this->pawn_B[u]->y)) {
+									this->boardPos[oldXpos][oldYpos] = 2;
+									//Removing the attacked piece.
+									this->pawn_B[u]->move(-100.0f, -100.0f);
+								}
+							}
+
+							//Rooks - knights - bishops.
+							for (int u = 0; u < 2; u++) {
+								if ((this->king_W->x == this->rook_B[u]->x) && (this->king_W->y == this->rook_B[u]->y)) {
+									this->boardPos[oldXpos][oldYpos] = 2;
+									this->rook_B[u]->move(-100.0f, -100.0f);
+								}
+								else if ((this->king_W->x == this->bishop_B[u]->x) && (this->king_W->y == this->bishop_B[u]->y)) {
+									this->boardPos[oldXpos][oldYpos] = 2;
+									this->bishop_B[u]->move(-100.0f, -100.0f);
+								}
+							}
+
+							//Queen.
+							if ((this->king_W->x == this->queen_B->x) && (this->king_W->y == this->queen_B->y)) {
+								this->boardPos[oldXpos][oldYpos] = 2;
+								this->queen_B->move(-100.0f, -100.0f);
+							}
+
+							//Square color reset (transparent).
+							initSquares();
+							turn++;
+							this->kingMoves_W = false;
+						}
+
+						//KING (BLACK)
+						if (kingMoves_B) { 
+
+							//Updating the occupied positions.
+							aux = this->boardPos[this->king_B->x][this->king_B->y];
+							this->boardPos[this->king_B->x][this->king_B->y] = this->boardPos[x][y];
+							this->boardPos[x][y] = aux;
+
+							//Saving the old white pawn position.
+							oldXpos = this->king_B->x;
+							oldYpos = this->king_B->y;
+
+							//New pawn position.
+							this->king_B->x = x;
+							this->king_B->y = y;
+							this->king_B->move(board[x][x].x, board[y][y].y);
+
+							//In case of attack.
+							for (int u = 0; u < 8; u++) {
+								//Pawns.
+								if ((this->king_B->x == this->pawn_W[u]->x) && (this->king_B->y == this->pawn_W[u]->y)) {
+									this->boardPos[oldXpos][oldYpos] = 2;
+									//Removing the attacked piece.
+									this->pawn_W[u]->move(-100.0f, -100.0f);
+								}
+							}
+
+							//Rooks - knights - bishops.
+							for (int u = 0; u < 2; u++) {
+								if ((this->king_B->x == this->rook_W[u]->x) && (this->king_B->y == this->rook_W[u]->y)) {
+									this->boardPos[oldXpos][oldYpos] = 2;
+									this->rook_W[u]->move(-100.0f, -100.0f);
+								}
+								else if ((this->king_B->x == this->bishop_W[u]->x) && (this->king_B->y == this->bishop_W[u]->y)) {
+									this->boardPos[oldXpos][oldYpos] = 2;
+									this->bishop_W[u]->move(-100.0f, -100.0f);
+								}
+							}
+
+							//Queen.
+							if ((this->king_B->x == this->queen_W->x) && (this->king_B->y == this->queen_W->y)) {
+								this->boardPos[oldXpos][oldYpos] = 2;
+								this->queen_W->move(-100.0f, -100.0f);
+							}
 
 
-
-
+							//Square color reset (transparent).
+							initSquares();
+							turn++;
+							this->kingMoves_B = false;
+						}
 					}
 				}
 			}

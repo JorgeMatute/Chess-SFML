@@ -13,14 +13,14 @@ class King {
 public:
 	//Constructors and destructor.
 	King();
-	King(int color, float dirX, float dirY);
+	King(int color, float dirX, float dirY, int x, int y);
 	virtual ~King();
 	
 	//Functions.
-	void update();
 	void render(sf::RenderTarget& target);
 
 	void move(const float dirX, const float dirY);
+	bool isMoveLegal(int board[][8]);
 
 private:
 	void initTexture();
@@ -28,8 +28,11 @@ private:
 
 private:
 	sf::Texture textureKing;
-	int color;
+
 public:
+	int color;
+	int x;
+	int y;
 	sf::Sprite spriteKing;
 };
 
