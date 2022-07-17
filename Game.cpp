@@ -12,6 +12,7 @@ Game::Game() {
 	this->initSquareBounds();
 	this->initBoardPos();
 	this->turn = 0; //Pair = white turn.
+	cout << "s" << endl;
 }
 
 Game::~Game() { //Avoiding memory leaks.
