@@ -1,6 +1,6 @@
 #include "Game.h"
 
-int main() {
+int WinMain() {
 
 	//Initialize a random seed.
 	srand(static_cast<unsigned>(time(0)));
